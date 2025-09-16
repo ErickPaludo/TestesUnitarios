@@ -48,7 +48,7 @@ namespace Financ.TesteUnitarios.Domain
         [Fact(DisplayName = "Status é um Enum válido")]
         public void Status_Invalido_GeraDivergencia()
         {
-            var statusInvalido = (Status)1;
+            var statusInvalido = (Status)999;
             Action action = () => new Contas("Teste x", TipoConta.Poupanca, 10, 19, statusInvalido, DateTime.Now);
             action.Should().Throw<ValidacaoDominio>().WithMessage(MensagensDominio.STATUS_INVALIDO);
         }
@@ -68,10 +68,16 @@ namespace Financ.TesteUnitarios.Domain
         [Fact(DisplayName = "Vencimento invalido")]
         public void DiaVencimento_Invalido_GeraDivergencia()
         {
-            var diaFechamento = 18;
+            var diaFechamento = 0;
             var diaVencimento = 17;
 
             Action action = () => new Contas("Teste x", TipoConta.Poupanca, diaFechamento, diaVencimento, Status.Ativo, DateTime.Now);
+            action.Should().Throw<ValidacaoDominio>().WithMessage(MensagensDominio.FECHAMENTO_INVALIDO);
+
+            diaFechamento = 12;
+            diaVencimento = 11;
+            
+            action = () => new Contas("Teste x", TipoConta.Poupanca, diaFechamento, diaVencimento, Status.Ativo, DateTime.Now);
             action.Should().Throw<ValidacaoDominio>().WithMessage(MensagensDominio.VENCIMENTO_MENOR_FECHAMENTO);
 
             diaFechamento = 11;
@@ -79,8 +85,8 @@ namespace Financ.TesteUnitarios.Domain
             action = () => new Contas("Teste x", TipoConta.Poupanca, diaFechamento, diaVencimento, Status.Ativo, DateTime.Now);
             action.Should().Throw<ValidacaoDominio>().WithMessage(MensagensDominio.VENCIMENTO_MINIMO_7_DIAS);
 
-            diaFechamento = 2;
-            diaVencimento = 20;
+            diaFechamento = 1;
+            diaVencimento = 16;
             action = () => new Contas("Teste x", TipoConta.Poupanca, diaFechamento, diaVencimento, Status.Ativo, DateTime.Now);
             action.Should().Throw<ValidacaoDominio>().WithMessage(MensagensDominio.VENCIMENTO_MAXIMO_12_DIAS);
         }
@@ -88,7 +94,10 @@ namespace Financ.TesteUnitarios.Domain
         public void DataRegistro_Invalido_GeraDivergencia()
         {
 
-            Action action = () => new Contas("Teste x", TipoConta.Poupanca, 1, 8, Status.Ativo, DateTime.Now.AddDays(-2));
+            Action action = () => new Contas("Teste x", TipoConta.Poupanca, 1, 8, Status.Ativo, DateTime.Now.AddDays(-1));
+            action.Should().Throw<ValidacaoDominio>().WithMessage(MensagensDominio.DATA_REGISTRO_INVALIDA);
+            
+            action = () => new Contas("Teste x", TipoConta.Poupanca, 1, 8, Status.Ativo, DateTime.Now.AddDays(1));
             action.Should().Throw<ValidacaoDominio>().WithMessage(MensagensDominio.DATA_REGISTRO_INVALIDA);
         }      
         [Fact(DisplayName = "Cadastra conta com sucesso")]

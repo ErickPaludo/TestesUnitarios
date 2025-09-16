@@ -1,12 +1,44 @@
-﻿using System;
+﻿using Financ.Domain.Enums;
+using Financ.Domain.Validacoes;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Financ.Domain.Entidades
 {
-    public sealed class ContasUsuario
+    public sealed class ContasUsuario : BaseConta
     {
+        public int IdConta { get; private set; }
+        public int IdUsuario { get; private set; }
+        public TipoAcesso Acesso { get; private set; }
+        public ICollection<Contas> Contas { get; private set; }
+
+        public ContasUsuario(int idConta,int idUsuario,TipoAcesso acesso,Status status,DateTime dthReg)
+        {
+            ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);
+        }  
+        public ContasUsuario(int id,int idConta,int idUsuario,TipoAcesso acesso,Status status,DateTime dthReg)
+        {
+            ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
+            Id = id;
+            ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);
+        }
+        private void ValidaContasUsuarios(int idConta, int idUsuario, TipoAcesso acesso, Status status, DateTime dthrReg)
+        {
+            ValidacaoDominio.VerificaExcessao(idConta <= 0,MensagensDominio.IDCONTA_IGUAL_MENOR_ZERO);
+            ValidacaoDominio.VerificaExcessao(idUsuario <= 0,MensagensDominio.IDUSUARIO_IGUAL_MENOR_ZERO);
+            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TipoAcesso),acesso),MensagensDominio.ACESSO_INVALIDO);
+            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(Status), status), MensagensDominio.STATUS_INVALIDO);
+            ValidacaoDominio.VerificaExcessao(dthrReg.Date != DateTime.Now.Date, MensagensDominio.DATA_REGISTRO_INVALIDA);
+
+            IdConta = idConta;
+            IdUsuario = idUsuario;
+            Acesso = acesso;
+            Status = status;
+            DthrReg = dthrReg;
+        }
     }
 }
