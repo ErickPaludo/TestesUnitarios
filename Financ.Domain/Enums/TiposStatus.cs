@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Financ.Domain.Enums
 {
-    public enum TipoConta
+    public enum TiposStatus
     {
-        Corrente,
-        Poupanca
+        Ativo,
+        Desativado,
+        Bloqueado,
+        Cancelado
     }
 }

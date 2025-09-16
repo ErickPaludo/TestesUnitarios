@@ -11,23 +11,23 @@ namespace Financ.Domain.Entidades
     public sealed class Contas : BaseConta
     {
         public string? Titulo { get; private set; }
-        public TipoConta TipoConta { get; private set; }
+        public TiposContas TipoConta { get; private set; }
         public int DiaFechamento { get; private set; }
         public int DiaVencimento { get; private set; }
 
         public ContasUsuario ContasUsuario { get; set; }
-        public Contas(string titulo, TipoConta tipoConta, int diaFechamento, int diaVencimento, Status status, DateTime dthrReg)
+        public Contas(string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, TiposStatus status, DateTime dthrReg)
         {
             ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, status, dthrReg);
         }
-        public Contas(int id, string titulo, TipoConta tipoConta, int diaFechamento, int diaVencimento, Status status, DateTime dthrReg)
+        public Contas(int id, string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, TiposStatus status, DateTime dthrReg)
         {
             ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
             Id = id;
             ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, status, dthrReg);
         }
 
-        private void ValidaContas(string titulo, TipoConta tipoConta, int diaFechamento, int diaVencimento, Status status, DateTime dthrReg)
+        private void ValidaContas(string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, TiposStatus status, DateTime dthrReg)
         {
             #region Titulo
             ValidacaoDominio.VerificaExcessao(string.IsNullOrEmpty(titulo), MensagensDominio.TITULO_OBRIGATORIO);
@@ -35,11 +35,11 @@ namespace Financ.Domain.Entidades
             #endregion
 
             #region Tipo da conta
-            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TipoConta), tipoConta), MensagensDominio.TIPO_CONTA_INVALIDO);
+            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposContas), tipoConta), MensagensDominio.TIPO_CONTA_INVALIDO);
             #endregion
 
             #region Status
-            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(Status), status), MensagensDominio.STATUS_INVALIDO);
+            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposStatus), status), MensagensDominio.STATUS_INVALIDO);
             #endregion
 
             #region Fechamento/Vencimento

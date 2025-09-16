@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Domain.Enums
 {
-    public enum TipoAcesso
+    public enum TiposAcessos
     {
         Administrador,
         Visualizador
