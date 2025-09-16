@@ -21,7 +21,7 @@ namespace Financ.Domain.Entidades
         }
         public Contas(int id, string titulo, TipoConta tipoConta, int diaFechamento, int diaVencimento, Status status, DateTime dthrReg)
         {
-            ValidacaoDominio.VerificaExcessao(id <= 0, "Id inválido!");
+            ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
             Id = id;
             ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, status, dthrReg);
         }
@@ -42,17 +42,19 @@ namespace Financ.Domain.Entidades
             #endregion
 
             #region Fechamento/Vencimento
-            ValidacaoDominio.VerificaExcessao(diaFechamento < 1 || diaFechamento > 25, "Dia de fechamento inválido, deve estar entre dia 1 e 25.");
+            ValidacaoDominio.VerificaExcessao(diaFechamento < 1 || diaFechamento > 16, MensagensDominio.FECHAMENTO_INVALIDO);
 
             int diferencaDiasFechamento = diaVencimento - diaFechamento; //diferença entre o dia de fechamento e o dia de vencimento
 
-            ValidacaoDominio.VerificaExcessao(diaVencimento <= diaFechamento, "O vencimento da fatura deve ser maior do que a data de fechamento.");
-            ValidacaoDominio.VerificaExcessao(diferencaDiasFechamento < 7, "O vencimento da fatura deve ser maior do que a data de fechamento.");
-            ValidacaoDominio.VerificaExcessao(diferencaDiasFechamento > 12, "O vencimento deve ser de no máximo 12 dias após o fechamento.");
+            ValidacaoDominio.VerificaExcessao(diaVencimento <= diaFechamento, MensagensDominio.VENCIMENTO_MENOR_FECHAMENTO);
+
+            ValidacaoDominio.VerificaExcessao(diferencaDiasFechamento < 7, MensagensDominio.VENCIMENTO_MINIMO_7_DIAS);
+
+            ValidacaoDominio.VerificaExcessao(diferencaDiasFechamento > 12, MensagensDominio.VENCIMENTO_MAXIMO_12_DIAS);
             #endregion
 
             #region Registro
-            ValidacaoDominio.VerificaExcessao(dthrReg.Date != DateTime.Now.Date, "Deve ser registrada a data atual, esta não pode ser manipulada");
+            ValidacaoDominio.VerificaExcessao(dthrReg.Date != DateTime.Now.Date, MensagensDominio.DATA_REGISTRO_INVALIDA);
             #endregion
 
             Titulo = titulo;
