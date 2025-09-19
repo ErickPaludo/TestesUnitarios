@@ -15,7 +15,8 @@ namespace Financ.Domain.Entidades
         public int DiaFechamento { get; private set; }
         public int DiaVencimento { get; private set; }
 
-        public ContasUsuario ContasUsuario { get; set; }
+        public ICollection<ContasUsuarios> ContasUsuarios { get; set; }
+        public ContasUsuarios ContasUsuario { get; set; }
         public Contas(string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, TiposStatus status, DateTime dthrReg)
         {
             ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, status, dthrReg);
@@ -65,6 +66,5 @@ namespace Financ.Domain.Entidades
             Status = status;
             DthrReg = dthrReg;
         }
-        //Todo: Implantar todas as variaveis de mensagem, e terminar testes unitarios
     }
 }

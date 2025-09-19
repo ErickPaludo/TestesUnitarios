@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace Financ.Domain.Entidades
 {
-    public sealed class ContasUsuario : BaseConta
+    public sealed class ContasUsuarios : BaseConta
     {
         public int IdConta { get; private set; }
         public int IdUsuario { get; private set; }
         public TiposAcessos Acesso { get; private set; }
-        public ICollection<Contas> Contas { get; private set; }
+        public Contas Contas { get; private set; }
 
-        public ContasUsuario(int idConta,int idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
+        public ContasUsuarios(int idConta,int idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
         {
             ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);
         }  
-        public ContasUsuario(int id,int idConta,int idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
+        public ContasUsuarios(int id,int idConta,int idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
         {
             ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
             Id = id;
