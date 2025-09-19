@@ -16,6 +16,7 @@ namespace Financ.Domain.Entidades
         public TiposAcessos Acesso { get; private set; }
         public Contas Contas { get; private set; }
 
+        private ContasUsuarios() { }
         public ContasUsuarios(int idConta,int idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
         {
             ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);

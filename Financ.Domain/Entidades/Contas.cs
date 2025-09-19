@@ -15,6 +15,7 @@ namespace Financ.Domain.Entidades
         public int DiaFechamento { get; private set; }
         public int DiaVencimento { get; private set; }
 
+        private Contas() { }
         public ICollection<ContasUsuarios> ContasUsuarios { get; set; }
         public ContasUsuarios ContasUsuario { get; set; }
         public Contas(string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, TiposStatus status, DateTime dthrReg)
