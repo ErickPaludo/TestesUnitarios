@@ -22,7 +22,9 @@ namespace Financ.Domain.Validacoes
         public const string VENCIMENTO_MENOR_FECHAMENTO = "O vencimento deve ser maior que o fechamento.";
         public const string VENCIMENTO_MINIMO_7_DIAS = "O vencimento deve ter pelo menos 7 dias após o fechamento.";
         public const string VENCIMENTO_MAXIMO_12_DIAS = "O vencimento deve ter no máximo 12 dias após o fechamento.";
+        public const string CREDITO_MENOR_QUE_ZERO = "O Crédito informado deve ser maior que zero!";
         #endregion
+
         #region Contas Usuários
         public const string IDCONTA_IGUAL_MENOR_ZERO = "IdConta não pode ser menor que zero";
         public const string IDUSUARIO_IGUAL_MENOR_ZERO = "IdUsuario não pode ser menor que zero";
