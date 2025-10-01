@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.DTOs.Contas
 {
-    public class ContasDTO
+    public class CadastrarContasDTO
     {
         [Required(ErrorMessage = "O titúlo deverá ser informado!")]
         [MinLength(3,ErrorMessage ="O título deve possuir no mínimo 3 caracteres")]
         [MaxLength(100,ErrorMessage ="O título deve possuir no máximo 100 caracteres")]
-        public string Titulo { get; set; }
+        public string? Titulo { get; set; }
         [DefaultValue(1)]
         public int DiaFechamento { get; set; }
         [DefaultValue(8)]

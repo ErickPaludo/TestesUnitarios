@@ -17,10 +17,13 @@ namespace Financ.Application.Servicos.Contas
         {
             _mediator = mediator;
         }
-        public async Task CriarConta(ContasDTO contaDTO)
+        public async Task CriarConta(CadastrarContasDTO contaDTO)
         {
-            var commandConta = new ContaCommand(contaDTO.Titulo,contaDTO.DiaFechamento,contaDTO.DiaVencimento,contaDTO.LimiteCredito);
-           await _mediator.Send(commandConta);
+            var commandConta = new CriarContaCommand(contaDTO.Titulo,contaDTO.DiaFechamento,contaDTO.DiaVencimento,contaDTO.LimiteCredito);
+            var idConta = await _mediator.Send(commandConta);
+
+            var commandContaUsuario = new CriarContaUsuarioCommand(idConta,Guid.NewGuid());
+            await _mediator.Send(commandContaUsuario);
         }
     }
 }

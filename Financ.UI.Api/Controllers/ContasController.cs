@@ -17,7 +17,7 @@ namespace Financ.UI.Api.Controllers
         }
 
         [HttpPost("cadastrar")]
-        public async Task<IActionResult> CadastrarContas(ContasDTO contasDTO)
+        public async Task<IActionResult> CadastrarContas(CadastrarContasDTO contasDTO)
         {
             await _contaServico.CriarConta(contasDTO);
             return Created();

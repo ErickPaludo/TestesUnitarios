@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\ContasUsuarios\Commands\" />
-    <Folder Include="CQRS\ContasUsuarios\Handler\" />
     <Folder Include="CQRS\ContasUsuarios\Querys\" />
     <Folder Include="CQRS\Contas\Querys\" />
-    <Folder Include="DTOs\ContasUsuarios\" />
-    <Folder Include="Interfaces\ContasUsuarios\" />
-    <Folder Include="Servicos\ContasUsuarios\" />
   </ItemGroup>
 
   <ItemGroup>

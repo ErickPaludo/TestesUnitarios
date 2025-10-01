@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Domain.Interfaces
+namespace Financ.Domain.Interfaces.Repositorios
 {
     public interface IContasUsuariosRepositorio : IBaseRepositorio<ContasUsuarios>{}
 }

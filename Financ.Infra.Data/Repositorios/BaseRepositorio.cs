@@ -3,6 +3,8 @@ using Financ.Infra.Data.Contexto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,9 +19,13 @@ namespace Financ.Infra.Data.Repositorios
         }
         public async Task<T> Adicionar(T entity)
         {
-            _contexto.Set<T>().Add(entity);
-            await _contexto.SaveChangesAsync();
+            await _contexto.Set<T>().AddAsync(entity);
             return entity;
+        }
+
+        public async Task<T?> BuscarPeloId<TId>(TId? id)
+        {
+            return await _contexto.Set<T>().FindAsync(id);
         }
     }
 }

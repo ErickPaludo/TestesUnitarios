@@ -17,24 +17,23 @@ namespace Financ.Domain.Entidades
         public double CreditoLimite { get; set; }
 
         private Contas() { }
-        public ICollection<ContasUsuarios> ContasUsuarios { get; set; }
-        public ContasUsuarios ContasUsuario { get; set; }
-        public Contas(string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
+        public ICollection<ContasUsuarios>? ContasUsuarios { get; set; }
+        public ContasUsuarios? ContasUsuario { get; set; }
+        public Contas(string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
         {
             ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, creditoLimite, status, dthrReg);
         }
-        public Contas(int id, string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
+        public Contas(int id, string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
         {
             ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
             Id = id;
             ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, creditoLimite, status, dthrReg);
         }
-
-        private void ValidaContas(string titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
+        private void ValidaContas(string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
         {
             #region Titulo
-            ValidacaoDominio.VerificaExcessao(string.IsNullOrEmpty(titulo), MensagensDominio.TITULO_OBRIGATORIO);
-            ValidacaoDominio.VerificaExcessao(titulo.Length < 5 || titulo.Length > 100, MensagensDominio.TITULO_TAMANHO_INVALIDO);
+            ValidacaoDominio.VerificaExcessao(string.IsNullOrWhiteSpace(titulo), MensagensDominio.TITULO_OBRIGATORIO);
+            ValidacaoDominio.VerificaExcessao(string.IsNullOrWhiteSpace(titulo) || titulo.Length < 5 || titulo.Length > 100, MensagensDominio.TITULO_TAMANHO_INVALIDO);
             #endregion
 
             #region Tipo da conta

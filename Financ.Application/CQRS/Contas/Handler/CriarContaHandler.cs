@@ -10,17 +10,18 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Handler
 {
-    public class CriaContaHandler : IRequestHandler<ContaCommand, int>
+    public class CriarContaHandler : IRequestHandler<CriarContaCommand, int>
     {
-        private readonly IContasRepositorio _contasRepositorio;
-        public CriaContaHandler(IContasRepositorio contasRepositorio)
+        private readonly IUnitOfWork _unitOfWork;
+        public CriarContaHandler(IUnitOfWork unitOfWork)
         {
-            _contasRepositorio = contasRepositorio;
+            _unitOfWork = unitOfWork;
         }
-        public async Task<int> Handle(ContaCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CriarContaCommand request, CancellationToken cancellationToken)
         {
             Contas contas = new Contas(request.Titulo,request.TipoConta,request.DiaFechamento,request.DiaVencimento,request.CreditoLimite,request.Status,request.DthrReg);
-            await _contasRepositorio.Adicionar(contas);
+            await _unitOfWork.contasRepositorio.Adicionar(contas);
+            await _unitOfWork.Commit();
             return contas.Id;
         }
     }

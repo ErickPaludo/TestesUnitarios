@@ -1,6 +1,10 @@
 ﻿using Financ.Application.Interfaces.Contas;
+using Financ.Application.Interfaces.ContasUsuarios;
+using Financ.Application.Servicos;
 using Financ.Application.Servicos.Contas;
 using Financ.Domain.Interfaces;
+using Financ.Domain.Interfaces.Repositorios;
+using Financ.Infra.Data;
 using Financ.Infra.Data.Contexto;
 using Financ.Infra.Data.Repositorios;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +26,13 @@ namespace Financ.Infra.IoC
 
             services.AddDbContext<AppContextoData>(op => op.UseSqlite(configure.GetConnectionString("Sqlite"), b => b.MigrationsAssembly(typeof(AppContextoData).Assembly.FullName))); //variavel b diz aonde gerar as migrations, pois o contexto esta em outro projeto
             #region Repositorios
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IContasRepositorio, ContasRepositorio>();
             services.AddScoped<IContasUsuariosRepositorio, ContasUsuariosRepositorio>();
             #endregion
             #region Servicos Applicaiton
             services.AddScoped<IContasServicos, ContasServico>();
+            services.AddScoped<IContasUsuariosServicos, ContasUsuariosServicos>();
             #endregion
             services.AddSimpleMediator();
             services.AddScoped<IMediator,Mediator>();

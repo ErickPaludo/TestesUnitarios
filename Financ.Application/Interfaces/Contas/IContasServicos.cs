@@ -9,6 +9,6 @@ namespace Financ.Application.Interfaces.Contas
 {
     public interface IContasServicos
     {
-        Task CriarConta(ContasDTO contaDTO);
+        Task CriarConta(CadastrarContasDTO contaDTO);
     }
 }

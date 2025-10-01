@@ -27,7 +27,7 @@ namespace Financ.Domain.Validacoes
 
         #region Contas Usuários
         public const string IDCONTA_IGUAL_MENOR_ZERO = "IdConta não pode ser menor que zero";
-        public const string IDUSUARIO_IGUAL_MENOR_ZERO = "IdUsuario não pode ser menor que zero";
+        public const string IDUSUARIO_VAZIO = "IdUsuario não deve ser vazio!";
         public const string ACESSO_INVALIDO = "O acesso informado é inválido.";
         #endregion
     }

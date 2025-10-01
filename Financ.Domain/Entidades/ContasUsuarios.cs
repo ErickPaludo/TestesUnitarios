@@ -12,25 +12,25 @@ namespace Financ.Domain.Entidades
     public sealed class ContasUsuarios : BaseConta
     {
         public int IdConta { get; private set; }
-        public int IdUsuario { get; private set; }
+        public Guid IdUsuario { get; private set; }
         public TiposAcessos Acesso { get; private set; }
         public Contas Contas { get; private set; }
 
         private ContasUsuarios() { }
-        public ContasUsuarios(int idConta,int idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
+        public ContasUsuarios(int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
         {
             ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);
         }  
-        public ContasUsuarios(int id,int idConta,int idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
+        public ContasUsuarios(int id,int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
         {
             ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
             Id = id;
             ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);
         }
-        private void ValidaContasUsuarios(int idConta, int idUsuario, TiposAcessos acesso, TiposStatus status, DateTime dthrReg)
+        private void ValidaContasUsuarios(int idConta, Guid idUsuario, TiposAcessos acesso, TiposStatus status, DateTime dthrReg)
         {
             ValidacaoDominio.VerificaExcessao(idConta <= 0,MensagensDominio.IDCONTA_IGUAL_MENOR_ZERO);
-            ValidacaoDominio.VerificaExcessao(idUsuario <= 0,MensagensDominio.IDUSUARIO_IGUAL_MENOR_ZERO);
+            ValidacaoDominio.VerificaExcessao(idUsuario == Guid.Empty, MensagensDominio.IDUSUARIO_VAZIO);
             ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposAcessos),acesso),MensagensDominio.ACESSO_INVALIDO);
             ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposStatus), status), MensagensDominio.STATUS_INVALIDO);
             ValidacaoDominio.VerificaExcessao(dthrReg.Date != DateTime.Now.Date, MensagensDominio.DATA_REGISTRO_INVALIDA);
