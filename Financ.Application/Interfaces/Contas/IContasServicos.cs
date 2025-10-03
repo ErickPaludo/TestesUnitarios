@@ -1,4 +1,4 @@
-﻿using Financ.Application.DTOs.Contas;
+﻿using Financ.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +10,6 @@ namespace Financ.Application.Interfaces.Contas
     public interface IContasServicos
     {
         Task CriarConta(CadastrarContasDTO contaDTO);
+        Task<RetornaContasDTO> RetornarContas(int idContas);
     }
 }

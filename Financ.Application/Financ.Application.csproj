@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="CQRS\ContasUsuarios\Querys\" />
-    <Folder Include="CQRS\Contas\Querys\" />
   </ItemGroup>
 
   <ItemGroup>

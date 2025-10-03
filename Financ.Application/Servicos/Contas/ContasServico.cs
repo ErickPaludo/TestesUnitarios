@@ -1,5 +1,6 @@
 ﻿using Financ.Application.CQRS.Commands;
-using Financ.Application.DTOs.Contas;
+using Financ.Application.CQRS.Querys;
+using Financ.Application.DTOs;
 using Financ.Application.Interfaces.Contas;
 using NetDevPack.SimpleMediator;
 using System;
@@ -19,11 +20,17 @@ namespace Financ.Application.Servicos.Contas
         }
         public async Task CriarConta(CadastrarContasDTO contaDTO)
         {
-            var commandConta = new CriarContaCommand(contaDTO.Titulo,contaDTO.DiaFechamento,contaDTO.DiaVencimento,contaDTO.LimiteCredito);
+            var commandConta = new CriarContaCommand(contaDTO.Titulo,contaDTO.DiaFechamento,contaDTO.DiaVencimento,contaDTO.CreditoLimite);
             var idConta = await _mediator.Send(commandConta);
 
             var commandContaUsuario = new CriarContaUsuarioCommand(idConta,Guid.NewGuid());
             await _mediator.Send(commandContaUsuario);
+        }
+
+        public async Task<RetornaContasDTO> RetornarContas(int idContas)
+        {
+            var queryContas = new RetornarContaIdQuery(idContas);
+            return await _mediator.Send(queryContas);
         }
     }
 }

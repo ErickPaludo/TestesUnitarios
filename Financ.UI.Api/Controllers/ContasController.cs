@@ -1,4 +1,4 @@
-using Financ.Application.DTOs.Contas;
+using Financ.Application.DTOs;
 using Financ.Application.Interfaces.Contas;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +21,12 @@ namespace Financ.UI.Api.Controllers
         {
             await _contaServico.CriarConta(contasDTO);
             return Created();
+        }
+        [HttpGet("retorna_contas/{id:int}")]
+        public async Task<IActionResult> RetornarContas(int id)
+        {
+            var contasLista = await _contaServico.RetornarContas(id);
+            return Ok(contasLista);
         }
     }
 }
