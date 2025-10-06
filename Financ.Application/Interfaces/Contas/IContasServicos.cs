@@ -1,5 +1,6 @@
 ﻿using Financ.Application.Comun.Resultadoado;
 using Financ.Application.DTOs;
+using Financ.Application.DTOs.Contas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Financ.Application.Interfaces.Contas
     {
         Task<Resultado<RetornaContasDTO>> CriarConta(CadastrarContasDTO contaDTO);
         Task<Resultado<RetornaContasDTO>> RetornarContas(int idContas);
+        Task<Resultado<RetornaContasDTO>> AlterarConta(AtualizaContaDTO contaDTO);
     }
 }

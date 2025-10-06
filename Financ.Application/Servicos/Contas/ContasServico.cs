@@ -2,6 +2,7 @@
 using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs;
+using Financ.Application.DTOs.Contas;
 using Financ.Application.Interfaces.Contas;
 using NetDevPack.SimpleMediator;
 using System;
@@ -19,6 +20,8 @@ namespace Financ.Application.Servicos.Contas
         {
             _mediator = mediator;
         }
+
+
         public async Task<Resultado<RetornaContasDTO>> CriarConta(CadastrarContasDTO contaDTO)
         {
             var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite);
@@ -55,6 +58,10 @@ namespace Financ.Application.Servicos.Contas
             }
             else
                 return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
+        }
+        public async Task<Resultado<RetornaContasDTO>> AlterarConta(AtualizaContaDTO contaDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

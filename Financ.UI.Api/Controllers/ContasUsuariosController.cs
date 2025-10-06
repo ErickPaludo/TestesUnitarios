@@ -21,7 +21,7 @@ namespace Financ.UI.Api.Controllers
         public async Task<IActionResult> EntrarNaConta(InclusaoContaUsuarioDTO inclusaoContaUsuarioDTO)
         {
             var usuarioConta = await _contasUsuariosServico.IncluiUsuarioNaConta(inclusaoContaUsuarioDTO);
-            return usuarioConta.RetornoAutomatico("nao tem ainda");
+            return usuarioConta.RetornoAutomatico();
         }
     }
 }

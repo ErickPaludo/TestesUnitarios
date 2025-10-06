@@ -23,9 +23,6 @@ namespace Financ.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ContasUsuarioId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<double>("CreditoLimite")
                         .HasColumnType("REAL");
 
@@ -55,8 +52,6 @@ namespace Financ.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContasUsuarioId");
-
                     b.ToTable("fnc_contas", (string)null);
                 });
 
@@ -75,8 +70,8 @@ namespace Financ.Infra.Data.Migrations
                     b.Property<int>("IdConta")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("IdUsuario")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
@@ -86,17 +81,6 @@ namespace Financ.Infra.Data.Migrations
                     b.HasIndex("IdConta");
 
                     b.ToTable("fnc_contas_usuarios", (string)null);
-                });
-
-            modelBuilder.Entity("Financ.Domain.Entidades.Contas", b =>
-                {
-                    b.HasOne("Financ.Domain.Entidades.ContasUsuarios", "ContasUsuario")
-                        .WithMany()
-                        .HasForeignKey("ContasUsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ContasUsuario");
                 });
 
             modelBuilder.Entity("Financ.Domain.Entidades.ContasUsuarios", b =>

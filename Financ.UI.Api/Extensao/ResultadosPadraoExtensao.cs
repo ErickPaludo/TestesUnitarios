@@ -6,11 +6,11 @@ namespace Financ.UI.Api.Extensao
 {
     public static class ResultadosPadraoExtensao
     {
-        public static IActionResult RetornoAutomatico<T>(this Resultado<T> resultado, string? rota = null)
+        public static IActionResult RetornoAutomatico<T>(this Resultado<T> resultado, (string rota, string controller,object parametros)? rota = null)
         {
             if (resultado.ValidaSucesso)
                 if (rota != null)
-                    return new CreatedResult(rota, resultado.Sucesso);
+                    return new CreatedAtActionResult(rota.Value.rota,null,rota.Value.parametros, resultado.Sucesso);
                 else
                     return new OkObjectResult(resultado.Sucesso);
 
