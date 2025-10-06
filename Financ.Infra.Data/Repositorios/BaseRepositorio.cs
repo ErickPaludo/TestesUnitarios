@@ -1,5 +1,6 @@
 ﻿using Financ.Domain.Interfaces;
 using Financ.Infra.Data.Contexto;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,11 @@ namespace Financ.Infra.Data.Repositorios
         public async Task<T?> BuscarPeloId<TId>(TId? id)
         {
             return await _contexto.Set<T>().FindAsync(id);
+        }
+
+        public async Task<bool> ExisteId(Expression<Func<T,bool>> predicado)
+        {
+            return await _contexto.Set<T>().AnyAsync(predicado);
         }
     }
 }

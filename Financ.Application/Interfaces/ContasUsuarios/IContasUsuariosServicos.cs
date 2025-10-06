@@ -1,4 +1,5 @@
-﻿using Financ.Application.DTOs.ContasUsuarios;
+﻿using Financ.Application.Comun.Resultadoado;
+using Financ.Application.DTOs.ContasUsuarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Financ.Application.Interfaces.ContasUsuarios
 {
     public interface IContasUsuariosServicos
     {
-        Task IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO);
+        Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO);
     }
 }

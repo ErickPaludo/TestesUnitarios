@@ -1,6 +1,7 @@
 ﻿using Financ.Application.DTOs.ContasUsuarios;
 using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Domain.Interfaces.Repositorios;
+using Financ.UI.Api.Extensao;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,8 +20,8 @@ namespace Financ.UI.Api.Controllers
         [HttpPost("entrar_na_conta")]
         public async Task<IActionResult> EntrarNaConta(InclusaoContaUsuarioDTO inclusaoContaUsuarioDTO)
         {
-            await _contasUsuariosServico.IncluiUsuarioNaConta(inclusaoContaUsuarioDTO);
-            return Ok("Entrou na conta com sucesso!");
+            var usuarioConta = await _contasUsuariosServico.IncluiUsuarioNaConta(inclusaoContaUsuarioDTO);
+            return usuarioConta.RetornoAutomatico("nao tem ainda");
         }
     }
 }

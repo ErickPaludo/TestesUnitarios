@@ -1,5 +1,6 @@
 ﻿using Financ.Domain.Enums;
 using Financ.Domain.Validacoes;
+using Financ.Domain.Validacoes.Mensagens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,63 +15,74 @@ namespace Financ.Domain.Entidades
         public TiposContas TipoConta { get; private set; }
         public int DiaFechamento { get; private set; }
         public int DiaVencimento { get; private set; }
-        public double CreditoLimite { get; set; }
+        public double CreditoLimite { get; private set; }
 
         private Contas() { }
         public ICollection<ContasUsuarios>? ContasUsuarios { get; set; }
-        public ContasUsuarios? ContasUsuario { get; set; }
-        public Contas(string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
+        public Contas(string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status)
         {
-            ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, creditoLimite, status, dthrReg);
+            ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, creditoLimite, status);
+            DthrReg = DateTime.Now;
         }
-        public Contas(int id, string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
+        public Contas(int id, string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status)
         {
-            ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
+            ContasValidacao.Verifica(id <= 0, MensagensBase.ID_IGUAL_MENOR_ZERO);
             Id = id;
-            ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, creditoLimite, status, dthrReg);
+            DthrReg = DateTime.Now;
+            ValidaContas(titulo, tipoConta, diaFechamento, diaVencimento, creditoLimite, status);
         }
-        private void ValidaContas(string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status, DateTime dthrReg)
+        private void ValidaContas(string? titulo, TiposContas tipoConta, int diaFechamento, int diaVencimento, double creditoLimite, TiposStatus status)
         {
-            #region Titulo
-            ValidacaoDominio.VerificaExcessao(string.IsNullOrWhiteSpace(titulo), MensagensDominio.TITULO_OBRIGATORIO);
-            ValidacaoDominio.VerificaExcessao(string.IsNullOrWhiteSpace(titulo) || titulo.Length < 5 || titulo.Length > 100, MensagensDominio.TITULO_TAMANHO_INVALIDO);
-            #endregion
-
-            #region Tipo da conta
-            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposContas), tipoConta), MensagensDominio.TIPO_CONTA_INVALIDO);
-            #endregion
-
-            #region Status
-            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposStatus), status), MensagensDominio.STATUS_INVALIDO);
-            #endregion
-
-            #region Fechamento/Vencimento
-            ValidacaoDominio.VerificaExcessao(diaFechamento < 1 || diaFechamento > 16, MensagensDominio.FECHAMENTO_INVALIDO);
+            ValidaTitulo(titulo);
+            ValidaTipoDaConta(tipoConta);
+            ValidaStatus(status);
+            ValidaFechamentoVencimento(diaFechamento, diaVencimento);
+            ValidaCreditoLimite(creditoLimite);
+        }
+        private void ValidaTitulo(string? titulo)
+        {
+            ContasValidacao.Verifica(string.IsNullOrWhiteSpace(titulo), MensagensContas.TITULO_OBRIGATORIO);
+            ContasValidacao.Verifica(string.IsNullOrWhiteSpace(titulo) || titulo.Length < 5 || titulo.Length > 100, MensagensContas.TITULO_TAMANHO_INVALIDO);
+            Titulo = titulo;
+        }
+        private void ValidaTipoDaConta(TiposContas tipoConta)
+        {
+            ContasValidacao.Verifica(!Enum.IsDefined(typeof(TiposContas), tipoConta), MensagensContas.TIPO_CONTA_INVALIDO);
+            TipoConta = tipoConta;
+        }
+        private void ValidaStatus(TiposStatus status)
+        {
+            ContasValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensContas.STATUS_INVALIDO);
+            Status = status;
+        }
+        private void ValidaFechamentoVencimento(int diaFechamento, int diaVencimento)
+        {
+            ContasValidacao.Verifica(diaFechamento < 1 || diaFechamento > 16, MensagensContas.FECHAMENTO_INVALIDO);
 
             int diferencaDiasFechamento = diaVencimento - diaFechamento; //diferença entre o dia de fechamento e o dia de vencimento
 
-            ValidacaoDominio.VerificaExcessao(diaVencimento <= diaFechamento, MensagensDominio.VENCIMENTO_MENOR_FECHAMENTO);
+            ContasValidacao.Verifica(diaVencimento <= diaFechamento, MensagensContas.VENCIMENTO_MENOR_FECHAMENTO);
 
-            ValidacaoDominio.VerificaExcessao(diferencaDiasFechamento < 7, MensagensDominio.VENCIMENTO_MINIMO_7_DIAS);
+            ContasValidacao.Verifica(diferencaDiasFechamento < 7, MensagensContas.VENCIMENTO_MINIMO_7_DIAS);
 
-            ValidacaoDominio.VerificaExcessao(diferencaDiasFechamento > 12, MensagensDominio.VENCIMENTO_MAXIMO_12_DIAS);
-            #endregion
-
-            #region Registro
-            ValidacaoDominio.VerificaExcessao(dthrReg.Date != DateTime.Now.Date, MensagensDominio.DATA_REGISTRO_INVALIDA);
-            #endregion
-
-            #region Credito Limite
-            ValidacaoDominio.VerificaExcessao(creditoLimite < 0,MensagensDominio.CREDITO_MENOR_QUE_ZERO);
-            #endregion
-
-            Titulo = titulo;
-            TipoConta = tipoConta;
+            ContasValidacao.Verifica(diferencaDiasFechamento >= 12, MensagensContas.VENCIMENTO_MAXIMO_12_DIAS);
             DiaFechamento = diaFechamento;
             DiaVencimento = diaVencimento;
-            Status = status;
-            DthrReg = dthrReg;
+        }
+        private void ValidaCreditoLimite(double creditoLimite)
+        {
+            ContasValidacao.Verifica(creditoLimite < 0, MensagensContas.CREDITO_MENOR_QUE_ZERO);
             CreditoLimite = creditoLimite;
+        }
+        public void AtualizaConta(ContasUsuarios usuarios,string? titulo, TiposStatus status, double creditoLimite, int diaFechamento, int diaVencimento)
+        {
+            ContasValidacao.Verifica(usuarios == null, MensagensBase.USUARIO_NAO_INFORMADO);
+            ContasValidacao.Verifica(usuarios!.Acesso != TiposAcessos.Administrador, MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
+
+            ValidaTitulo(titulo);
+            ValidaCreditoLimite(creditoLimite);
+            ValidaFechamentoVencimento(diaFechamento, diaVencimento);
+            ValidaStatus(status);
         }
     }
 }

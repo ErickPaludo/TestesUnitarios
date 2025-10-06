@@ -1,4 +1,5 @@
-﻿using Financ.Application.CQRS.Base.Command;
+﻿using Financ.Application.Comun.Resultadoado;
+using Financ.Application.CQRS.Base.Command;
 using Financ.Domain.Entidades;
 using Financ.Domain.Enums;
 using NetDevPack.SimpleMediator;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public class CriarContaUsuarioCommand : ContasBaseCommand, IRequest<ContasUsuarios>
+    public class CriarContaUsuarioCommand : ContasBaseCommand, IRequest<Resultado<ContasUsuarios>>
     {
         public CriarContaUsuarioCommand(int idConta, Guid idUsuario)
         {
@@ -18,7 +19,6 @@ namespace Financ.Application.CQRS.Commands
             IdUsuario = idUsuario;
             Acesso = TiposAcessos.Administrador;
             Status = TiposStatus.Ativo;
-            DthrReg = DateTime.Now;
         }
     }
 }

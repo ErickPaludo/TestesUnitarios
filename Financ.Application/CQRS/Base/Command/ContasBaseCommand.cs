@@ -13,6 +13,5 @@ namespace Financ.Application.CQRS.Base.Command
         public Guid IdUsuario { get; protected set; }
         public TiposAcessos Acesso { get; protected set; }
         public TiposStatus Status { get; protected set; }
-        public DateTime DthrReg { get; protected set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Financ.Application.CQRS.Commands;
+﻿using Financ.Application.Comun.Resultado;
+using Financ.Application.Comun.Resultadoado;
+using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Handler;
 using Financ.Application.DTOs.ContasUsuarios;
 using Financ.Application.Interfaces.ContasUsuarios;
@@ -21,11 +23,16 @@ namespace Financ.Application.Servicos
             _mediator = mediator;
         }
 
-        public async Task IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO)
+        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO)
         {
             var commandContaUsuario = new IncluiUsuarioContaCommand(contaUsuarioDTO.IdConta, Guid.NewGuid(), contaUsuarioDTO.Acesso);
 
             var contaUsuario = await _mediator.Send(commandContaUsuario);
+
+            if (contaUsuario.ValidaFalha)
+                return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(contaUsuario.Falha!);
+
+            return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(new RetornaCadastroContasUsuariosDTO(contaUsuario.Sucesso.IdConta, contaUsuario.Sucesso.Acesso, contaUsuario.Sucesso.IdUsuario));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Financ.Domain.Enums;
 using Financ.Domain.Validacoes;
+using Financ.Domain.Validacoes.Mensagens;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,32 +15,31 @@ namespace Financ.Domain.Entidades
         public int IdConta { get; private set; }
         public Guid IdUsuario { get; private set; }
         public TiposAcessos Acesso { get; private set; }
-        public Contas Contas { get; private set; }
+        public Contas? Contas { get; private set; }
 
-        private ContasUsuarios() { }
-        public ContasUsuarios(int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
+        public ContasUsuarios() { }
+        public ContasUsuarios(int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status)
         {
-            ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);
+            ValidaContasUsuarios(idConta, idUsuario, acesso, status);
         }  
-        public ContasUsuarios(int id,int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status,DateTime dthReg)
+        public ContasUsuarios(int id,int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status )
         {
-            ValidacaoDominio.VerificaExcessao(id <= 0, MensagensDominio.ID_IGUAL_MENOR_ZERO);
+            ContasUsuariosValidacao.Verifica(id <= 0, MensagensBase.ID_IGUAL_MENOR_ZERO);
             Id = id;
-            ValidaContasUsuarios(idConta, idUsuario, acesso, status, dthReg);
+            ValidaContasUsuarios(idConta, idUsuario, acesso, status);
         }
-        private void ValidaContasUsuarios(int idConta, Guid idUsuario, TiposAcessos acesso, TiposStatus status, DateTime dthrReg)
+        private void ValidaContasUsuarios(int idConta, Guid idUsuario, TiposAcessos acesso, TiposStatus status)
         {
-            ValidacaoDominio.VerificaExcessao(idConta <= 0,MensagensDominio.IDCONTA_IGUAL_MENOR_ZERO);
-            ValidacaoDominio.VerificaExcessao(idUsuario == Guid.Empty, MensagensDominio.IDUSUARIO_VAZIO);
-            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposAcessos),acesso),MensagensDominio.ACESSO_INVALIDO);
-            ValidacaoDominio.VerificaExcessao(!Enum.IsDefined(typeof(TiposStatus), status), MensagensDominio.STATUS_INVALIDO);
-            ValidacaoDominio.VerificaExcessao(dthrReg.Date != DateTime.Now.Date, MensagensDominio.DATA_REGISTRO_INVALIDA);
+            ContasUsuariosValidacao.Verifica(idConta <= 0, MensagensContasUsuarios.IDCONTA_IGUAL_MENOR_ZERO);
+            ContasUsuariosValidacao.Verifica(idUsuario == Guid.Empty, MensagensContasUsuarios.IDUSUARIO_VAZIO);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos),acesso),MensagensContasUsuarios.ACESSO_INVALIDO);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensContas.STATUS_INVALIDO);
 
             IdConta = idConta;
             IdUsuario = idUsuario;
             Acesso = acesso;
             Status = status;
-            DthrReg = dthrReg;
+            DthrReg = DateTime.Now;
         }
     }
 }

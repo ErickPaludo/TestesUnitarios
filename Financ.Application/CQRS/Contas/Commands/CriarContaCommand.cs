@@ -1,4 +1,5 @@
-﻿using Financ.Application.CQRS.Base.Command;
+﻿using Financ.Application.Comun.Resultadoado;
+using Financ.Application.CQRS.Base.Command;
 using Financ.Domain.Entidades;
 using Financ.Domain.Enums;
 using NetDevPack.SimpleMediator;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public class CriarContaCommand : ContasBaseCommand, IRequest<int>
+    public class CriarContaCommand : ContasBaseCommand, IRequest<Resultado<Contas>>
     {
         public string? Titulo { get; private set; }
         public TiposContas TipoConta { get; private set; }
@@ -21,7 +22,6 @@ namespace Financ.Application.CQRS.Commands
         public CriarContaCommand(string? titulo, int diaFechamento, int diaVencimento, double creditoLimite)
         {
             Status = TiposStatus.Ativo;
-            DthrReg = DateTime.Now;
             Titulo = titulo;
             TipoConta = TiposContas.Corrente;
             DiaFechamento = diaFechamento;

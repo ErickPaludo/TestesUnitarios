@@ -1,4 +1,5 @@
-﻿using Financ.Application.CQRS.Commands;
+﻿using Financ.Application.Comun.Resultadoado;
+using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs;
 using Financ.Application.Interfaces.Contas;
@@ -18,19 +19,42 @@ namespace Financ.Application.Servicos.Contas
         {
             _mediator = mediator;
         }
-        public async Task CriarConta(CadastrarContasDTO contaDTO)
+        public async Task<Resultado<RetornaContasDTO>> CriarConta(CadastrarContasDTO contaDTO)
         {
-            var commandConta = new CriarContaCommand(contaDTO.Titulo,contaDTO.DiaFechamento,contaDTO.DiaVencimento,contaDTO.CreditoLimite);
-            var idConta = await _mediator.Send(commandConta);
+            var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite);
+            var conta = await _mediator.Send(commandConta);
 
-            var commandContaUsuario = new CriarContaUsuarioCommand(idConta,Guid.NewGuid());
+            if (!conta.ValidaSucesso)
+                return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
+
+            var commandContaUsuario = new CriarContaUsuarioCommand(conta.Sucesso!.Id, Guid.NewGuid());
             await _mediator.Send(commandContaUsuario);
+            return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
+            {
+                IdConta = conta.Sucesso!.Id,
+                Titulo = conta.Sucesso!.Titulo,
+                DiaFechamento = conta.Sucesso!.DiaFechamento,
+                DiaVencimento = conta.Sucesso!.DiaVencimento,
+                CreditoLimite = conta.Sucesso!.CreditoLimite
+            });
         }
 
-        public async Task<RetornaContasDTO> RetornarContas(int idContas)
+        public async Task<Resultado<RetornaContasDTO>> RetornarContas(int idContas)
         {
-            var queryContas = new RetornarContaIdQuery(idContas);
-            return await _mediator.Send(queryContas);
+            var conta = await _mediator.Send(new RetornarContaIdQuery(idContas));
+            if (conta.ValidaSucesso)
+            {
+                return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
+                {
+                    IdConta = conta.Sucesso!.Id,
+                    Titulo = conta.Sucesso!.Titulo,
+                    DiaFechamento = conta.Sucesso!.DiaFechamento,
+                    DiaVencimento = conta.Sucesso!.DiaVencimento,
+                    CreditoLimite = conta.Sucesso!.CreditoLimite
+                });
+            }
+            else
+                return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
         }
     }
 }
