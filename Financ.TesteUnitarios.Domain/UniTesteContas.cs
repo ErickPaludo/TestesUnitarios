@@ -121,6 +121,27 @@ namespace Financ.TesteUnitarios.Domain
             Action action = () => conta.AtualizaConta(contausaurio,"Teste y", TiposStatus.Desativado, 300, 2, 10);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
         }
+        [Fact(DisplayName = "Atualiza conta corretamente")]
+        public void Atualiza_Conta_NaoGeraDivergencia()
+        {
+            var conta = new Contas("Teste x", TiposContas.Corrente, 1, 8, 200, TiposStatus.Ativo);
+            var contausaurio = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Ativo);
+
+            Action action = () => conta.AtualizaConta(contausaurio,null, TiposStatus.Desativado, 300, 2, 10);
+            action.Should().NotThrow<ContasValidacao>();
+            
+            action = () => conta.AtualizaConta(contausaurio, "Teste x", null, 300, 2, 10);
+            action.Should().NotThrow<ContasValidacao>();
+            
+            action = () => conta.AtualizaConta(contausaurio, "Teste x", TiposStatus.Desativado, null, 2, 10);
+            action.Should().NotThrow<ContasValidacao>();
+            
+            action = () => conta.AtualizaConta(contausaurio, "Teste x", TiposStatus.Desativado, 300, null, 10);
+            action.Should().NotThrow<ContasValidacao>();
+            
+            action = () => conta.AtualizaConta(contausaurio, "Teste x", TiposStatus.Desativado, 300, 2, null);
+            action.Should().NotThrow<ContasValidacao>();
+        }
 
     }
 }

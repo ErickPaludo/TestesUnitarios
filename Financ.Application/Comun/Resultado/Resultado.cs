@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.Comun.Resultadoado
+namespace Financ.Application.Comun.Resultado
 {
     public class Resultado<T>
     {

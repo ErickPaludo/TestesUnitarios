@@ -30,10 +30,11 @@ namespace Financ.UI.Api.Controllers
             var contasLista = await _contaServico.RetornarContas(id);
             return contasLista.RetornoAutomatico();
         }
-        [HttpPatch]
-        public async Task<IActionResult> AtualizaConta(AtualizaContaDTO contaDTO)
+        [HttpPatch("atualiza_conta/{idContaUsuario}")]
+        public async Task<IActionResult> AtualizaConta(int idContaUsuario, AtualizaContaDTO contaDTO)
         {
-            return Ok();
+            var contaAtualizada = await _contaServico.AlterarConta(idContaUsuario, contaDTO);
+            return contaAtualizada.RetornoAutomatico();
         }
     }
 }

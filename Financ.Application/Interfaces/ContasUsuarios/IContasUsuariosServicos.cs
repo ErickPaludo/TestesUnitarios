@@ -1,4 +1,4 @@
-﻿using Financ.Application.Comun.Resultadoado;
+﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.DTOs.ContasUsuarios;
 using System;
 using System.Collections.Generic;

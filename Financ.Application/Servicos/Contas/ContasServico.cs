@@ -1,4 +1,4 @@
-﻿using Financ.Application.Comun.Resultadoado;
+﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs;
@@ -20,7 +20,6 @@ namespace Financ.Application.Servicos.Contas
         {
             _mediator = mediator;
         }
-
 
         public async Task<Resultado<RetornaContasDTO>> CriarConta(CadastrarContasDTO contaDTO)
         {
@@ -59,9 +58,22 @@ namespace Financ.Application.Servicos.Contas
             else
                 return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
         }
-        public async Task<Resultado<RetornaContasDTO>> AlterarConta(AtualizaContaDTO contaDTO)
+
+        public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, AtualizaContaDTO contaDTO)
         {
-            throw new NotImplementedException();
+            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
+
+            if(commandConta.ValidaSucesso)
+                return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
+                {
+                    IdConta = commandConta.Sucesso!.Id,
+                    Titulo = commandConta.Sucesso!.Titulo,
+                    DiaFechamento = commandConta.Sucesso!.DiaFechamento,
+                    DiaVencimento = commandConta.Sucesso!.DiaVencimento,
+                    CreditoLimite = commandConta.Sucesso!.CreditoLimite
+                });
+            else
+                return Resultado<RetornaContasDTO>.GeraFalha(commandConta.Falha!);
         }
     }
 }

@@ -33,5 +33,14 @@ namespace Financ.Infra.Data.Repositorios
         {
             return await _contexto.Set<T>().AnyAsync(predicado);
         }
+        public async Task<T?> BuscarObjetoUnico(Expression<Func<T, bool>> predicado)
+        {
+            return await _contexto.Set<T>().FirstOrDefaultAsync(predicado);
+        }
+
+        public void Atualiza(T entity)
+        {
+          _contexto.Set<T>().Update(entity);
+        }
     }
 }

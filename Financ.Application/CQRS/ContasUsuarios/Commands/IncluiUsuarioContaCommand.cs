@@ -1,4 +1,4 @@
-﻿using Financ.Application.Comun.Resultadoado;
+﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Base.Command;
 using Financ.Domain.Entidades;
 using Financ.Domain.Enums;

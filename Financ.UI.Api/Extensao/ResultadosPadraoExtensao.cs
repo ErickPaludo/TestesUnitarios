@@ -1,4 +1,4 @@
-﻿using Financ.Application.Comun.Resultadoado;
+﻿using Financ.Application.Comun.Resultado;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 

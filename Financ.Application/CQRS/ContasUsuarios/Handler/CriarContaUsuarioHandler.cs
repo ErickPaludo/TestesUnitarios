@@ -1,5 +1,4 @@
 ﻿using Financ.Application.Comun.Resultado;
-using Financ.Application.Comun.Resultadoado;
 using Financ.Application.CQRS.Commands;
 using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces;

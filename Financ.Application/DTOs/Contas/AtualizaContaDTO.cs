@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Financ.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace Financ.Application.DTOs.Contas
         public int? DiaFechamento { get; set; }
         public int? DiaVencimento { get; set; }
         public double? CreditoLimite { get; set; }
+        public TiposStatus? Status { get; set; }
     }
 }

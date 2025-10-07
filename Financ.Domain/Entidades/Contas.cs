@@ -74,15 +74,22 @@ namespace Financ.Domain.Entidades
             ContasValidacao.Verifica(creditoLimite < 0, MensagensContas.CREDITO_MENOR_QUE_ZERO);
             CreditoLimite = creditoLimite;
         }
-        public void AtualizaConta(ContasUsuarios usuarios,string? titulo, TiposStatus status, double creditoLimite, int diaFechamento, int diaVencimento)
+        public void AtualizaConta(ContasUsuarios usuarios, string? titulo, TiposStatus? status, double? creditoLimite, int? diaFechamento, int? diaVencimento)
         {
             ContasValidacao.Verifica(usuarios == null, MensagensBase.USUARIO_NAO_INFORMADO);
             ContasValidacao.Verifica(usuarios!.Acesso != TiposAcessos.Administrador, MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
 
-            ValidaTitulo(titulo);
-            ValidaCreditoLimite(creditoLimite);
-            ValidaFechamentoVencimento(diaFechamento, diaVencimento);
-            ValidaStatus(status);
+            if (titulo != null)
+                ValidaTitulo(titulo);
+
+            if (creditoLimite is not null)
+                ValidaCreditoLimite(creditoLimite.Value);
+
+            if (diaFechamento is not null && diaVencimento is not null)
+                ValidaFechamentoVencimento(diaFechamento.Value, diaVencimento.Value);
+
+            if (status is not null)
+                ValidaStatus(status.Value);
         }
     }
 }

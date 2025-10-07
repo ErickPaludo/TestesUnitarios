@@ -1,4 +1,4 @@
-﻿using Financ.Application.Comun.Resultadoado;
+﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Base.Command;
 using Financ.Domain.Entidades;
 using Financ.Domain.Enums;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public class CriarContaCommand : ContasBaseCommand, IRequest<Resultado<Contas>>
+    public sealed class CriarContaCommand : ContasBaseCommand, IRequest<Resultado<Contas>>
     {
         public string? Titulo { get; private set; }
         public TiposContas TipoConta { get; private set; }
