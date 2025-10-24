@@ -25,17 +25,11 @@ namespace Financ.Infra.IoC
         {
 
             services.AddDbContext<AppContextoData>(op => op.UseSqlite(configure.GetConnectionString("Sqlite"), b => b.MigrationsAssembly(typeof(AppContextoData).Assembly.FullName))); //variavel b diz aonde gerar as migrations, pois o contexto esta em outro projeto
-            #region Repositorios
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IContasRepositorio, ContasRepositorio>();
             services.AddScoped<IContasUsuariosRepositorio, ContasUsuariosRepositorio>();
-            #endregion
-            #region Servicos Applicaiton
-            services.AddScoped<IContasServicos, ContasServico>();
-            services.AddScoped<IContasUsuariosServicos, ContasUsuariosServicos>();
-            #endregion
-            services.AddSimpleMediator();
-            services.AddScoped<IMediator,Mediator>();
+
         }
     }
 }

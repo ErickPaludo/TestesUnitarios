@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Financ.UI.Api.Models
 {
-    public class RegisterModel
+    public class UsuarioCadastro
     {
         [Required]
         [EmailAddress]
@@ -11,11 +11,11 @@ namespace Financ.UI.Api.Models
 
         [Required]
         [PasswordPropertyText]
-        public string Password { get; set; }
+        public string Senha { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "Passwords don´t match")]
-        public string ConfirmPassword { get; set; }
+        [Display(Name = "Confirme a senha")]
+        [Compare("Senha", ErrorMessage = "As senhas devem ser identicas!")]
+        public string ConfirmarSenha { get; set; }
     }
 }

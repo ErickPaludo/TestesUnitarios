@@ -11,9 +11,9 @@ namespace Financ.Infra.Data.Identity
 {
     public class Autenticacao : IAutenticacao
     {
-        private readonly UserManager<ApplicationUser> _gerenciaUsuarios;
-        private readonly SignInManager<ApplicationUser> _gerenciaLogin;
-        public Autenticacao(UserManager<ApplicationUser> gerenciaUsuarios, SignInManager<ApplicationUser> gerenciaLogin)
+        private readonly UserManager<UsuarioIdentity> _gerenciaUsuarios;
+        private readonly SignInManager<UsuarioIdentity> _gerenciaLogin;
+        public Autenticacao(UserManager<UsuarioIdentity> gerenciaUsuarios, SignInManager<UsuarioIdentity> gerenciaLogin)
         {
             _gerenciaUsuarios = gerenciaUsuarios;
             _gerenciaLogin = gerenciaLogin;
@@ -24,7 +24,7 @@ namespace Financ.Infra.Data.Identity
         }
         public async Task<bool> RegistrarUsuario(string email, string senha)
         {
-            var usuario = new ApplicationUser
+            var usuario = new UsuarioIdentity
             {
                 Email = email,
                 UserName = email
@@ -32,21 +32,6 @@ namespace Financ.Infra.Data.Identity
             var usuarioCriado = await _gerenciaUsuarios.CreateAsync(usuario, senha);
 
             return usuarioCriado.Succeeded;
-        }
-        public async Task DeslogaUsuario()
-        {
-            await _gerenciaLogin.SignOutAsync();
-        }
-
-        public async Task<string> ReAutentica()
-        {
-            var byteChave = new byte[128];
-            using var numeroGeradoAleatoriamente = RandomNumberGenerator.Create();
-
-            numeroGeradoAleatoriamente.GetBytes(byteChave);
-
-            var novoToken = Convert.ToBase64String(byteChave);
-            return novoToken;
         }
     }
 }

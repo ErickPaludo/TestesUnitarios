@@ -10,7 +10,5 @@ namespace Financ.Domain.Interfaces.Autenticação
     {
         Task<bool> Autenticador(string email, string senha);
         Task<bool> RegistrarUsuario(string email, string senha);
-        Task DeslogaUsuario();
-        Task<string> ReAutentica();
     }
 }

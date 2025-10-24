@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public sealed class CriarContaCommand : ContasBaseCommand, IRequest<Resultado<Contas>>
+    public sealed class CriarContaCommand : BaseCommand, IRequest<Resultado<Contas>>
     {
         public string? Titulo { get; private set; }
         public TiposContas TipoConta { get; private set; }

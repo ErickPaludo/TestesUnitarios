@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Infra.Data.Identity
 {
-    public class ApplicationUser : IdentityUser
+    public class UsuarioIdentity : IdentityUser
     {
     }
 }

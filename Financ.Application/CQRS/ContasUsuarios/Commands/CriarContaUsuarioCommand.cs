@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public class CriarContaUsuarioCommand : ContasBaseCommand, IRequest<Resultado<ContasUsuarios>>
+    public class CriarContaUsuarioCommand : BaseCommand, IRequest<Resultado<ContasUsuarios>>
     {
         public CriarContaUsuarioCommand(int idConta, Guid idUsuario)
         {
