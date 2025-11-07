@@ -15,6 +15,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Financ.Application.Interfaces.Autenticação;
+using Financ.Application.Servicos.Autenticaçao;
+using Financ.Infra.Data.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Financ.Infra.IoC
 {
@@ -24,6 +28,11 @@ namespace Financ.Infra.IoC
         {
             services.AddScoped<IContasServicos, ContasServico>();
             services.AddScoped<IContasUsuariosServicos, ContasUsuariosServicos>();
+            services.AddScoped<IUsuarioAutenticacao, UsuarioAutenticacao>();
+
+            services.AddIdentity<UsuarioIdentity, IdentityRole>()
+    .AddEntityFrameworkStores<AppContextoData>()
+    .AddDefaultTokenProviders();
         }
     }
 }

@@ -33,5 +33,6 @@ namespace Financ.Infra.Data.Identity
 
             return usuarioCriado.Succeeded;
         }
+
     }
 }

@@ -19,7 +19,8 @@ namespace Financ.Application.CQRS.UsuarioAutenticação.Handler
         }
         public async Task<Resultado<string>> Handle(CadastraUsuarioCommand request, CancellationToken cancellationToken)
         {
-            return Resultado<string>.GeraSucesso("ok");
+            var usuarioCriado = await _autenticacao.RegistrarUsuario(request.Email,request.Senha);
+            return usuarioCriado ? Resultado<string>.GeraSucesso("Usuário criado com sucesso!") : Resultado<string>.GeraFalha(Falha.ErroOperacional("Erro ao criar usuário, tente novamente!"));
         }
     }
 }

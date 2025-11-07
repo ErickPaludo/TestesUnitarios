@@ -11,10 +11,15 @@ namespace Financ.UI.Api
 
             // Add services to the container.
             builder.Services.ConfigurarInjecaoInfraestrutura(builder.Configuration);
+            builder.Services.ConfigurarInjecaoServicos();
+            builder.Services.ConfigurarInjecaoBibliotecas();
+            builder.Services.ConfigurarInjecaoAutenticaoJWT(builder.Configuration);
+            builder.Services.ConfigurarInjecaoSwagger(builder.Configuration);
+            
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+           builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 

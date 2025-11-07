@@ -1,5 +1,5 @@
 ﻿using Financ.Application.Comun.Resultado;
-using Financ.UI.Api.Models;
+using Financ.Application.DTOs.Autenticação;
 using System;
 using System.Collections.Generic;
 using System.Linq;

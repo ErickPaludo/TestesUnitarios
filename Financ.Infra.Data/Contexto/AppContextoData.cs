@@ -1,4 +1,6 @@
 ﻿using Financ.Domain.Entidades;
+using Financ.Infra.Data.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Infra.Data.Contexto
 {
-    public class AppContextoData : DbContext
+    public class AppContextoData : IdentityDbContext<UsuarioIdentity>
     {
         public AppContextoData(DbContextOptions<AppContextoData> options) : base(options){}
         public DbSet<Contas> Contas;

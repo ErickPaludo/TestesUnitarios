@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Financ.UI.Api.Models
+namespace Financ.Application.DTOs.Autenticação
 {
-    public class UsuarioConectaDTO
+    public class ConectaUsuarioDTO
     {
         [Required(ErrorMessage = "Usuário inválido!")]
         [EmailAddress(ErrorMessage = "Email inválido!")]

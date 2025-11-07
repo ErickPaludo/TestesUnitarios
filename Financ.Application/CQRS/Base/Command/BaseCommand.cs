@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Base.Command
 {
-    public class ContasBaseCommand
+    public class BaseCommand
     {
         public int IdConta { get; protected set; }
         public Guid IdUsuario { get; protected set; }

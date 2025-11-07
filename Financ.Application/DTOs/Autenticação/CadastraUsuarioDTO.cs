@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace Financ.UI.Api.Models
+namespace Financ.Application.DTOs.Autenticação
 {
-    public class UsuarioCadastro
+    public class CadastraUsuarioDTO
     {
         [Required]
         [EmailAddress]
