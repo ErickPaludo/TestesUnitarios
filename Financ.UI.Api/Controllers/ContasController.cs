@@ -1,8 +1,11 @@
 using Financ.Application.DTOs;
 using Financ.Application.DTOs.Contas;
 using Financ.Application.Interfaces.Contas;
+using Financ.Domain.Interfaces.Autenticação;
 using Financ.UI.Api.Extensao;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Financ.UI.Api.Controllers
 {
@@ -12,24 +15,27 @@ namespace Financ.UI.Api.Controllers
     {
       
         private readonly IContasServicos _contaServico;
-
-        public ContasController(IContasServicos contaServico)
+        private readonly IAutenticacao _autenticacao;
+        public ContasController(IContasServicos contaServico, IAutenticacao autenticacao)
         {
             _contaServico = contaServico;
+            _autenticacao = autenticacao;
         }
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CadastrarContas(CadastrarContasDTO contasDTO)
         {
-           var conta = await _contaServico.CriarConta(contasDTO);
-            return conta.RetornoAutomatico(conta.ValidaSucesso ? (nameof(RetornaContasDTO),"Contas", new { id = conta.Sucesso!.IdConta }) : null);
+           var conta = await _contaServico.CriarConta(User.RetornaIdUsuario(), contasDTO);
+            return conta.RetornoAutomatico();
         }
+        [Authorize]
         [HttpGet("retorna_contas/{id:int}")]
         public async Task<IActionResult> RetornarContas(int id)
         {
             var contasLista = await _contaServico.RetornarContas(id);
             return contasLista.RetornoAutomatico();
         }
+
         [HttpPatch("atualiza_conta/{idContaUsuario}")]
         public async Task<IActionResult> AtualizaConta(int idContaUsuario, AtualizaContaDTO contaDTO)
         {

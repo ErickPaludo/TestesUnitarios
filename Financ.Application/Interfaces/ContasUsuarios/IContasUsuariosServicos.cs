@@ -10,6 +10,6 @@ namespace Financ.Application.Interfaces.ContasUsuarios
 {
     public interface IContasUsuariosServicos
     {
-        Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO);
+        Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO,Guid idUsuario);
     }
 }

@@ -21,7 +21,6 @@ namespace Financ.Application.CQRS.Handler
         }
         public async Task<Resultado<ContasUsuarios>> Handle(IncluiUsuarioContaCommand request, CancellationToken cancellationToken)
         {
-
             try
             {
                 if (!await _unitOfWork.contasRepositorio.ExisteId(x => x.Id == request.IdConta))

@@ -22,16 +22,16 @@ namespace Financ.Application.Servicos
             _mediator = mediator;
         }
 
-        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO)
+        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO, Guid idUsuario)
         {
-            var commandContaUsuario = new IncluiUsuarioContaCommand(contaUsuarioDTO.IdConta, Guid.NewGuid(), contaUsuarioDTO.Acesso);
+            var commandContaUsuario = new IncluiUsuarioContaCommand(contaUsuarioDTO.IdConta, idUsuario, contaUsuarioDTO.Acesso);
 
             var contaUsuario = await _mediator.Send(commandContaUsuario);
 
             if (contaUsuario.ValidaFalha)
                 return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(contaUsuario.Falha!);
 
-            return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(new RetornaCadastroContasUsuariosDTO(contaUsuario.Sucesso.IdConta, contaUsuario.Sucesso.Acesso, contaUsuario.Sucesso.IdUsuario));
+            return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(new RetornaCadastroContasUsuariosDTO(contaUsuario.Sucesso!.IdConta, contaUsuario.Sucesso.Acesso, contaUsuario.Sucesso.IdUsuario));
         }
     }
 }

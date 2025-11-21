@@ -21,7 +21,7 @@ namespace Financ.Application.Servicos.Contas
             _mediator = mediator;
         }
 
-        public async Task<Resultado<RetornaContasDTO>> CriarConta(CadastrarContasDTO contaDTO)
+        public async Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario,CadastrarContasDTO contaDTO)
         {
             var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite);
             var conta = await _mediator.Send(commandConta);
@@ -29,7 +29,7 @@ namespace Financ.Application.Servicos.Contas
             if (!conta.ValidaSucesso)
                 return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
 
-            var commandContaUsuario = new CriarContaUsuarioCommand(conta.Sucesso!.Id, Guid.NewGuid());
+            var commandContaUsuario = new CriarContaUsuarioCommand(conta.Sucesso!.Id, idUsuario);
             await _mediator.Send(commandContaUsuario);
             return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
             {

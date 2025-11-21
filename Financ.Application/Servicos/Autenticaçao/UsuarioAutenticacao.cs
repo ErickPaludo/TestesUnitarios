@@ -21,8 +21,12 @@ namespace Financ.Application.Servicos.Autenticaçao
 
         public async Task<Resultado<RetornaTokenDTO>> AutenticacaoUsuario(ConectaUsuarioDTO conectaUsuario)
         {
-            await _mediator.Send(new AutenticadoUsuarioCommand(conectaUsuario.Email, conectaUsuario.Senha));
-            return null;
+           var tokenAutenticacao = await _mediator.Send(new AutenticadoUsuarioCommand(conectaUsuario.Email, conectaUsuario.Senha));
+            if (tokenAutenticacao.ValidaSucesso)
+            {
+                return Resultado<RetornaTokenDTO>.GeraSucesso(new RetornaTokenDTO{Token = tokenAutenticacao.Sucesso!.Token,Expiracao = tokenAutenticacao.Sucesso.Expiracao});
+            }
+            return Resultado<RetornaTokenDTO>.GeraFalha(tokenAutenticacao.Falha!);
         }
 
         public async Task<Resultado<string>> CadastraUsuario(CadastraUsuarioDTO usuarioDTO)

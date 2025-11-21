@@ -2,8 +2,10 @@
 using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Domain.Interfaces.Repositorios;
 using Financ.UI.Api.Extensao;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Financ.UI.Api.Controllers
@@ -17,10 +19,12 @@ namespace Financ.UI.Api.Controllers
         {
             _contasUsuariosServico = contasUsuariosServico;
         }
+
+        [Authorize]
         [HttpPost("entrar_na_conta")]
         public async Task<IActionResult> EntrarNaConta(InclusaoContaUsuarioDTO inclusaoContaUsuarioDTO)
         {
-            var usuarioConta = await _contasUsuariosServico.IncluiUsuarioNaConta(inclusaoContaUsuarioDTO);
+            var usuarioConta = await _contasUsuariosServico.IncluiUsuarioNaConta(inclusaoContaUsuarioDTO,User.RetornaIdUsuario());
             return usuarioConta.RetornoAutomatico();
         }
     }
