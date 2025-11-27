@@ -1,6 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Handler;
+using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs.ContasUsuarios;
 using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Domain.Entidades;
@@ -32,6 +33,11 @@ namespace Financ.Application.Servicos
                 return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(contaUsuario.Falha!);
 
             return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(new RetornaCadastroContasUsuariosDTO(contaUsuario.Sucesso!.IdConta, contaUsuario.Sucesso.Acesso, contaUsuario.Sucesso.IdUsuario));
+        }
+
+        public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(int idConta, Guid idUsuario)
+        {
+           return await _mediator.Send(new RetornaUsuariosAssociadosQuery(idConta, idUsuario));
         }
     }
 }

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\ContasUsuarios\Querys\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NetDevPack.SimpleMediator" Version="1.2.0" />
   </ItemGroup>
 

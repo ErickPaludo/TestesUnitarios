@@ -1,5 +1,5 @@
 ﻿using Financ.Application.Comun.Resultado;
-using Financ.Application.CQRS.UsuarioAutenticação.Commands;
+using Financ.Application.CQRS.Commands;
 using Financ.Domain.Interfaces.Autenticação;
 using NetDevPack.SimpleMediator;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.CQRS.UsuarioAutenticação.Handler
+namespace Financ.Application.CQRS.Handler
 {
     public class CadastraUsuarioHandler : IRequestHandler<CadastraUsuarioCommand, Resultado<string>>
     {

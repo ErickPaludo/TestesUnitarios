@@ -1,4 +1,5 @@
-﻿using Financ.Domain.Interfaces.Autenticação;
+﻿using Financ.Domain.Entidades;
+using Financ.Domain.Interfaces.Autenticação;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -79,6 +80,12 @@ namespace Financ.Infra.Data.Identity
 
             return (new JwtSecurityTokenHandler().WriteToken(token), expiration);
         }
-      
+
+        public async Task<Usuario> ObtemUsuario(Guid idUsuario)
+        {
+            var usuario = _gerenciaUsuarios.FindByIdAsync(idUsuario.ToString()).Result;
+
+            return new Usuario(idUsuario,usuario.UserName,usuario.Email);
+        }
     }
 }

@@ -27,5 +27,11 @@ namespace Financ.UI.Api.Controllers
             var usuarioConta = await _contasUsuariosServico.IncluiUsuarioNaConta(inclusaoContaUsuarioDTO,User.RetornaIdUsuario());
             return usuarioConta.RetornoAutomatico();
         }
+        [HttpGet("retorna_usuarios_associados")]
+        public async Task<IActionResult> RetornaUsuarosAssociados([FromQuery]int idConta)
+        {
+            var t = await _contasUsuariosServico.RetornaUsuariosAssociados(idConta, User.RetornaIdUsuario());
+            return t.RetornoAutomatico();
+        }
     }
 }
