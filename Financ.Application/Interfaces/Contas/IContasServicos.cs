@@ -12,7 +12,7 @@ namespace Financ.Application.Interfaces.Contas
     public interface IContasServicos
     {
         Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario,CadastrarContasDTO contaDTO);
-        Task<Resultado<RetornaContasDTO>> RetornarContas(int idContas);
+        Task<Resultado<List<RetornaContasDTO>>> RetornarContas(FiltroContasDTO? filtros, Guid IdUsuario);
         Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario,Guid IdUsuario, AtualizaContaDTO contaDTO);
     }
 }

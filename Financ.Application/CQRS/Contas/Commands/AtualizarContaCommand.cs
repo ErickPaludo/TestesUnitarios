@@ -12,7 +12,7 @@ namespace Financ.Application.CQRS.Commands
 {
     public sealed class AtualizarContaCommand : IRequest<Resultado<Contas>>
     {
-        public int IdContaUsuario { get; private set; }
+        public int IdConta { get; private set; }
         public Guid IdUsuario { get; set; }
         public TiposStatus? Status { get; private set; }
         public string? Titulo { get; private set; }
@@ -22,7 +22,7 @@ namespace Financ.Application.CQRS.Commands
 
         public AtualizarContaCommand(int idContaUsuario, Guid idUsuario,TiposStatus? status,string? titulo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
         {
-            IdContaUsuario = idContaUsuario;
+            IdConta = idContaUsuario;
             IdUsuario = idUsuario;
             Status = status;
             Titulo = titulo;

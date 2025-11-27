@@ -20,7 +20,7 @@ namespace Financ.Infra.Data.ConfiguracaoTabelas
             builder.Property(e => e.Acesso).IsRequired();
             builder.Property(e => e.Status).IsRequired();
             builder.Property(e => e.DthrReg).IsRequired();
-            builder.HasOne(e => e.Contas).WithMany(e => e.ContasUsuarios).HasForeignKey(e => e.IdConta);
+            builder.HasOne(e => e.Contas).WithMany(e => e.ContasUsuarios).HasForeignKey(e => e.IdConta).OnDelete(DeleteBehavior.Restrict); ;
         }
     }
 }

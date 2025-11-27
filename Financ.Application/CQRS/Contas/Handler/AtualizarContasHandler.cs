@@ -1,6 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
 using Financ.Domain.Entidades;
+using Financ.Domain.Enums;
 using Financ.Domain.Interfaces;
 using Financ.Domain.Validacoes;
 using NetDevPack.SimpleMediator;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Financ.Application.CQRS.Handler
 {
     public class AtualizarContasHandler : IRequestHandler<AtualizarContaCommand, Resultado<Contas>>
@@ -23,13 +23,15 @@ namespace Financ.Application.CQRS.Handler
         {
             try
             {
-
-                var contaUsuario = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.Id == request.IdContaUsuario);
+                var contaUsuario = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.Id == request.IdConta);
                 if (contaUsuario == null)
                     return Resultado<Contas>.GeraFalha(Falha.NaoEncontrado("Conta ou usuário inválidos."));
 
-                if (await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.Id == request.IdContaUsuario && x.IdUsuario == request.IdUsuario) == null)
+                if (await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.IdConta && x.IdUsuario == request.IdUsuario) == null)
                     return Resultado<Contas>.GeraFalha(Falha.ErroOperacional("O Usuário não pertence a está conta!"));
+                
+                if (!contaUsuario.Status.Equals(TiposAcessos.Administrador))
+                    return Resultado<Contas>.GeraFalha(Falha.ErroOperacional("O Usuário não um adiministrador!"));
 
                 var conta = await _unitOfWork.contasRepositorio.BuscarPeloId<int>(contaUsuario.IdConta);
                 if (conta == null)

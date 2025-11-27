@@ -13,6 +13,7 @@ namespace Financ.Domain.Interfaces
         Task<T?> BuscarPeloId<TId>(TId? id);
         Task<bool> ExisteId(Expression<Func<T, bool>> predicado);
         Task<T?> BuscarObjetoUnico(Expression<Func<T, bool>> predicado);
+        Task<IEnumerable<T>> BuscarPorCondicao(Expression<Func<T, bool>> predicado);
         void Atualiza(T entity);
     }
 }

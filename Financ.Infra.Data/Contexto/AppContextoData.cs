@@ -14,7 +14,7 @@ namespace Financ.Infra.Data.Contexto
     {
         public AppContextoData(DbContextOptions<AppContextoData> options) : base(options){}
         public DbSet<Contas> Contas;
-        public DbSet<ContasUsuarios> ContasUsuarios;
+        public DbSet<ContasUsuarios> ContasUsuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

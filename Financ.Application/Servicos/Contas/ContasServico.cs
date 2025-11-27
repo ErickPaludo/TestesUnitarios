@@ -21,7 +21,7 @@ namespace Financ.Application.Servicos.Contas
             _mediator = mediator;
         }
 
-        public async Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario,CadastrarContasDTO contaDTO)
+        public async Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario, CadastrarContasDTO contaDTO)
         {
             var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite);
             var conta = await _mediator.Send(commandConta);
@@ -41,29 +41,16 @@ namespace Financ.Application.Servicos.Contas
             });
         }
 
-        public async Task<Resultado<RetornaContasDTO>> RetornarContas(int idContas)
-        {
-            var conta = await _mediator.Send(new RetornarContaIdQuery(idContas));
-            if (conta.ValidaSucesso)
-            {
-                return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
-                {
-                    IdConta = conta.Sucesso!.Id,
-                    Titulo = conta.Sucesso!.Titulo,
-                    DiaFechamento = conta.Sucesso!.DiaFechamento,
-                    DiaVencimento = conta.Sucesso!.DiaVencimento,
-                    CreditoLimite = conta.Sucesso!.CreditoLimite
-                });
-            }
-            else
-                return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
+        public async Task<Resultado<List<RetornaContasDTO>>> RetornarContas(FiltroContasDTO? filtros, Guid IdUsuario)
+        { 
+          return await _mediator.Send(new RetornaContaQuery(IdUsuario,filtros));
         }
 
         public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, Guid IdUsuario, AtualizaContaDTO contaDTO)
         {
-            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario,IdUsuario, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
+            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, IdUsuario, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
 
-            if(commandConta.ValidaSucesso)
+            if (commandConta.ValidaSucesso)
                 return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
                 {
                     IdConta = commandConta.Sucesso!.Id,

@@ -37,6 +37,10 @@ namespace Financ.Infra.Data.Repositorios
         {
             return await _contexto.Set<T>().FirstOrDefaultAsync(predicado);
         }
+        public async Task<IEnumerable<T>> BuscarPorCondicao(Expression<Func<T, bool>> predicado)
+        {
+            return await _contexto.Set<T>().AsNoTracking().Where(predicado).ToListAsync();
+        }
 
         public void Atualiza(T entity)
         {

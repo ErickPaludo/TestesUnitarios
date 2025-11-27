@@ -28,10 +28,10 @@ namespace Financ.UI.Api.Controllers
            var conta = await _contaServico.CriarConta(User.RetornaIdUsuario(), contasDTO);
             return conta.RetornoAutomatico();
         }
-        [HttpGet("retorna_contas/{id:int}")]
-        public async Task<IActionResult> RetornarContas(int id)
+        [HttpGet("retorna_contas")]
+        public async Task<IActionResult> RetornarContas([FromQuery]FiltroContasDTO? parametros)
         {
-            var contasLista = await _contaServico.RetornarContas(id);
+            var contasLista = await _contaServico.RetornarContas(parametros,User.RetornaIdUsuario());
             return contasLista.RetornoAutomatico();
         }
 
