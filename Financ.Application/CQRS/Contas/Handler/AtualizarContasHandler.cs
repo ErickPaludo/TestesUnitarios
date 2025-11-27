@@ -23,9 +23,13 @@ namespace Financ.Application.CQRS.Handler
         {
             try
             {
+
                 var contaUsuario = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.Id == request.IdContaUsuario);
                 if (contaUsuario == null)
                     return Resultado<Contas>.GeraFalha(Falha.NaoEncontrado("Conta ou usuário inválidos."));
+
+                if (await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.Id == request.IdContaUsuario && x.IdUsuario == request.IdUsuario) == null)
+                    return Resultado<Contas>.GeraFalha(Falha.ErroOperacional("O Usuário não pertence a está conta!"));
 
                 var conta = await _unitOfWork.contasRepositorio.BuscarPeloId<int>(contaUsuario.IdConta);
                 if (conta == null)

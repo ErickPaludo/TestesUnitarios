@@ -13,15 +13,17 @@ namespace Financ.Application.CQRS.Commands
     public sealed class AtualizarContaCommand : IRequest<Resultado<Contas>>
     {
         public int IdContaUsuario { get; private set; }
+        public Guid IdUsuario { get; set; }
         public TiposStatus? Status { get; private set; }
         public string? Titulo { get; private set; }
         public int? DiaFechamento { get; private set; }
         public int? DiaVencimento { get; private set; }
         public double? CreditoLimite { get; private set; }
 
-        public AtualizarContaCommand(int idContaUsuario, TiposStatus? status,string? titulo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
+        public AtualizarContaCommand(int idContaUsuario, Guid idUsuario,TiposStatus? status,string? titulo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
         {
             IdContaUsuario = idContaUsuario;
+            IdUsuario = idUsuario;
             Status = status;
             Titulo = titulo;
             DiaFechamento = diaFechamento;

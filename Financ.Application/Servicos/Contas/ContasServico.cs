@@ -59,9 +59,9 @@ namespace Financ.Application.Servicos.Contas
                 return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
         }
 
-        public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, AtualizaContaDTO contaDTO)
+        public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, Guid IdUsuario, AtualizaContaDTO contaDTO)
         {
-            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
+            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario,IdUsuario, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
 
             if(commandConta.ValidaSucesso)
                 return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO

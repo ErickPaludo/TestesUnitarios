@@ -10,7 +10,8 @@ using System.Security.Claims;
 namespace Financ.UI.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Authorize]
+    [Route("api/[controller]")]
     public class ContasController : ControllerBase
     {
       
@@ -21,14 +22,12 @@ namespace Financ.UI.Api.Controllers
             _contaServico = contaServico;
             _autenticacao = autenticacao;
         }
-
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CadastrarContas(CadastrarContasDTO contasDTO)
         {
            var conta = await _contaServico.CriarConta(User.RetornaIdUsuario(), contasDTO);
             return conta.RetornoAutomatico();
         }
-        [Authorize]
         [HttpGet("retorna_contas/{id:int}")]
         public async Task<IActionResult> RetornarContas(int id)
         {
@@ -39,7 +38,7 @@ namespace Financ.UI.Api.Controllers
         [HttpPatch("atualiza_conta/{idContaUsuario}")]
         public async Task<IActionResult> AtualizaConta(int idContaUsuario, AtualizaContaDTO contaDTO)
         {
-            var contaAtualizada = await _contaServico.AlterarConta(idContaUsuario, contaDTO);
+            var contaAtualizada = await _contaServico.AlterarConta(idContaUsuario,User.RetornaIdUsuario(), contaDTO);
             return contaAtualizada.RetornoAutomatico();
         }
     }

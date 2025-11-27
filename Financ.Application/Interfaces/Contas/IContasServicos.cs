@@ -13,6 +13,6 @@ namespace Financ.Application.Interfaces.Contas
     {
         Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario,CadastrarContasDTO contaDTO);
         Task<Resultado<RetornaContasDTO>> RetornarContas(int idContas);
-        Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, AtualizaContaDTO contaDTO);
+        Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario,Guid IdUsuario, AtualizaContaDTO contaDTO);
     }
 }

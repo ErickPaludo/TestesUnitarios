@@ -12,6 +12,7 @@ namespace Financ.UI.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ContasUsuariosController : ControllerBase
     {
         private readonly IContasUsuariosServicos _contasUsuariosServico;
@@ -20,7 +21,6 @@ namespace Financ.UI.Api.Controllers
             _contasUsuariosServico = contasUsuariosServico;
         }
 
-        [Authorize]
         [HttpPost("entrar_na_conta")]
         public async Task<IActionResult> EntrarNaConta(InclusaoContaUsuarioDTO inclusaoContaUsuarioDTO)
         {
