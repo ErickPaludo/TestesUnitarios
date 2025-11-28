@@ -25,25 +25,30 @@ namespace Financ.Application.CQRS.Handler
 
         public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> Handle(RetornaUsuariosAssociadosQuery request, CancellationToken cancellationToken)
         {
-            var contaUsuarios = await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdConta == request.IdConta && x.IdUsuario != request.IdUsuario);
-
-            if (contaUsuarios.Count() > 0)
+            if (await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.IdConta && x.IdUsuario == request.IdUsuario) != null)
             {
-                List<RetornaUsuariosAssociadosDTO> listaUsuarios = new List<RetornaUsuariosAssociadosDTO>();
-                foreach (var conta in contaUsuarios)
+
+                var contaUsuarios = await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdConta == request.IdConta && x.IdUsuario != request.IdUsuario);
+
+                if (contaUsuarios.Count() > 0)
                 {
-                    var usuario = _autenticacao.ObtemUsuario(conta.IdUsuario).Result;
-                    listaUsuarios.Add(new RetornaUsuariosAssociadosDTO(
-                      conta.IdUsuario,
-                      usuario.PrimeiroNome,
-                      usuario.Email,
-                      conta.Acesso,
-                      conta.Status
-                    ));
+                    List<RetornaUsuariosAssociadosDTO> listaUsuarios = new List<RetornaUsuariosAssociadosDTO>();
+                    foreach (var conta in contaUsuarios)
+                    {
+                        var usuario = _autenticacao.ObtemUsuario(conta.IdUsuario).Result;
+                        listaUsuarios.Add(new RetornaUsuariosAssociadosDTO(
+                          conta.IdUsuario,
+                          usuario.PrimeiroNome,
+                          usuario.Email,
+                          conta.Acesso,
+                          conta.Status
+                        ));
+                    }
+                    return Resultado<List<RetornaUsuariosAssociadosDTO>>.GeraSucesso(listaUsuarios);
                 }
-                return Resultado<List<RetornaUsuariosAssociadosDTO>>.GeraSucesso(listaUsuarios);
+                return Resultado<List<RetornaUsuariosAssociadosDTO>>.GeraFalha(Falha.NaoEncontrado("Somente você está associado a está conta!"));
             }
-            return null;
+            return Resultado<List<RetornaUsuariosAssociadosDTO>>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
         }
     }
 }

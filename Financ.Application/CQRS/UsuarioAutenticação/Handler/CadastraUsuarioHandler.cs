@@ -25,16 +25,24 @@ namespace Financ.Application.CQRS.Handler
             {
                 Usuario usuario = new Usuario(request.PrimeiroNome, request.SegundoNome, request.Email);
 
-                var usuarioCriado = await _autenticacao.RegistrarUsuario(usuario, request.Senha);
+                if (string.IsNullOrEmpty(await _autenticacao.ObtemIdUsuario(request.Email)))
+                {
+                    var usuarioCriado = await _autenticacao.RegistrarUsuario(usuario, request.Senha);
 
-                return usuarioCriado.Item1 ? Resultado<string>.GeraSucesso("Usuário criado com sucesso!") : Resultado<string>.GeraFalha(Falha.ErroOperacional(usuarioCriado.Item2!));
-                
+                    return usuarioCriado.Item1 ? Resultado<string>.GeraSucesso("Usuário criado com sucesso!") : Resultado<string>.GeraFalha(Falha.ErroOperacional(usuarioCriado.Item2!));
+                }
+                else
+                {
+                    return Resultado<string>.GeraFalha(Falha.ErroOperacional("Já existe um usuário cadastrado com esse e-mail."));
+                }
+
+
             }
             catch (UsuariosValidacoes ex)
-            { 
+            {
                 return Resultado<string>.GeraFalha(Falha.ErroOperacional(ex.Message));
             }
-            catch (Exception ex)
+            catch
             {
                 return Resultado<string>.GeraFalha(Falha.ErroOperacional());
             }

@@ -30,8 +30,8 @@ namespace Financ.UI.Api.Controllers
         [HttpGet("retorna_usuarios_associados")]
         public async Task<IActionResult> RetornaUsuarosAssociados([FromQuery]int idConta)
         {
-            var t = await _contasUsuariosServico.RetornaUsuariosAssociados(idConta, User.RetornaIdUsuario());
-            return t.RetornoAutomatico();
+            var usuariosAssociados = await _contasUsuariosServico.RetornaUsuariosAssociados(idConta, User.RetornaIdUsuario());
+            return usuariosAssociados.RetornoAutomatico();
         }
     }
 }

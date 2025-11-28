@@ -32,6 +32,9 @@ namespace Financ.Infra.Data.Identity
         public async Task<string> ObtemIdUsuario(string email)
         {
             var usuario = await _gerenciaUsuarios.FindByEmailAsync(email);
+            if(usuario == null)
+              return string.Empty;
+            
             return _gerenciaUsuarios.GetUserIdAsync(usuario!).Result;  
         }
         public async Task<(bool,string?)> RegistrarUsuario(Usuario usuario,string senha)
@@ -39,7 +42,7 @@ namespace Financ.Infra.Data.Identity
             var usuarioidentity = new UsuarioIdentity
             {
                 Email = usuario.Email,
-                UserName = $"{usuario.PrimeiroNome.Replace(" ","")}{usuario.SegundoNome.Replace(" ", "")}",
+                UserName = usuario.Email,
                 PrimeiroNome = usuario.PrimeiroNome,
                 SegundoNome = usuario.SegundoNome 
             };
@@ -65,6 +68,9 @@ namespace Financ.Infra.Data.Identity
 
             //definir o tempo de expiração
             var expiration = DateTime.UtcNow.AddHours(1);
+#if DEBUG
+            expiration = DateTime.UtcNow.AddDays(30);
+#endif
 
             //gerar o token
             JwtSecurityToken token = new JwtSecurityToken(
