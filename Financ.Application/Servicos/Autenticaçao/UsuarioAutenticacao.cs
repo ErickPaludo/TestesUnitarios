@@ -31,7 +31,7 @@ namespace Financ.Application.Servicos.Autenticaçao
 
         public async Task<Resultado<string>> CadastraUsuario(CadastraUsuarioDTO usuarioDTO)
         {
-             return await _mediator.Send(new CadastraUsuarioCommand(usuarioDTO.Email, usuarioDTO.Senha, usuarioDTO.ConfirmarSenha));
+             return await _mediator.Send(new CadastraUsuarioCommand(usuarioDTO.Email, usuarioDTO.PrimeiroNome,usuarioDTO.SegundoNome, usuarioDTO.Senha, usuarioDTO.ConfirmarSenha));
         }
     }
 }

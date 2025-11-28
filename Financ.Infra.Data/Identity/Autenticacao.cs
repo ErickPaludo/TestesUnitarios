@@ -34,16 +34,18 @@ namespace Financ.Infra.Data.Identity
             var usuario = await _gerenciaUsuarios.FindByEmailAsync(email);
             return _gerenciaUsuarios.GetUserIdAsync(usuario!).Result;  
         }
-        public async Task<bool> RegistrarUsuario(string email, string senha)
+        public async Task<(bool,string?)> RegistrarUsuario(Usuario usuario,string senha)
         {
-            var usuario = new UsuarioIdentity
+            var usuarioidentity = new UsuarioIdentity
             {
-                Email = email,
-                UserName = email
+                Email = usuario.Email,
+                UserName = $"{usuario.PrimeiroNome.Replace(" ","")}{usuario.SegundoNome.Replace(" ", "")}",
+                PrimeiroNome = usuario.PrimeiroNome,
+                SegundoNome = usuario.SegundoNome 
             };
-            var usuarioCriado = await _gerenciaUsuarios.CreateAsync(usuario, senha);
-
-            return usuarioCriado.Succeeded;
+            var usuarioCriado = await _gerenciaUsuarios.CreateAsync(usuarioidentity, senha);
+        
+            return (usuarioCriado.Succeeded,string.Join("\n", usuarioCriado.Errors.Select(x => x.Description)));
         }
         public (string email, DateTime Expiracao) GeraToken(string id, string email)
         {
