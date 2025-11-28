@@ -1,4 +1,4 @@
-using Financ.Domain.Entidades;
+ï»¿using Financ.Domain.Entidades;
 using Financ.Domain.Enums;
 using Financ.Domain.Validacoes;
 using Financ.Domain.Validacoes.Mensagens;
@@ -11,137 +11,140 @@ namespace Financ.TesteUnitarios.Domain
         [Fact(DisplayName = "Valida id menor igual a 0")]
         public void Id_NuloOuVazio_GeraDivergencia()
         {
-            Action action = () => new Contas(0,"Teste x", TiposContas.Corrente, 10, 19,200, TiposStatus.Ativo);
+            Action action = () => new Contas(0, "Teste x", TiposContas.Corrente, false, null, null, null, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensBase.ID_IGUAL_MENOR_ZERO);
 
-            action = () => new Contas(-1,"Teste x", TiposContas.Corrente, 10, 19,200, TiposStatus.Ativo);
+            action = () => new Contas(-1, "Teste x", TiposContas.Corrente, false, null, null, null, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensBase.ID_IGUAL_MENOR_ZERO);
         }
-        [Fact(DisplayName = "Valida se título é nulo ou vazio")]
+
+        [Fact(DisplayName = "Valida se tÃ­tulo Ã© nulo ou vazio")]
         public void Titulo_NuloOuVazio_GeraDivergencia()
         {
-            Action action = () => new Contas(null, TiposContas.Corrente, 10, 19,200, TiposStatus.Ativo);
+            Action action = () => new Contas(null, TiposContas.Corrente, false, null, null, null, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.TITULO_OBRIGATORIO);
 
-            action = () => new Contas("", TiposContas.Corrente, 10, 19,200, TiposStatus.Ativo);
+            action = () => new Contas("", TiposContas.Corrente, false, null, null, null, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.TITULO_OBRIGATORIO);
         }
 
-        [Fact(DisplayName = "Valida se título é maior que 3 e menor que 100")]
+        [Fact(DisplayName = "Valida se tÃ­tulo tem entre 5 e 100 caracteres")]
         public void Titulo_QuantidadeCaracteres_GeraDivergencia()
         {
-            Action action = () => new Contas("af", TiposContas.Corrente, 10, 19,200, TiposStatus.Ativo);
+            Action action = () => new Contas("af", TiposContas.Corrente, false, null, null, null, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.TITULO_TAMANHO_INVALIDO);
 
-            action = () => new Contas("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111", TiposContas.Corrente, 10, 19,200, TiposStatus.Ativo);
+            string longo = new string('x', 150);
+            action = () => new Contas(longo, TiposContas.Corrente, false, null, null, null, TiposStatus.Ativo);
 
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.TITULO_TAMANHO_INVALIDO);
         }
 
-        [Fact(DisplayName = "Tipo conta é um Enum válido")]
+        [Fact(DisplayName = "Tipo conta Ã© um Enum vÃ¡lido")]
         public void TipoConta_Invalido_GeraDivergencia()
         {
             var tipoContaInvalido = (TiposContas)999;
-            Action action = () => new Contas("Teste x", tipoContaInvalido, 10, 19,200, TiposStatus.Ativo);
+            Action action = () => new Contas("Teste x", tipoContaInvalido, false, null, null, null, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.TIPO_CONTA_INVALIDO);
         }
 
-        [Fact(DisplayName = "Status é um Enum válido")]
+        [Fact(DisplayName = "Status Ã© um Enum vÃ¡lido")]
         public void Status_Invalido_GeraDivergencia()
         {
             var statusInvalido = (TiposStatus)999;
-            Action action = () => new Contas("Teste x", TiposContas.Poupanca, 10, 19,200, statusInvalido);
+            Action action = () => new Contas("Teste x", TiposContas.Poupanca, false, null, null, null, statusInvalido);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.STATUS_INVALIDO);
         }
 
-        [Fact(DisplayName = "Fechamento inválido")]
+        [Fact(DisplayName = "Fechamento invÃ¡lido")]
         public void DiaFechamento_Invalido_GeraDivergencia()
         {
-            var diaFechamentoMenor = 0;
-            var diaFechamentoMaior = 26;
-
-            Action action = () => new Contas("Teste x", TiposContas.Poupanca, diaFechamentoMenor, 19,200, TiposStatus.Ativo);
+            Action action = () => new Contas("Teste", TiposContas.Poupanca, true, 0, 10, 100, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.FECHAMENTO_INVALIDO);
 
-            action = () => new Contas("Teste x", TiposContas.Poupanca, diaFechamentoMaior, 19,200, TiposStatus.Ativo);
+            action = () => new Contas("Teste", TiposContas.Poupanca, true, 20, 10, 100, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.FECHAMENTO_INVALIDO);
         }
+
         [Fact(DisplayName = "Vencimento invalido")]
         public void DiaVencimento_Invalido_GeraDivergencia()
         {
-            var diaFechamento = 0;
-            var diaVencimento = 17;
-
-            Action action = () => new Contas("Teste x", TiposContas.Poupanca, diaFechamento, diaVencimento,200, TiposStatus.Ativo);
-            action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.FECHAMENTO_INVALIDO);
-
-            diaFechamento = 12;
-            diaVencimento = 11;
-            
-            action = () => new Contas("Teste x", TiposContas.Poupanca, diaFechamento, diaVencimento,200, TiposStatus.Ativo);
+            Action action = () => new Contas("Teste", TiposContas.Poupanca, true, 5, 4, 200, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.VENCIMENTO_MENOR_FECHAMENTO);
 
-            diaFechamento = 11;
-            diaVencimento = 14;
-            action = () => new Contas("Teste x", TiposContas.Poupanca, diaFechamento, diaVencimento,200, TiposStatus.Ativo);
+            action = () => new Contas("Teste", TiposContas.Poupanca, true, 10, 13, 200, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.VENCIMENTO_MINIMO_7_DIAS);
 
-            diaFechamento = 1;
-            diaVencimento = 16;
-            action = () => new Contas("Teste x", TiposContas.Poupanca, diaFechamento, diaVencimento,200, TiposStatus.Ativo);
-            action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.VENCIMENTO_MAXIMO_12_DIAS);
-
-            diaFechamento = 1;
-            diaVencimento = 13;
-            action = () => new Contas("Teste x", TiposContas.Poupanca, diaFechamento, diaVencimento, 200, TiposStatus.Ativo);
+            action = () => new Contas("Teste", TiposContas.Poupanca, true, 1, 16, 200, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.VENCIMENTO_MAXIMO_12_DIAS);
         }
-     
-        [Fact(DisplayName = "Crédito limite maior que zero")]
+
+        [Fact(DisplayName = "CrÃ©dito limite maior que zero")]
         public void CreditoLimite_Maior_Que_Zero()
         {
-            Action action = () => new Contas("Teste x", TiposContas.Poupanca, 1, 8,-1, TiposStatus.Ativo);
+            Action action = () => new Contas("Teste", TiposContas.Poupanca, true, 5, 15, -1, TiposStatus.Ativo);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.CREDITO_MENOR_QUE_ZERO);
 
-            action = () => new Contas("Teste x", TiposContas.Poupanca, 1, 8, 0, TiposStatus.Ativo);
-            action.Should().NotThrow<ContasValidacao>();
-        }      
+            // quando crÃ©dito inativo â†’ limite pode ser nulo
+            action = () => new Contas("Teste", TiposContas.Poupanca, false, null, null, null, TiposStatus.Ativo);
+            action.Should().NotThrow();
+        }
+
         [Fact(DisplayName = "Cadastra conta com sucesso")]
         public void Conta_Valida_NaoGeraDivergencia()
         {
-            Action action = () => new Contas("Teste x", TiposContas.Poupanca, 1, 8,200, TiposStatus.Ativo);
-            action.Should().NotThrow<ContasValidacao>();
+            Action action = () => new Contas("Teste x", TiposContas.Poupanca, true, 5, 15, 200, TiposStatus.Ativo);
+            action.Should().NotThrow();
         }
-        [Fact(DisplayName = "Não atualizar conta com usuario diferente de admin")]
+
+        [Fact(DisplayName = "NÃ£o atualizar conta com usuÃ¡rio diferente de admin")]
         public void Atualiza_Conta_Usuario_Nao_Admin()
         {
-            var conta = new Contas("Teste x", TiposContas.Poupanca, 1, 8, 200, TiposStatus.Ativo);
-            var contausaurio = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Visualizador, TiposStatus.Ativo);
+            var conta = new Contas("Teste x", TiposContas.Poupanca, true, 5, 15, 200, TiposStatus.Ativo);
+            var contausuario = new ContasUsuarios(1, 1, Guid.NewGuid(), TiposAcessos.Visualizador, TiposStatus.Ativo);
 
-            Action action = () => conta.AtualizaConta(contausaurio,"Teste y", TiposStatus.Desativado, 300, 2, 10);
+            Action action = () => conta.AtualizaConta(contausuario, "Teste y", true, TiposStatus.Desativado, 300, 2, 10);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
         }
+        [Fact(DisplayName = "NÃ£o permitir desativar crÃ©dito ativo em conta jÃ¡ ativa")]
+        public void Atualiza_Conta_DesativarCreditoAtivo_GeraDivergencia()
+        {
+            var conta = new Contas("Conta Teste", TiposContas.Corrente, true, 5, 12, 500, TiposStatus.Ativo);
+
+            var contausuario = new ContasUsuarios(1,1,Guid.NewGuid(),TiposAcessos.Administrador,TiposStatus.Ativo);
+
+            Action action = () => conta.AtualizaConta(contausuario,"Nova Conta",false,TiposStatus.Ativo,500,5,10);
+
+            action.Should()
+                .Throw<ContasValidacao>()
+                .WithMessage(MensagensContas.ATUALIZA_CONTA_CREDITO_ATIVO);
+        }
+
         [Fact(DisplayName = "Atualiza conta corretamente")]
         public void Atualiza_Conta_NaoGeraDivergencia()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, 1, 8, 200, TiposStatus.Ativo);
-            var contausaurio = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Ativo);
+            var conta = new Contas("Teste x", TiposContas.Corrente, true, 5, 15, 200, TiposStatus.Ativo);
+            var contausuario = new ContasUsuarios(1, 1, Guid.NewGuid(), TiposAcessos.Administrador, TiposStatus.Ativo);
 
-            Action action = () => conta.AtualizaConta(contausaurio,null, TiposStatus.Desativado, 300, 2, 10);
-            action.Should().NotThrow<ContasValidacao>();
-            
-            action = () => conta.AtualizaConta(contausaurio, "Teste x", null, 300, 2, 10);
-            action.Should().NotThrow<ContasValidacao>();
-            
-            action = () => conta.AtualizaConta(contausaurio, "Teste x", TiposStatus.Desativado, null, 2, 10);
-            action.Should().NotThrow<ContasValidacao>();
-            
-            action = () => conta.AtualizaConta(contausaurio, "Teste x", TiposStatus.Desativado, 300, null, 10);
-            action.Should().NotThrow<ContasValidacao>();
-            
-            action = () => conta.AtualizaConta(contausaurio, "Teste x", TiposStatus.Desativado, 300, 2, null);
-            action.Should().NotThrow<ContasValidacao>();
+            Action action = () => conta.AtualizaConta(contausuario, null, true, TiposStatus.Desativado, 300, 2, 10);
+            action.Should().NotThrow();
+
+            action = () => conta.AtualizaConta(contausuario, "Teste x", true, null, 300, 2, 10);
+            action.Should().NotThrow();
+
+            action = () => conta.AtualizaConta(contausuario, "Teste x", true, TiposStatus.Desativado, null, 2, 10);
+            action.Should().NotThrow();
+
+            action = () => conta.AtualizaConta(contausuario, "Teste x", true, TiposStatus.Desativado, 300, null, 10);
+            action.Should().NotThrow();
+
+            action = () => conta.AtualizaConta(contausuario, "Teste x", true, TiposStatus.Desativado, 300, 2, null);
+            action.Should().NotThrow();
+
+            conta = new Contas("Teste x", TiposContas.Corrente, false, 5, 15, 200, TiposStatus.Ativo);
+
+            action = () => conta.AtualizaConta(contausuario, "Teste x", false, TiposStatus.Desativado, 300, 2, null);
+            action.Should().NotThrow();
         }
-
     }
 }

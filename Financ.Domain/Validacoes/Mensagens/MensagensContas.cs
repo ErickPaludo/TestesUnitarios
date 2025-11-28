@@ -18,5 +18,6 @@ namespace Financ.Domain.Validacoes.Mensagens
         public const string VENCIMENTO_MAXIMO_12_DIAS = "O vencimento deve ser de no máximo 12 dias após o fechamento.";
         public const string CREDITO_MENOR_QUE_ZERO = "O Crédito informado deve ser maior que zero!";
         public const string ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO = "Usuário sem permissão para atualizar a conta!";
+        public const string ATUALIZA_CONTA_CREDITO_ATIVO = "Não é possível alterar crédito ativo pois o mesmo já está ativo!";
     }
 }
