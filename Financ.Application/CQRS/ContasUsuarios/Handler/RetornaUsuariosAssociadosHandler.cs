@@ -35,7 +35,7 @@ namespace Financ.Application.CQRS.Handler
                     var usuario = _autenticacao.ObtemUsuario(conta.IdUsuario).Result;
                     listaUsuarios.Add(new RetornaUsuariosAssociadosDTO(
                       conta.IdUsuario,
-                      usuario.Nome,
+                      usuario.PrimeiroNome,
                       usuario.Email,
                       conta.Acesso,
                       conta.Status

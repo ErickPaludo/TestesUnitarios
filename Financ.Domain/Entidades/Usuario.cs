@@ -1,5 +1,6 @@
 ﻿using Financ.Domain.Interfaces.InterfaceEntidades;
 using Financ.Domain.Validacoes;
+using Financ.Domain.Validacoes.Mensagens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,11 @@ namespace Financ.Domain.Entidades
 
         public Usuario(Guid idUsuario, string primeiroNome, string segundoNome, string email)
         {
-            IdUsuario = idUsuario;
+            UsuariosValidacoes.Verifica(idUsuario == Guid.Empty, MensagensBase.USUARIO_NAO_INFORMADO);
             VerificaNome(primeiroNome, segundoNome);
             VerificaEmail(email);
+
+            IdUsuario = idUsuario;
         }
 
         public Usuario(string primeiroNome, string segundoNome, string email)
@@ -30,23 +33,23 @@ namespace Financ.Domain.Entidades
 
         private void VerificaNome(string primeiroNome, string segundoNome)
         {
-            UsuariosValidacoes.Verifica(string.IsNullOrWhiteSpace(primeiroNome), "O primeiro nome do usuário é obrigatório.");
-            UsuariosValidacoes.Verifica(string.IsNullOrWhiteSpace(segundoNome), "O Segundo nome do usuário é obrigatório.");
+            UsuariosValidacoes.Verifica(string.IsNullOrWhiteSpace(primeiroNome), MensagensUsuarios.PRIMEIRO_NOME_OBRIGATORIO);
+            UsuariosValidacoes.Verifica(string.IsNullOrWhiteSpace(segundoNome), MensagensUsuarios.SEGUNDO_NOME_OBRIGATORIO);
 
-            UsuariosValidacoes.Verifica(primeiroNome.Length > 100, "O primeiro nome não deve possuir mais do que 100 caracteres");
-            UsuariosValidacoes.Verifica(primeiroNome.Length < 3, "O primeiro nome não deve possuir menos do que 3 caracteres");
+            UsuariosValidacoes.Verifica(primeiroNome.Length > 100, MensagensUsuarios.PRIMEIRO_NOME_MAXIMO);
+            UsuariosValidacoes.Verifica(primeiroNome.Length < 3, MensagensUsuarios.PRIMEIRO_NOME_MINIMO);
 
-            UsuariosValidacoes.Verifica(segundoNome.Length > 100, "O primeiro nome não deve possuir mais do que 100 caracteres");
-            UsuariosValidacoes.Verifica(segundoNome.Length < 3, "O primeiro nome não deve possuir menos do que 3 caracteres");
+            UsuariosValidacoes.Verifica(segundoNome.Length > 100, MensagensUsuarios.SEGUNDO_NOME_MAXIMO);
+            UsuariosValidacoes.Verifica(segundoNome.Length < 3, MensagensUsuarios.SEGUNDO_NOME_MINIMO);
 
             PrimeiroNome = primeiroNome;
             SegundoNome = segundoNome;
         }  
         private void VerificaEmail(string email)
         {
-            UsuariosValidacoes.Verifica(string.IsNullOrWhiteSpace(email), "O email do usuário é obrigatório.");
-            UsuariosValidacoes.Verifica(email.Length > 256, "O email não deve possuir mais do que 256 caracteres");
-            UsuariosValidacoes.Verifica(email.Length < 6, "O email não deve possuir menos do que 6 caracteres");
+            UsuariosValidacoes.Verifica(string.IsNullOrWhiteSpace(email), MensagensUsuarios.EMAIL_OBRIGATORIO);
+            UsuariosValidacoes.Verifica(email.Length > 256, MensagensUsuarios.EMAIL_MAXIMO);
+            UsuariosValidacoes.Verifica(email.Length < 6, MensagensUsuarios.EMAIL_MINIMO);
             Email = email;
         }
     }
