@@ -35,6 +35,7 @@ namespace Financ.Application.Servicos.Contas
             {
                 IdConta = conta.Sucesso!.Id,
                 Titulo = conta.Sucesso!.Titulo,
+                CreditoAtivo = conta.Sucesso!.CreditoAtivo,
                 DiaFechamento = conta.Sucesso!.DiaFechamento,
                 DiaVencimento = conta.Sucesso!.DiaVencimento,
                 CreditoLimite = conta.Sucesso!.CreditoLimite

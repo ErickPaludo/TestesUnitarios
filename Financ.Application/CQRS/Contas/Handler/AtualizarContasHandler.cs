@@ -27,10 +27,15 @@ namespace Financ.Application.CQRS.Handler
                 if (contaUsuario == null)
                     return Resultado<Contas>.GeraFalha(Falha.NaoEncontrado("Conta ou usuário inválidos."));
 
-                if (await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.IdConta && x.IdUsuario == request.IdUsuario) == null)
+                contaUsuario = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.IdConta && x.IdUsuario == request.IdUsuario);
+
+                if (contaUsuario == null)
                     return Resultado<Contas>.GeraFalha(Falha.ErroOperacional("O Usuário não pertence a está conta!"));
-                
-                if (!contaUsuario.Status.Equals(TiposAcessos.Administrador))
+
+                if (!contaUsuario.Status.Equals(TiposStatus.Ativo))
+                    return Resultado<Contas>.GeraFalha(Falha.ErroOperacional($"Não foi possível concluir a operação pois seu usuário está {contaUsuario.Status.ToString()}!"));
+
+                if (!contaUsuario.Acesso.Equals(TiposAcessos.Administrador))
                     return Resultado<Contas>.GeraFalha(Falha.ErroOperacional("O Usuário não um adiministrador!"));
 
                 var conta = await _unitOfWork.contasRepositorio.BuscarPeloId<int>(contaUsuario.IdConta);
@@ -40,6 +45,7 @@ namespace Financ.Application.CQRS.Handler
                 conta.AtualizaConta(contaUsuario, request.Titulo,request.CreditoAtivo, request.Status, request.CreditoLimite, request.DiaFechamento, request.DiaVencimento);
 
                 _unitOfWork.contasRepositorio.Atualiza(conta);
+                await _unitOfWork.Commit();
                 return Resultado<Contas>.GeraSucesso(conta);
             }
             catch (ContasValidacao contasExecao)

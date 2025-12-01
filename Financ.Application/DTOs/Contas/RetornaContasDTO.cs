@@ -9,6 +9,6 @@ namespace Financ.Application.DTOs
     public sealed class RetornaContasDTO : BaseContasDTO
     {
         public int IdConta { get; set; }
-        public bool CreditoAtivo { get; set; }
+        public bool? CreditoAtivo { get; set; }
     }
 }

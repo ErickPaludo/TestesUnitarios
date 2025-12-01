@@ -23,15 +23,20 @@ namespace Financ.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("CreditoLimite")
+                    b.Property<bool>("CreditoAtivo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double?>("CreditoLimite")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("DiaFechamento")
+                    b.Property<int?>("DiaFechamento")
+                        .IsRequired()
                         .HasMaxLength(16)
                         .HasPrecision(2)
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DiaVencimento")
+                    b.Property<int?>("DiaVencimento")
+                        .IsRequired()
                         .HasMaxLength(12)
                         .HasPrecision(2)
                         .HasColumnType("INTEGER");

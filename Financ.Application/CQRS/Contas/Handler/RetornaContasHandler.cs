@@ -43,10 +43,14 @@ namespace Financ.Application.CQRS.Handler
             List<RetornaContasDTO> listaContas = new List<RetornaContasDTO>();
             foreach (var conta in contasUsuario)
             {
+                if(conta.Contas == null)
+                    return Resultado<List<RetornaContasDTO>>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
+
                 listaContas.Add(new RetornaContasDTO
                 {
-                    IdConta = conta.Contas!.Id,
+                    IdConta = conta.Contas.Id,
                     Titulo = conta.Contas.Titulo,
+                    CreditoAtivo = conta.Contas.CreditoAtivo,
                     DiaFechamento = conta.Contas.DiaFechamento,
                     DiaVencimento = conta.Contas.DiaVencimento,
                     CreditoLimite = conta.Contas.CreditoLimite,
