@@ -19,6 +19,9 @@ using Financ.Application.Interfaces.Autenticação;
 using Financ.Application.Servicos.Autenticaçao;
 using Financ.Infra.Data.Identity;
 using Microsoft.AspNetCore.Identity;
+using Financ.Domain.Interfaces.Autenticação;
+using Financ.Application.Interfaces.Usuarios;
+using Financ.Application.Servicos.Usuarios;
 
 namespace Financ.Infra.IoC
 {
@@ -28,7 +31,9 @@ namespace Financ.Infra.IoC
         {
             services.AddScoped<IContasServicos, ContasServico>();
             services.AddScoped<IContasUsuariosServicos, ContasUsuariosServicos>();
-            services.AddScoped<IUsuarioAutenticacao, UsuarioAutenticacao>();
+            services.AddScoped<IAutenticacaoServicos, AutenticacaoServicos>();
+            services.AddScoped<IUsuariosServicos, UsuariosServicos>();
+            services.AddScoped<IUsuariosIdentityServicos, UsuariosIdentityServicos>();
 
             services.AddIdentity<UsuarioIdentity, IdentityRole>()
     .AddEntityFrameworkStores<AppContextoData>()

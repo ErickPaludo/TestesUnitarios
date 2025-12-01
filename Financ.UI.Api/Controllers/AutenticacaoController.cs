@@ -11,17 +11,12 @@ namespace Financ.UI.Api.Controllers
     [ApiController]
     public class AutenticacaoController : ControllerBase
     {
-        private readonly IUsuarioAutenticacao _usuarioAutenticacao;
-        public AutenticacaoController(IUsuarioAutenticacao usuarioAutenticacao)
+        private readonly Application.Interfaces.Autenticação.IAutenticacaoServicos _usuarioAutenticacao;
+        public AutenticacaoController(Application.Interfaces.Autenticação.IAutenticacaoServicos usuarioAutenticacao)
         {
             _usuarioAutenticacao = usuarioAutenticacao;
         }
-        [HttpPost("registrar")]
-        public async Task<IActionResult> Registrar(CadastraUsuarioDTO usuarioDTO)
-        {
-            var usuario = await _usuarioAutenticacao.CadastraUsuario(usuarioDTO);
-            return usuario.RetornoAutomatico();
-        }
+       
         [HttpPost]
         public async Task<IActionResult> RetornaToken(ConectaUsuarioDTO usuario)
         {

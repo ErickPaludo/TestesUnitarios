@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Domain.Entidades
 {
-    public class Usuario : IUsuario
+    public class Usuario : IUsuarioIdentity
     {
         public Guid IdUsuario { get; private set; }
         public string PrimeiroNome { get; private set; }

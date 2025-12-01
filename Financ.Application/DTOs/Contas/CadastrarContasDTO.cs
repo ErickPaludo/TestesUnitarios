@@ -10,6 +10,6 @@ namespace Financ.Application.DTOs
 {
     public sealed class CadastrarContasDTO : BaseContasDTO
     {
-      
+        public bool CreditoAtivo { get; set; }
     }
 }

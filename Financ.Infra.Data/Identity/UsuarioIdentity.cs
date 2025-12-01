@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Infra.Data.Identity
 {
-    public class UsuarioIdentity : IdentityUser, IUsuario
+    public class UsuarioIdentity : IdentityUser, IUsuarioIdentity
     {
         public string PrimeiroNome {  get; set; } = string.Empty;
         public string SegundoNome { get; set; } = string.Empty;

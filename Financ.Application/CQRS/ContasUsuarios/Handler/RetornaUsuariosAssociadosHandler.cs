@@ -15,12 +15,12 @@ namespace Financ.Application.CQRS.Handler
     public class RetornaUsuariosAssociadosHandler : IRequestHandler<RetornaUsuariosAssociadosQuery, Resultado<List<RetornaUsuariosAssociadosDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAutenticacao _autenticacao;
+        private readonly IUsuariosIdentityServicos _usuarioServicos;
 
-        public RetornaUsuariosAssociadosHandler(IUnitOfWork unitOfWork, IAutenticacao autenticacao)
+        public RetornaUsuariosAssociadosHandler(IUnitOfWork unitOfWork, IUsuariosIdentityServicos usuarioServicos)
         {
             _unitOfWork = unitOfWork;
-            _autenticacao = autenticacao;
+            _usuarioServicos = usuarioServicos;
         }
 
         public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> Handle(RetornaUsuariosAssociadosQuery request, CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ namespace Financ.Application.CQRS.Handler
                     List<RetornaUsuariosAssociadosDTO> listaUsuarios = new List<RetornaUsuariosAssociadosDTO>();
                     foreach (var conta in contaUsuarios)
                     {
-                        var usuario = _autenticacao.ObtemUsuario(conta.IdUsuario).Result;
+                        var usuario = _usuarioServicos.ObtemUsuario(conta.IdUsuario).Result;
                         listaUsuarios.Add(new RetornaUsuariosAssociadosDTO(
                           conta.IdUsuario,
                           usuario.PrimeiroNome,

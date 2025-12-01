@@ -1,5 +1,5 @@
 ﻿using Financ.Application.Comun.Resultado;
-using Financ.Application.CQRS.Commands;
+using Financ.Application.CQRS.Usuarios.Commands;
 using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces.Autenticação;
 using Financ.Domain.Validacoes;
@@ -10,14 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.CQRS.Handler
+namespace Financ.Application.CQRS.Usuarios.Handler
 {
     public class CadastraUsuarioHandler : IRequestHandler<CadastraUsuarioCommand, Resultado<string>>
     {
-        private readonly IAutenticacao _autenticacao;
-        public CadastraUsuarioHandler(IAutenticacao autenticacao)
+        private readonly IUsuariosIdentityServicos _usuariosServico;
+        public CadastraUsuarioHandler(IUsuariosIdentityServicos usuariosServico)
         {
-            _autenticacao = autenticacao;
+            _usuariosServico = usuariosServico;
         }
         public async Task<Resultado<string>> Handle(CadastraUsuarioCommand request, CancellationToken cancellationToken)
         {
@@ -25,9 +25,9 @@ namespace Financ.Application.CQRS.Handler
             {
                 Usuario usuario = new Usuario(request.PrimeiroNome, request.SegundoNome, request.Email);
 
-                if (string.IsNullOrEmpty(await _autenticacao.ObtemIdUsuario(request.Email)))
+                if (string.IsNullOrEmpty(await _usuariosServico.ObtemIdUsuario(request.Email)))
                 {
-                    var usuarioCriado = await _autenticacao.RegistrarUsuario(usuario, request.Senha);
+                    var usuarioCriado = await _usuariosServico.RegistrarUsuario(usuario, request.Senha);
 
                     return usuarioCriado.Item1 ? Resultado<string>.GeraSucesso("Usuário criado com sucesso!") : Resultado<string>.GeraFalha(Falha.ErroOperacional(usuarioCriado.Item2!));
                 }

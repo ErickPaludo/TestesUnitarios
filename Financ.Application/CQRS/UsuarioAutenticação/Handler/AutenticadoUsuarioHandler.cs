@@ -14,9 +14,11 @@ namespace Financ.Application.CQRS.Handler
     public class AutenticadoUsuarioHandler : IRequestHandler<AutenticadoUsuarioCommand, Resultado<RetornaTokenDTO>>
     {
         private readonly IAutenticacao _autenticacao;
-        public AutenticadoUsuarioHandler(IAutenticacao autenticacao)
+        private readonly IUsuariosIdentityServicos _usuarioServicos;
+        public AutenticadoUsuarioHandler(IAutenticacao autenticacao, IUsuariosIdentityServicos usuarioServicos)
         {
             _autenticacao = autenticacao;
+            _usuarioServicos = usuarioServicos;
         }
 
         public async Task<Resultado<RetornaTokenDTO>> Handle(AutenticadoUsuarioCommand request, CancellationToken cancellationToken)
@@ -24,7 +26,7 @@ namespace Financ.Application.CQRS.Handler
             bool autenticador = await _autenticacao.Autenticador(request.Email, request.Senha);
             if (autenticador)
             {
-                var token = _autenticacao.GeraToken(await _autenticacao.ObtemIdUsuario(request.Email), request.Email);
+                var token = _autenticacao.GeraToken(await _usuarioServicos.ObtemIdUsuario(request.Email), request.Email);
                 return Resultado<RetornaTokenDTO>.GeraSucesso(new RetornaTokenDTO { Token = token.email, Expiracao = token.Expiracao });
             }
             return Resultado<RetornaTokenDTO>.GeraFalha(Falha.ErroOperacional("Usuário ou senha inválidos!"));

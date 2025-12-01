@@ -15,13 +15,15 @@ namespace Financ.Application.CQRS.Commands
     {
         public string? Titulo { get; private set; }
         public TiposContas TipoConta { get; private set; }
-        public int DiaFechamento { get; private set; }
-        public int DiaVencimento { get; private set; }
-        public double CreditoLimite { get; private set; }
+        public bool CreditoAtivo { get; private set; }
+        public int? DiaFechamento { get; private set; }
+        public int? DiaVencimento { get; private set; }
+        public double? CreditoLimite { get; private set; }
 
-        public CriarContaCommand(string? titulo, int diaFechamento, int diaVencimento, double creditoLimite)
+        public CriarContaCommand(string? titulo, bool creditoAtivo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
         {
             Status = TiposStatus.Ativo;
+            CreditoAtivo = creditoAtivo;
             Titulo = titulo;
             TipoConta = TiposContas.Corrente;
             DiaFechamento = diaFechamento;

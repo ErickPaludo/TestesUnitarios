@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.Servicos.Autenticaçao
 {
-    public sealed class UsuarioAutenticacao : IUsuarioAutenticacao
+    public sealed class AutenticacaoServicos : IAutenticacaoServicos
     {
         private readonly IMediator _mediator;
-        public UsuarioAutenticacao(IMediator mediator)
+        public AutenticacaoServicos(IMediator mediator)
         {
           _mediator = mediator;
         }
@@ -27,11 +27,6 @@ namespace Financ.Application.Servicos.Autenticaçao
                 return Resultado<RetornaTokenDTO>.GeraSucesso(new RetornaTokenDTO{Token = tokenAutenticacao.Sucesso!.Token,Expiracao = tokenAutenticacao.Sucesso.Expiracao});
             }
             return Resultado<RetornaTokenDTO>.GeraFalha(tokenAutenticacao.Falha!);
-        }
-
-        public async Task<Resultado<string>> CadastraUsuario(CadastraUsuarioDTO usuarioDTO)
-        {
-             return await _mediator.Send(new CadastraUsuarioCommand(usuarioDTO.Email, usuarioDTO.PrimeiroNome,usuarioDTO.SegundoNome, usuarioDTO.Senha, usuarioDTO.ConfirmarSenha));
         }
     }
 }

@@ -16,14 +16,16 @@ namespace Financ.Application.CQRS.Commands
         public Guid IdUsuario { get; set; }
         public TiposStatus? Status { get; private set; }
         public string? Titulo { get; private set; }
+        public bool CreditoAtivo { get; private set; }
         public int? DiaFechamento { get; private set; }
         public int? DiaVencimento { get; private set; }
         public double? CreditoLimite { get; private set; }
 
-        public AtualizarContaCommand(int idContaUsuario, Guid idUsuario,TiposStatus? status,string? titulo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
+        public AtualizarContaCommand(int idContaUsuario, Guid idUsuario,bool creditoAtivo, TiposStatus? status,string? titulo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
         {
             IdConta = idContaUsuario;
             IdUsuario = idUsuario;
+            CreditoAtivo = creditoAtivo;
             Status = status;
             Titulo = titulo;
             DiaFechamento = diaFechamento;

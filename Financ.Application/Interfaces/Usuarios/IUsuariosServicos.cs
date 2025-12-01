@@ -6,11 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.Interfaces.Autenticação
+namespace Financ.Application.Interfaces.Usuarios
 {
-    public interface IUsuarioAutenticacao
+    public interface IUsuariosServicos
     {
         Task<Resultado<string>> CadastraUsuario(CadastraUsuarioDTO usuarioDTO);
-        Task<Resultado<RetornaTokenDTO>> AutenticacaoUsuario(ConectaUsuarioDTO conectaUsuario);
     }
 }

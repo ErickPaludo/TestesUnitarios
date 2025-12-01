@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Domain.Interfaces.InterfaceEntidades
 {
-    public interface IUsuario
+    public interface IUsuarioIdentity
     {
         public string PrimeiroNome { get; }
         public string SegundoNome { get; }

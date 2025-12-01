@@ -23,7 +23,7 @@ namespace Financ.Application.Servicos.Contas
 
         public async Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario, CadastrarContasDTO contaDTO)
         {
-            var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite);
+            var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.CreditoAtivo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite);
             var conta = await _mediator.Send(commandConta);
 
             if (!conta.ValidaSucesso)
@@ -48,13 +48,14 @@ namespace Financ.Application.Servicos.Contas
 
         public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, Guid IdUsuario, AtualizaContaDTO contaDTO)
         {
-            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, IdUsuario, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
+            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, IdUsuario, contaDTO.CreditoAtivo, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
 
             if (commandConta.ValidaSucesso)
                 return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
                 {
                     IdConta = commandConta.Sucesso!.Id,
                     Titulo = commandConta.Sucesso!.Titulo,
+                    CreditoAtivo = commandConta.Sucesso!.CreditoAtivo,
                     DiaFechamento = commandConta.Sucesso!.DiaFechamento,
                     DiaVencimento = commandConta.Sucesso!.DiaVencimento,
                     CreditoLimite = commandConta.Sucesso!.CreditoLimite

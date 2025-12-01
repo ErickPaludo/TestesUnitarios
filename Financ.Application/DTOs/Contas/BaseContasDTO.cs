@@ -15,10 +15,10 @@ namespace Financ.Application.DTOs
         [MaxLength(100, ErrorMessage = "O título deve possuir no máximo 100 caracteres")]
         public string? Titulo { get; set; }
         [DefaultValue(1)]
-        public int DiaFechamento { get; set; }
+        public int? DiaFechamento { get; set; }
         [DefaultValue(8)]
-        public int DiaVencimento { get; set; }
+        public int? DiaVencimento { get; set; }
         [DefaultValue(200)]
-        public double CreditoLimite { get; set; }
+        public double? CreditoLimite { get; set; }
     }
 }

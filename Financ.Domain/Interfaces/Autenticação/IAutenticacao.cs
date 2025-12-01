@@ -10,9 +10,6 @@ namespace Financ.Domain.Interfaces.Autenticação
     public interface IAutenticacao
     {
         Task<bool> Autenticador(string email, string senha);
-        Task<string> ObtemIdUsuario(string email);
-        Task<(bool,string?)> RegistrarUsuario(Usuario usuario, string senha);
-        Task<Usuario> ObtemUsuario(Guid idUsuario);
        (string email, DateTime Expiracao) GeraToken(string id,string email);
     }
 }
