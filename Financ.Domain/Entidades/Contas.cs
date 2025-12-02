@@ -14,38 +14,41 @@ namespace Financ.Domain.Entidades
         public string? Titulo { get; private set; }
         public TiposContas TipoConta { get; private set; }
         public bool CreditoAtivo { get; private set; }
+        public bool CreditoLimite { get; set; }
+        public double? CreditoMaximo { get; private set; }
         public int? DiaFechamento { get; private set; }
         public int? DiaVencimento { get; private set; }
-        public double? CreditoLimite { get; private set; }
 
         private Contas() { }
         public ICollection<ContasUsuarios>? ContasUsuarios { get; set; }
-        public Contas(string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, double? creditoLimite, TiposStatus status)
+        public Contas(string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo, TiposStatus status)
         {
-            ValidaContas(titulo, tipoConta, creditoAtivo, diaFechamento, diaVencimento, creditoLimite, status);
+            ValidaContas(titulo, tipoConta, creditoAtivo, diaFechamento, diaVencimento, creditoLimite, creditoMaximo, status);
             DthrReg = DateTime.Now;
         }
-        public Contas(int id, string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, double? creditoLimite, TiposStatus status)
+        public Contas(int id, string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo, TiposStatus status)
         {
             ContasValidacao.Verifica(id <= 0, MensagensBase.ID_IGUAL_MENOR_ZERO);
             Id = id;
             DthrReg = DateTime.Now;
-            ValidaContas(titulo, tipoConta, creditoAtivo, diaFechamento, diaVencimento, creditoLimite, status);
+            ValidaContas(titulo, tipoConta, creditoAtivo, diaFechamento, diaVencimento, creditoLimite, creditoMaximo, status);
         }
-        private void ValidaContas(string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, double? creditoLimite, TiposStatus status)
+        private void ValidaContas(string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo, TiposStatus status)
         {
             ValidaTitulo(titulo);
             ValidaTipoDaConta(tipoConta);
             ValidaStatus(status);
-            ValidaCreditoAtivo(creditoAtivo, diaFechamento, diaVencimento, creditoLimite);
+            ValidaCreditoAtivo(creditoAtivo, diaFechamento, diaVencimento, creditoLimite, creditoMaximo);
         }
-        private void ValidaCreditoAtivo(bool creditoAtivo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
+        private void ValidaCreditoAtivo(bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo)
         {
             if (creditoAtivo)
             {
                 ContasValidacao.Verifica(!diaVencimento.HasValue || !diaFechamento.HasValue, MensagensContas.FECHAMENTO_INVALIDO);
                 ValidaFechamentoVencimento(diaFechamento!.Value, diaVencimento!.Value);
-                ValidaCreditoLimite(creditoLimite);
+
+                if (creditoLimite)
+                    ValidaCreditoLimite(creditoMaximo);
             }
             CreditoAtivo = creditoAtivo;
         }
@@ -79,12 +82,13 @@ namespace Financ.Domain.Entidades
             DiaFechamento = diaFechamento;
             DiaVencimento = diaVencimento;
         }
-        private void ValidaCreditoLimite(double? creditoLimite)
+        private void ValidaCreditoLimite(double? creditoMaximo)
         {
-            ContasValidacao.Verifica(creditoLimite <= 0, MensagensContas.CREDITO_MENOR_QUE_ZERO);
-            CreditoLimite = creditoLimite;
+            ContasValidacao.Verifica(creditoMaximo == null, MensagensContas.ATUALIZA_CONTA_CREDITO_MAXIMO_NULO);
+            ContasValidacao.Verifica(creditoMaximo <= 0, MensagensContas.CREDITO_MENOR_QUE_ZERO);
+            CreditoMaximo = creditoMaximo;
         }
-        public void AtualizaConta(ContasUsuarios usuarios, string? titulo, bool creditoAtivo, TiposStatus? status, double? creditoLimite, int? diaFechamento, int? diaVencimento)
+        public void AtualizaConta(ContasUsuarios usuarios, string? titulo, bool? creditoAtivo, TiposStatus? status, bool? creditoLimite, double? creditoMaximo, int? diaFechamento, int? diaVencimento)
         {
             ContasValidacao.Verifica(usuarios == null, MensagensBase.USUARIO_NAO_INFORMADO);
             ContasValidacao.Verifica(usuarios!.Acesso != TiposAcessos.Administrador, MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
@@ -93,16 +97,30 @@ namespace Financ.Domain.Entidades
             if (titulo != null)
                 ValidaTitulo(titulo);
 
-            if (creditoAtivo)
+            if (status is not null)
+                ValidaStatus(status.Value);
+
+            if (CreditoAtivo || creditoAtivo == true)
             {
-                if (creditoLimite is not null)
-                    ValidaCreditoLimite(creditoLimite.Value);
+                if (creditoMaximo is not null)
+                    ValidaCreditoLimite(creditoMaximo.Value);
 
                 if (diaFechamento is not null && diaVencimento is not null)
                     ValidaFechamentoVencimento(diaFechamento.Value, diaVencimento.Value);
 
-                if (status is not null)
-                    ValidaStatus(status.Value);
+
+                if (creditoLimite is not null)
+                {
+                    if (creditoLimite.Value)
+                    {
+                        ValidaCreditoLimite(creditoMaximo);
+                    }
+                    else
+                    {
+                        CreditoMaximo = null;
+                        CreditoLimite = creditoLimite.Value;
+                    }
+                }
             }
         }
     }

@@ -42,7 +42,7 @@ namespace Financ.Application.CQRS.Handler
                 if (conta == null)
                     return Resultado<Contas>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada."));
 
-                conta.AtualizaConta(contaUsuario, request.Titulo,request.CreditoAtivo, request.Status, request.CreditoLimite, request.DiaFechamento, request.DiaVencimento);
+                conta.AtualizaConta(contaUsuario, request.Titulo,request.CreditoAtivo, request.Status,request.CreditoLimite, request.CreditoMaximo, request.DiaFechamento, request.DiaVencimento);
 
                 _unitOfWork.contasRepositorio.Atualiza(conta);
                 await _unitOfWork.Commit();

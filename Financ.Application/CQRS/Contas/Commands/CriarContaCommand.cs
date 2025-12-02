@@ -18,17 +18,19 @@ namespace Financ.Application.CQRS.Commands
         public bool CreditoAtivo { get; private set; }
         public int? DiaFechamento { get; private set; }
         public int? DiaVencimento { get; private set; }
-        public double? CreditoLimite { get; private set; }
+        public bool CreditoLimite { get; private set; }
+        public double? CreditoMaximo { get; private set; }
 
-        public CriarContaCommand(string? titulo, bool creditoAtivo, int? diaFechamento, int? diaVencimento, double? creditoLimite)
+        public CriarContaCommand(string? titulo, bool creditoAtivo, bool creditoLimite, int? diaFechamento, int? diaVencimento, double? creditoMaximo)
         {
             Status = TiposStatus.Ativo;
             CreditoAtivo = creditoAtivo;
+            CreditoLimite = !creditoAtivo ? false : creditoLimite;
             Titulo = titulo;
             TipoConta = TiposContas.Corrente;
             DiaFechamento = diaFechamento;
             DiaVencimento = diaVencimento;
-            CreditoLimite = creditoLimite;
+            CreditoMaximo = creditoMaximo;
         }
     }
 }

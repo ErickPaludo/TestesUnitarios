@@ -23,7 +23,7 @@ namespace Financ.Application.Servicos.Contas
 
         public async Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario, CadastrarContasDTO contaDTO)
         {
-            var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.CreditoAtivo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite);
+            var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.CreditoAtivo, contaDTO.CreditoLimite, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoMaximo);
             var conta = await _mediator.Send(commandConta);
 
             if (!conta.ValidaSucesso)
@@ -38,7 +38,7 @@ namespace Financ.Application.Servicos.Contas
                 CreditoAtivo = conta.Sucesso!.CreditoAtivo,
                 DiaFechamento = conta.Sucesso!.DiaFechamento,
                 DiaVencimento = conta.Sucesso!.DiaVencimento,
-                CreditoLimite = conta.Sucesso!.CreditoLimite
+                CreditoMaximo = conta.Sucesso!.CreditoMaximo
             });
         }
 
@@ -49,7 +49,7 @@ namespace Financ.Application.Servicos.Contas
 
         public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, Guid IdUsuario, AtualizaContaDTO contaDTO)
         {
-            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, IdUsuario, contaDTO.CreditoAtivo, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite));
+            var commandConta = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, IdUsuario, contaDTO.CreditoAtivo,contaDTO.CreditoLimite ,contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoMaximo));
 
             if (commandConta.ValidaSucesso)
                 return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
@@ -59,7 +59,7 @@ namespace Financ.Application.Servicos.Contas
                     CreditoAtivo = commandConta.Sucesso!.CreditoAtivo,
                     DiaFechamento = commandConta.Sucesso!.DiaFechamento,
                     DiaVencimento = commandConta.Sucesso!.DiaVencimento,
-                    CreditoLimite = commandConta.Sucesso!.CreditoLimite
+                    CreditoMaximo = commandConta.Sucesso!.CreditoMaximo
                 });
             else
                 return Resultado<RetornaContasDTO>.GeraFalha(commandConta.Falha!);

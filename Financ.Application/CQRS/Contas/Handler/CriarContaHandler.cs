@@ -23,7 +23,7 @@ namespace Financ.Application.CQRS.Handler
         {
             try
             {
-                Contas contas = new Contas(request.Titulo, request.TipoConta,request.CreditoAtivo, request.DiaFechamento, request.DiaVencimento, request.CreditoLimite, request.Status);
+                Contas contas = new Contas(request.Titulo, request.TipoConta, request.CreditoAtivo, request.DiaFechamento, request.DiaVencimento, request.CreditoLimite, request.CreditoMaximo, request.Status);
                 await _unitOfWork.contasRepositorio.Adicionar(contas);
                 await _unitOfWork.Commit();
                 return Resultado<Contas>.GeraSucesso(contas);

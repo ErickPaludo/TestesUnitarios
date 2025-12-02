@@ -26,7 +26,10 @@ namespace Financ.Infra.Data.Migrations
                     b.Property<bool>("CreditoAtivo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double?>("CreditoLimite")
+                    b.Property<bool>("CreditoLimite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double?>("CreditoMaximo")
                         .HasColumnType("REAL");
 
                     b.Property<int?>("DiaFechamento")

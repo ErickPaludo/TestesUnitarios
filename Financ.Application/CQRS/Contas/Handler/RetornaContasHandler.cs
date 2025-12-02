@@ -53,7 +53,7 @@ namespace Financ.Application.CQRS.Handler
                     CreditoAtivo = conta.Contas.CreditoAtivo,
                     DiaFechamento = conta.Contas.DiaFechamento,
                     DiaVencimento = conta.Contas.DiaVencimento,
-                    CreditoLimite = conta.Contas.CreditoLimite,
+                    CreditoMaximo = conta.Contas.CreditoMaximo,
                 });
             }
 

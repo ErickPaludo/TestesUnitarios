@@ -19,6 +19,6 @@ namespace Financ.Application.DTOs
         [DefaultValue(8)]
         public int? DiaVencimento { get; set; }
         [DefaultValue(200)]
-        public double? CreditoLimite { get; set; }
+        public double? CreditoMaximo { get; set; }
     }
 }
