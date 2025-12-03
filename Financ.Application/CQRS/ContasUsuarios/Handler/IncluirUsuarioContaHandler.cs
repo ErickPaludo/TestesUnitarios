@@ -26,6 +26,9 @@ namespace Financ.Application.CQRS.Handler
                 if (!await _unitOfWork.contasRepositorio.ExisteId(x => x.Id == request.IdConta))
                     return Resultado<ContasUsuarios>.GeraFalha(Falha.NaoEncontrado("Conta não cadastrada!"));
 
+                if ((await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdUsuario == request.IdUsuario && x.IdConta == request.IdConta)).Count() > 0)
+                    return Resultado<ContasUsuarios>.GeraFalha(Falha.ErroOperacional("Usuário já está cadastrado nesta conta!"));
+
                 var contaUsuario = new ContasUsuarios(request.IdConta, request.IdUsuario, request.Acesso, request.Status);
                 contaUsuario = await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);
                 await _unitOfWork.Commit();

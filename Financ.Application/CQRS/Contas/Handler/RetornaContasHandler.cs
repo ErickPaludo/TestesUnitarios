@@ -31,7 +31,7 @@ namespace Financ.Application.CQRS.Handler
                 x => x.IdUsuario == request.IdUsuario
                 && (!possuiFiltros || (
                     (!filtroId.HasValue || x.IdConta == filtroId.Value) &&
-                    (string.IsNullOrEmpty(filtroTitulo) || x.Contas!.Titulo!.Contains(filtroTitulo)) && 
+                    (string.IsNullOrEmpty(filtroTitulo) || x.Contas!.Titulo!.Contains(filtroTitulo)) &&
                     (!filtroStatus.HasValue || x.Contas!.Status == filtroStatus.Value)))
             );
 
@@ -43,8 +43,10 @@ namespace Financ.Application.CQRS.Handler
             List<RetornaContasDTO> listaContas = new List<RetornaContasDTO>();
             foreach (var conta in contasUsuario)
             {
-                if(conta.Contas is not null)
+                if (conta.Contas is null)
                 {
+                    return Resultado<List<RetornaContasDTO>>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
+                }
                 listaContas.Add(new RetornaContasDTO
                 {
                     IdConta = conta.Contas.Id,
@@ -54,9 +56,6 @@ namespace Financ.Application.CQRS.Handler
                     DiaVencimento = conta.Contas.DiaVencimento,
                     CreditoMaximo = conta.Contas.CreditoMaximo,
                 });
-
-                }
-                    return Resultado<List<RetornaContasDTO>>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
 
             }
 
