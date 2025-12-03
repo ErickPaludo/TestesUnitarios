@@ -1,7 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Usuarios.Commands;
-using Financ.Application.DTOs.Autenticação;
+using Financ.Application.DTOs.Usuarios.Post;
 using Financ.Application.Interfaces.Usuarios;
 using NetDevPack.SimpleMediator;
 using System;

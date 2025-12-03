@@ -1,5 +1,6 @@
-using Financ.Application.DTOs;
-using Financ.Application.DTOs.Contas;
+using Financ.Application.DTOs.Contas.Get;
+using Financ.Application.DTOs.Contas.Get.Filtros;
+using Financ.Application.DTOs.Contas.Ptch;
 using Financ.Application.Interfaces.Contas;
 using Financ.Domain.Interfaces.Autenticação;
 using Financ.UI.Api.Extensao;

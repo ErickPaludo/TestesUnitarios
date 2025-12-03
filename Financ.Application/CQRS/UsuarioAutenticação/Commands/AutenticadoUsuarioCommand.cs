@@ -1,5 +1,5 @@
 ﻿using Financ.Application.Comun.Resultado;
-using Financ.Application.DTOs.Autenticação;
+using Financ.Application.DTOs.Autenticação.Get;
 using NetDevPack.SimpleMediator;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Financ.Application.DTOs.Autenticação;
+﻿using Financ.Application.DTOs.Autenticação.Post;
 using Financ.Application.Interfaces.Autenticação;
 using Financ.Domain.Interfaces.Autenticação;
 using Financ.UI.Api.Extensao;

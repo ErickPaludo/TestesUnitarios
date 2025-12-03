@@ -1,4 +1,4 @@
-﻿namespace Financ.Application.DTOs.Autenticação
+﻿namespace Financ.Application.DTOs.Autenticação.Get
 {
     public class RetornaTokenDTO
     {

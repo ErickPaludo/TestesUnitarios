@@ -1,6 +1,6 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Querys;
-using Financ.Application.DTOs;
+using Financ.Application.DTOs.Contas.Get;
 using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces;
 using NetDevPack.SimpleMediator;
@@ -43,9 +43,8 @@ namespace Financ.Application.CQRS.Handler
             List<RetornaContasDTO> listaContas = new List<RetornaContasDTO>();
             foreach (var conta in contasUsuario)
             {
-                if(conta.Contas == null)
-                    return Resultado<List<RetornaContasDTO>>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
-
+                if(conta.Contas is not null)
+                {
                 listaContas.Add(new RetornaContasDTO
                 {
                     IdConta = conta.Contas.Id,
@@ -55,6 +54,10 @@ namespace Financ.Application.CQRS.Handler
                     DiaVencimento = conta.Contas.DiaVencimento,
                     CreditoMaximo = conta.Contas.CreditoMaximo,
                 });
+
+                }
+                    return Resultado<List<RetornaContasDTO>>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
+
             }
 
             return Resultado<List<RetornaContasDTO>>.GeraSucesso(listaContas);

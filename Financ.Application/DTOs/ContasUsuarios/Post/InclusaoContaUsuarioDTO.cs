@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.DTOs.ContasUsuarios
+namespace Financ.Application.DTOs.ContasUsuarios.Post
 {
     public class InclusaoContaUsuarioDTO
     {

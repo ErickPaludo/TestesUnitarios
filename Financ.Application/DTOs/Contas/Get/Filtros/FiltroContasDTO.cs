@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.DTOs.Contas
+namespace Financ.Application.DTOs.Contas.Get.Filtros
 {
     public class FiltroContasDTO
     {

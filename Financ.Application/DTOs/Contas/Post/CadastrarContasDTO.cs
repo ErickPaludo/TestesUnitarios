@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.DTOs
+namespace Financ.Application.DTOs.Contas.Get
 {
-    public abstract class BaseContasDTO
+    public sealed class CadastrarContasDTO
     {
         [Required(ErrorMessage = "O titúlo deverá ser informado!")]
         [MinLength(3, ErrorMessage = "O título deve possuir no mínimo 3 caracteres")]
         [MaxLength(100, ErrorMessage = "O título deve possuir no máximo 100 caracteres")]
-        public string? Titulo { get; set; }
+        public string Titulo { get; set; }
+        public bool CreditoAtivo { get; set; }
+        public bool CreditoLimite { get; set; }
+        public double? CreditoMaximo { get; set; }
         [DefaultValue(1)]
-        public int? DiaFechamento { get; set; }
+        public int? DiaFechamento { get; init; }
         [DefaultValue(8)]
         public int? DiaVencimento { get; set; }
-        [DefaultValue(200)]
-        public double? CreditoMaximo { get; set; }
     }
 }

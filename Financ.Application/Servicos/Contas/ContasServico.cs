@@ -1,8 +1,9 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Querys;
-using Financ.Application.DTOs;
-using Financ.Application.DTOs.Contas;
+using Financ.Application.DTOs.Contas.Get;
+using Financ.Application.DTOs.Contas.Get.Filtros;
+using Financ.Application.DTOs.Contas.Ptch;
 using Financ.Application.Interfaces.Contas;
 using NetDevPack.SimpleMediator;
 using System;
@@ -37,7 +38,7 @@ namespace Financ.Application.Servicos.Contas
                 Titulo = conta.Sucesso!.Titulo,
                 CreditoAtivo = conta.Sucesso!.CreditoAtivo,
                 DiaFechamento = conta.Sucesso!.DiaFechamento,
-                DiaVencimento = conta.Sucesso!.DiaVencimento,
+                DiaVencimento = conta.Sucesso.DiaVencimento,
                 CreditoMaximo = conta.Sucesso!.CreditoMaximo
             });
         }

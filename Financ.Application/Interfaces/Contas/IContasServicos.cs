@@ -1,6 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
-using Financ.Application.DTOs;
-using Financ.Application.DTOs.Contas;
+using Financ.Application.DTOs.Contas.Get;
+using Financ.Application.DTOs.Contas.Get.Filtros;
+using Financ.Application.DTOs.Contas.Ptch;
 using System;
 using System.Collections.Generic;
 using System.Linq;

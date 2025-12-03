@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Financ.Application.DTOs.ContasUsuarios
+namespace Financ.Application.DTOs.ContasUsuarios.Get
 {
     public record RetornaCadastroContasUsuariosDTO(int IdConta,TiposAcessos Acesso,Guid IdUsuario){}
 }

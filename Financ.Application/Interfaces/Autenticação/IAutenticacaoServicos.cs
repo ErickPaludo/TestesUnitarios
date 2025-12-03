@@ -1,5 +1,6 @@
 ﻿using Financ.Application.Comun.Resultado;
-using Financ.Application.DTOs.Autenticação;
+using Financ.Application.DTOs.Autenticação.Get;
+using Financ.Application.DTOs.Autenticação.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;

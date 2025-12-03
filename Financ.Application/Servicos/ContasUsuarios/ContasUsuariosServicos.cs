@@ -2,7 +2,8 @@
 using Financ.Application.CQRS.Commands;
 using Financ.Application.CQRS.Handler;
 using Financ.Application.CQRS.Querys;
-using Financ.Application.DTOs.ContasUsuarios;
+using Financ.Application.DTOs.ContasUsuarios.Get;
+using Financ.Application.DTOs.ContasUsuarios.Post;
 using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces.Repositorios;
