@@ -27,8 +27,7 @@ namespace Financ.Application.CQRS.Commands
             IdConta = idContaUsuario;
             IdUsuario = idUsuario;
             CreditoAtivo = creditoAtivo;
-            if (creditoAtivo.HasValue)
-                CreditoLimite = !creditoAtivo.Value ? false : creditoLimite;
+            CreditoLimite = creditoLimite;
             Status = status;
             Titulo = titulo;
             DiaFechamento = diaFechamento;

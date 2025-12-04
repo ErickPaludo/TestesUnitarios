@@ -48,7 +48,10 @@ namespace Financ.Domain.Entidades
                 ValidaFechamentoVencimento(diaFechamento!.Value, diaVencimento!.Value);
 
                 if (creditoLimite)
+                {
                     ValidaCreditoLimite(creditoMaximo);
+                    CreditoLimite = creditoLimite;
+                }
             }
             CreditoAtivo = creditoAtivo;
         }
@@ -100,10 +103,10 @@ namespace Financ.Domain.Entidades
             if (status is not null)
                 ValidaStatus(status.Value);
 
-            if(!CreditoAtivo && creditoAtivo == true)
+            if (!CreditoAtivo && creditoAtivo == true)
             {
                 CreditoAtivo = creditoAtivo.Value;
-                ContasValidacao.Verifica((DiaFechamento is null && !diaFechamento.HasValue) || (DiaVencimento is null && !DiaVencimento.HasValue), MensagensContas.FECHAMENTO_INVALIDO);
+                ContasValidacao.Verifica((DiaFechamento is null && !diaFechamento.HasValue) || (DiaVencimento is null && !diaVencimento.HasValue), MensagensContas.FECHAMENTO_INVALIDO);
                 ValidaFechamentoVencimento(diaFechamento.Value, diaVencimento.Value);
             }
 
@@ -115,15 +118,15 @@ namespace Financ.Domain.Entidades
 
                 if (creditoLimite is not null)
                 {
+                    CreditoLimite = creditoLimite.Value;
                     if (creditoLimite.Value)
                     {
-                        if (creditoMaximo is not null)
+                        if (CreditoMaximo is null)
                             ValidaCreditoLimite(creditoMaximo);
                     }
                     else
                     {
                         CreditoMaximo = null;
-                        CreditoLimite = creditoLimite.Value;
                     }
                 }
             }

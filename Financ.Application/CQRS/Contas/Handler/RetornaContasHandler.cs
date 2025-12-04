@@ -2,6 +2,7 @@
 using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs.Contas.Get;
 using Financ.Domain.Entidades;
+using Financ.Domain.Enums;
 using Financ.Domain.Interfaces;
 using NetDevPack.SimpleMediator;
 using System;
@@ -28,7 +29,7 @@ namespace Financ.Application.CQRS.Handler
             var possuiFiltros = request.Filtros != null;
 
             var contasUsuario = await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(
-                x => x.IdUsuario == request.IdUsuario
+                x => x.IdUsuario == request.IdUsuario && x.Contas.Status != TiposStatus.Deletado
                 && (!possuiFiltros || (
                     (!filtroId.HasValue || x.IdConta == filtroId.Value) &&
                     (string.IsNullOrEmpty(filtroTitulo) || x.Contas!.Titulo!.Contains(filtroTitulo)) &&
@@ -50,8 +51,10 @@ namespace Financ.Application.CQRS.Handler
                 listaContas.Add(new RetornaContasDTO
                 {
                     IdConta = conta.Contas.Id,
-                    Titulo = conta.Contas.Titulo,
+                    Titulo = conta.Contas.Titulo!,
+                    Status = conta.Contas.Status,
                     CreditoAtivo = conta.Contas.CreditoAtivo,
+                    CreditoLimite = conta.Contas.CreditoLimite,
                     DiaFechamento = conta.Contas.DiaFechamento,
                     DiaVencimento = conta.Contas.DiaVencimento,
                     CreditoMaximo = conta.Contas.CreditoMaximo,

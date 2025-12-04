@@ -35,8 +35,10 @@ namespace Financ.Application.Servicos.Contas
             return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
             {
                 IdConta = conta.Sucesso!.Id,
-                Titulo = conta.Sucesso!.Titulo,
+                Titulo = conta.Sucesso!.Titulo!,
+                Status = conta.Sucesso!.Status,
                 CreditoAtivo = conta.Sucesso!.CreditoAtivo,
+                CreditoLimite = conta.Sucesso!.CreditoLimite,
                 DiaFechamento = conta.Sucesso!.DiaFechamento,
                 DiaVencimento = conta.Sucesso.DiaVencimento,
                 CreditoMaximo = conta.Sucesso!.CreditoMaximo
@@ -56,8 +58,10 @@ namespace Financ.Application.Servicos.Contas
                 return Resultado<RetornaContasDTO>.GeraSucesso(new RetornaContasDTO
                 {
                     IdConta = commandConta.Sucesso!.Id,
-                    Titulo = commandConta.Sucesso!.Titulo,
+                    Titulo = commandConta.Sucesso!.Titulo!,
+                    Status = commandConta.Sucesso!.Status,
                     CreditoAtivo = commandConta.Sucesso!.CreditoAtivo,
+                    CreditoLimite = commandConta.Sucesso!.CreditoLimite,
                     DiaFechamento = commandConta.Sucesso!.DiaFechamento,
                     DiaVencimento = commandConta.Sucesso!.DiaVencimento,
                     CreditoMaximo = commandConta.Sucesso!.CreditoMaximo

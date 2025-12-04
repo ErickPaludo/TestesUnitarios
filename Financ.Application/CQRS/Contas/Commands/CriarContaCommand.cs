@@ -28,7 +28,7 @@ namespace Financ.Application.CQRS.Commands
         {
             Status = TiposStatus.Ativo;
             CreditoAtivo = creditoAtivo;
-            CreditoLimite = !creditoAtivo ? false : creditoLimite;
+            CreditoLimite = creditoLimite;
             Titulo = titulo;
             TipoConta = TiposContas.Corrente;
             DiaFechamento = diaFechamento;

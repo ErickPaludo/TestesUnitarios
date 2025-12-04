@@ -11,6 +11,7 @@ namespace Financ.Domain.Enums
         Ativo,
         Desativado,
         Bloqueado,
-        Cancelado
+        Cancelado,
+        Deletado
     }
 }

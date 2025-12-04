@@ -1,6 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
 using Financ.Domain.Entidades;
+using Financ.Domain.Enums;
 using Financ.Domain.Interfaces;
 using Financ.Domain.Validacoes;
 using NetDevPack.SimpleMediator;
@@ -23,7 +24,7 @@ namespace Financ.Application.CQRS.Handler
         {
             try
             {
-                if (!await _unitOfWork.contasRepositorio.ExisteId(x => x.Id == request.IdConta))
+                if (!await _unitOfWork.contasRepositorio.ExisteId(x => x.Id == request.IdConta && x.Status != TiposStatus.Deletado))
                     return Resultado<ContasUsuarios>.GeraFalha(Falha.NaoEncontrado("Conta não cadastrada!"));
 
                 if ((await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdUsuario == request.IdUsuario && x.IdConta == request.IdConta)).Count() > 0)
