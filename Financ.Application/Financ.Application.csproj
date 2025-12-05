@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Usuarios\Querys\" />
     <Folder Include="DTOs\ContasUsuarios\Patch\" />
-    <Folder Include="DTOs\Usuarios\Get\" />
   </ItemGroup>
 
 </Project>

@@ -29,14 +29,14 @@ namespace Financ.Application.Servicos.Contas
             var conta = await _mediator.Send(commandConta);
 
             if (!conta.ValidaSucesso)
-                return Resultado<RetornaContasDTO>.GeraFalha(conta.Falha!);
+                return conta;
 
             var contaUsuario = await _mediator.Send(new CriarContaUsuarioCommand(conta.Sucesso!.IdConta, idUsuario));
 
             if (contaUsuario.ValidaFalha)
                 return Resultado<RetornaContasDTO>.GeraFalha(contaUsuario.Falha!);
 
-            return Resultado<RetornaContasDTO>.GeraSucesso(conta.Sucesso);
+            return conta;
         }
 
         public async Task<Resultado<List<RetornaContasDTO>>> RetornarContas(FiltroContasDTO? filtros, Guid IdUsuario)

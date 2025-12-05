@@ -1,4 +1,5 @@
 ﻿using Financ.Application.Comun.Resultado;
+using Financ.Application.DTOs.Usuarios.Get;
 using Financ.Application.DTOs.Usuarios.Post;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace Financ.Application.Interfaces.Usuarios
     public interface IUsuariosServicos
     {
         Task<Resultado<string>> CadastraUsuario(CadastraUsuarioDTO usuarioDTO);
+        Task<Resultado<RetornaUsuarioDTO>> RetornaUsuario(Guid idUsuario);
     }
 }

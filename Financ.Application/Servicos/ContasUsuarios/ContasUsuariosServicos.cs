@@ -30,10 +30,7 @@ namespace Financ.Application.Servicos
 
             var contaUsuario = await _mediator.Send(commandContaUsuario);
 
-            if (contaUsuario.ValidaFalha)
-                return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(contaUsuario.Falha!);
-
-            return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(contaUsuario.Sucesso!);
+            return contaUsuario;
         }
 
         public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(int idConta, Guid idUsuario)
