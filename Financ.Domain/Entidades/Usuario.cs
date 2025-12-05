@@ -31,6 +31,8 @@ namespace Financ.Domain.Entidades
             VerificaEmail(email);
         }
 
+        public string NomeCompleto => $"{PrimeiroNome} {SegundoNome}".Trim();
+
         private void VerificaNome(string primeiroNome, string segundoNome)
         {
             UsuariosValidacoes.Verifica(string.IsNullOrWhiteSpace(primeiroNome), MensagensUsuarios.PRIMEIRO_NOME_OBRIGATORIO);

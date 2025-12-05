@@ -1,6 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
 using Financ.Application.DTOs.Autenticação.Get;
+using Financ.Application.Mapeamento;
 using Financ.Domain.Interfaces.Autenticação;
 using NetDevPack.SimpleMediator;
 using System;
@@ -27,7 +28,7 @@ namespace Financ.Application.CQRS.Handler
             if (autenticador)
             {
                 var token = _autenticacao.GeraToken(await _usuarioServicos.ObtemIdUsuario(request.Email), request.Email);
-                return Resultado<RetornaTokenDTO>.GeraSucesso(new RetornaTokenDTO { Token = token.email, Expiracao = token.Expiracao });
+                return Resultado<RetornaTokenDTO>.GeraSucesso(AutenticacaoMapper.ParaDTO(token.email,token.Expiracao));
             }
             return Resultado<RetornaTokenDTO>.GeraFalha(Falha.ErroOperacional("Usuário ou senha inválidos!"));
         }

@@ -1,4 +1,5 @@
 ﻿using Financ.Application.Comun.Resultado;
+using Financ.Application.DTOs.ContasUsuarios.Get;
 using Financ.Domain.Entidades;
 using Financ.Domain.Enums;
 using NetDevPack.SimpleMediator;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public class CriarContaUsuarioCommand : IRequest<Resultado<ContasUsuarios>>
+    public class CriarContaUsuarioCommand : IRequest<Resultado<RetornaCadastroContasUsuariosDTO>>
     {
         public int IdConta { get; private set; }
         public Guid IdUsuario { get; private set; }

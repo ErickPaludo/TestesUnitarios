@@ -1,6 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs.ContasUsuarios.Get;
+using Financ.Application.Mapeamento;
 using Financ.Domain.Interfaces;
 using Financ.Domain.Interfaces.Autenticação;
 using NetDevPack.SimpleMediator;
@@ -27,7 +28,6 @@ namespace Financ.Application.CQRS.Handler
         {
             if (await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.IdConta && x.IdUsuario == request.IdUsuario) != null)
             {
-
                 var contaUsuarios = await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdConta == request.IdConta && x.IdUsuario != request.IdUsuario);
 
                 if (contaUsuarios.Count() > 0)
@@ -36,13 +36,7 @@ namespace Financ.Application.CQRS.Handler
                     foreach (var conta in contaUsuarios)
                     {
                         var usuario = _usuarioServicos.ObtemUsuario(conta.IdUsuario).Result;
-                        listaUsuarios.Add(new RetornaUsuariosAssociadosDTO(
-                          conta.IdUsuario,
-                          $"{usuario.PrimeiroNome} {usuario.SegundoNome}",
-                          usuario.Email,
-                          conta.Acesso,
-                          conta.Status
-                        ));
+                        listaUsuarios.Add(ContasUsuariosMapper.ParaDTO(conta,usuario));
                     }
                     return Resultado<List<RetornaUsuariosAssociadosDTO>>.GeraSucesso(listaUsuarios);
                 }

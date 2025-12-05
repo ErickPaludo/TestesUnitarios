@@ -11,7 +11,7 @@ namespace Financ.Domain.Entidades
 {
     public sealed class Contas : BaseConta
     {
-        public string? Titulo { get; private set; }
+        public string Titulo { get; private set; }
         public TiposContas TipoConta { get; private set; }
         public bool CreditoAtivo { get; private set; }
         public bool CreditoLimite { get; set; }
@@ -26,14 +26,14 @@ namespace Financ.Domain.Entidades
             ValidaContas(titulo, tipoConta, creditoAtivo, diaFechamento, diaVencimento, creditoLimite, creditoMaximo, status);
             DthrReg = DateTime.Now;
         }
-        public Contas(int id, string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo, TiposStatus status)
+        public Contas(int id, string titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo, TiposStatus status)
         {
             ContasValidacao.Verifica(id <= 0, MensagensBase.ID_IGUAL_MENOR_ZERO);
             Id = id;
             DthrReg = DateTime.Now;
             ValidaContas(titulo, tipoConta, creditoAtivo, diaFechamento, diaVencimento, creditoLimite, creditoMaximo, status);
         }
-        private void ValidaContas(string? titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo, TiposStatus status)
+        private void ValidaContas(string titulo, TiposContas tipoConta, bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo, TiposStatus status)
         {
             ValidaTitulo(titulo);
             ValidaTipoDaConta(tipoConta);
@@ -55,7 +55,7 @@ namespace Financ.Domain.Entidades
             }
             CreditoAtivo = creditoAtivo;
         }
-        private void ValidaTitulo(string? titulo)
+        private void ValidaTitulo(string titulo)
         {
             ContasValidacao.Verifica(string.IsNullOrWhiteSpace(titulo), MensagensContas.TITULO_OBRIGATORIO);
             ContasValidacao.Verifica(string.IsNullOrWhiteSpace(titulo) || titulo.Length < 5 || titulo.Length > 100, MensagensContas.TITULO_TAMANHO_INVALIDO);

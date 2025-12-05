@@ -1,5 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Commands;
+using Financ.Application.DTOs.Contas.Get;
+using Financ.Application.Mapeamento;
 using Financ.Domain.Entidades;
 using Financ.Domain.Enums;
 using Financ.Domain.Interfaces;
@@ -12,44 +14,44 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Financ.Application.CQRS.Handler
 {
-    public class AtualizarContasHandler : IRequestHandler<AtualizarContaCommand, Resultado<Contas>>
+    public class AtualizarContasHandler : IRequestHandler<AtualizarContaCommand, Resultado<RetornaContasDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         public AtualizarContasHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Resultado<Contas>> Handle(AtualizarContaCommand request, CancellationToken cancellationToken)
+        public async Task<Resultado<RetornaContasDTO>> Handle(AtualizarContaCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 if (await _unitOfWork.contasRepositorio.BuscarObjetoUnico(x => x.Id == request.IdConta) == null)
-                    return Resultado<Contas>.GeraFalha(Falha.NaoEncontrado("Conta ou usuário inválidos."));
+                    return Resultado<RetornaContasDTO>.GeraFalha(Falha.NaoEncontrado("Conta ou usuário inválidos."));
 
                 var contaUsuario = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.IdConta && x.IdUsuario == request.IdUsuario);
 
                 if (contaUsuario == null)
-                    return Resultado<Contas>.GeraFalha(Falha.ErroOperacional("O Usuário não pertence a está conta!"));
+                    return Resultado<RetornaContasDTO>.GeraFalha(Falha.ErroOperacional("O Usuário não pertence a está conta!"));
 
                 if (!contaUsuario.Status.Equals(TiposStatus.Ativo))
-                    return Resultado<Contas>.GeraFalha(Falha.ErroOperacional($"Não foi possível concluir a operação pois seu usuário está {contaUsuario.Status.ToString()}!"));
+                    return Resultado<RetornaContasDTO>.GeraFalha(Falha.ErroOperacional($"Não foi possível concluir a operação pois seu usuário está {contaUsuario.Status.ToString()}!"));
 
                 if (!contaUsuario.Acesso.Equals(TiposAcessos.Administrador))
-                    return Resultado<Contas>.GeraFalha(Falha.ErroOperacional("O Usuário não um adiministrador!"));
+                    return Resultado<RetornaContasDTO>.GeraFalha(Falha.ErroOperacional("O Usuário não um adiministrador!"));
 
                 var conta = await _unitOfWork.contasRepositorio.BuscarPeloId<int>(contaUsuario.IdConta);
                 if (conta == null)
-                    return Resultado<Contas>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada."));
+                    return Resultado<RetornaContasDTO>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada."));
 
                 conta.AtualizaConta(contaUsuario, request.Titulo,request.CreditoAtivo, request.Status,request.CreditoLimite, request.CreditoMaximo, request.DiaFechamento, request.DiaVencimento);
 
                 _unitOfWork.contasRepositorio.Atualiza(conta);
                 await _unitOfWork.Commit();
-                return Resultado<Contas>.GeraSucesso(conta);
+                return Resultado<RetornaContasDTO>.GeraSucesso(ContaMapper.ParaDTO(conta));
             }
             catch (ContasValidacao contasExecao)
             {
-                return Resultado<Contas>.GeraFalha(Falha.ErroOperacional(contasExecao.Message));
+                return Resultado<RetornaContasDTO>.GeraFalha(Falha.ErroOperacional(contasExecao.Message));
             }
         }
     }

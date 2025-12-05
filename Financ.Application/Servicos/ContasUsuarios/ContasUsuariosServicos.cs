@@ -33,7 +33,7 @@ namespace Financ.Application.Servicos
             if (contaUsuario.ValidaFalha)
                 return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(contaUsuario.Falha!);
 
-            return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(new RetornaCadastroContasUsuariosDTO(contaUsuario.Sucesso!.IdConta, contaUsuario.Sucesso.Acesso, contaUsuario.Sucesso.IdUsuario));
+            return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(contaUsuario.Sucesso!);
         }
 
         public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(int idConta, Guid idUsuario)
