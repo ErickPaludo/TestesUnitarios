@@ -1,5 +1,6 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.DTOs.ContasUsuarios.Get;
+using Financ.Domain.Enums;
 using NetDevPack.SimpleMediator;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,21 @@ namespace Financ.Application.CQRS.Querys
 {
     public class RetornaUsuariosAssociadosQuery : IRequest<Resultado<List<RetornaUsuariosAssociadosDTO>>>
     {
-        public int IdConta { get; private set; }
-        public Guid IdUsuario { get; private set; }
-        public RetornaUsuariosAssociadosQuery(int idConta,Guid idUsuario)
+        public Guid IdUsuarioSolicitante { get; set; }
+        public int IdConta { get; set; }
+        public Guid? IdUsuario { get; set; }
+        public string? NomeUsuario { get; set; }
+        public TiposAcessos? Acesso { get; set; }
+        public TiposStatus? Status { get; set; }
+
+        public RetornaUsuariosAssociadosQuery(Guid idUsuarioSolicitante, int idConta, Guid? idUsuario, string? nomeUsuario, TiposAcessos? acesso, TiposStatus? status)
         {
+            IdUsuarioSolicitante = idUsuarioSolicitante;
             IdConta = idConta;
             IdUsuario = idUsuario;
+            NomeUsuario = nomeUsuario;
+            Acesso = acesso;
+            Status = status;
         }
     }
 }

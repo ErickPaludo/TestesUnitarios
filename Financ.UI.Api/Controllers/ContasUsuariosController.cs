@@ -1,4 +1,5 @@
-﻿using Financ.Application.DTOs.ContasUsuarios.Post;
+﻿using Financ.Application.DTOs.ContasUsuarios.Get.Filtros;
+using Financ.Application.DTOs.ContasUsuarios.Post;
 using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Domain.Interfaces.Repositorios;
 using Financ.UI.Api.Extensao;
@@ -28,9 +29,9 @@ namespace Financ.UI.Api.Controllers
             return usuarioConta.RetornoAutomatico();
         }
         [HttpGet("retorna_usuarios_associados")]
-        public async Task<IActionResult> RetornaUsuarosAssociados([FromQuery]int idConta)
+        public async Task<IActionResult> RetornaUsuarosAssociados([FromQuery] FiltroUsuarioAssociado filtroConta)
         {
-            var usuariosAssociados = await _contasUsuariosServico.RetornaUsuariosAssociados(idConta, User.RetornaIdUsuario());
+            var usuariosAssociados = await _contasUsuariosServico.RetornaUsuariosAssociados(filtroConta, User.RetornaIdUsuario());
             return usuariosAssociados.RetornoAutomatico();
         }
     }
