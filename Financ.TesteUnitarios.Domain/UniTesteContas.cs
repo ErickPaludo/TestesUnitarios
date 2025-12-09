@@ -53,7 +53,7 @@ namespace Financ.TesteUnitarios.Domain
         {
             var statusInvalido = (TiposStatus)999;
             Action action = () => new Contas("Teste x", TiposContas.Poupanca, false, null, null, true, null, statusInvalido);
-            action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.STATUS_INVALIDO);
+            action.Should().Throw<ContasValidacao>().WithMessage(MensagensBase.STATUS_INVALIDO);
         }
 
         [Fact(DisplayName = "Fechamento inválido")]

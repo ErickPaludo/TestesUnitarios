@@ -18,11 +18,11 @@ namespace Financ.Domain.Entidades
         public Contas? Contas { get; private set; }
 
         public ContasUsuarios() { }
-        public ContasUsuarios(int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status)
+        public ContasUsuarios(int idConta, Guid idUsuario, TiposAcessos acesso, TiposStatus status)
         {
             ValidaContasUsuarios(idConta, idUsuario, acesso, status);
-        }  
-        public ContasUsuarios(int id,int idConta, Guid idUsuario,TiposAcessos acesso,TiposStatus status )
+        }
+        public ContasUsuarios(int id, int idConta, Guid idUsuario, TiposAcessos acesso, TiposStatus status)
         {
             ContasUsuariosValidacao.Verifica(id <= 0, MensagensBase.ID_IGUAL_MENOR_ZERO);
             Id = id;
@@ -32,8 +32,8 @@ namespace Financ.Domain.Entidades
         {
             ContasUsuariosValidacao.Verifica(idConta <= 0, MensagensContasUsuarios.IDCONTA_IGUAL_MENOR_ZERO);
             ContasUsuariosValidacao.Verifica(idUsuario == Guid.Empty, MensagensContasUsuarios.IDUSUARIO_VAZIO);
-            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos),acesso),MensagensContasUsuarios.ACESSO_INVALIDO);
-            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensContas.STATUS_INVALIDO);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos), acesso), MensagensContasUsuarios.ACESSO_INVALIDO);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensBase.STATUS_INVALIDO);
 
             IdConta = idConta;
             IdUsuario = idUsuario;
@@ -41,5 +41,22 @@ namespace Financ.Domain.Entidades
             Status = status;
             DthrReg = DateTime.Now;
         }
+        public void AtualizaContasUsuario(TiposAcessos? acessos, TiposStatus? status)
+        {
+            ContasUsuariosValidacao.Verifica(Acesso != TiposAcessos.Administrador, MensagensContasUsuarios.ACESSO_NEGADO);
+            ContasUsuariosValidacao.Verifica(Status != TiposStatus.Ativo, MensagensContasUsuarios.USUARIO_INATIVO_NAO_PODE_SER_ATUALIZADO);
+
+            if (acessos.HasValue)
+            {
+                ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos), acessos.Value), MensagensContasUsuarios.ACESSO_INVALIDO);
+                Acesso = acessos.Value;
+            }
+            if (status.HasValue)
+            {
+                ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status.Value), MensagensBase.STATUS_INVALIDO);
+                Status = status.Value;
+            }
+        }
+
     }
 }

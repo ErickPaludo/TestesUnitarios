@@ -11,7 +11,6 @@ namespace Financ.Domain.Validacoes.Mensagens
         public const string TITULO_OBRIGATORIO = "O título é obrigatório.";
         public const string TITULO_TAMANHO_INVALIDO = "O título deve possuir entre 3 e 100 caracteres.";
         public const string TIPO_CONTA_INVALIDO = "Tipo de conta inválido.";
-        public const string STATUS_INVALIDO = "Status inválido.";
         public const string FECHAMENTO_INVALIDO = "Dia de fechamento inválido, deve estar entre 1 e 16.";
         public const string VENCIMENTO_MENOR_FECHAMENTO = "O vencimento deve ser maior que o fechamento.";
         public const string VENCIMENTO_MINIMO_7_DIAS = "O vencimento deve ter pelo menos 7 dias de diferença entre fechamento e vencimento da fatura.";

@@ -68,7 +68,7 @@ namespace Financ.Domain.Entidades
         }
         private void ValidaStatus(TiposStatus status)
         {
-            ContasValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensContas.STATUS_INVALIDO);
+            ContasValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensBase.STATUS_INVALIDO);
             Status = status;
         }
         private void ValidaFechamentoVencimento(int diaFechamento, int diaVencimento)

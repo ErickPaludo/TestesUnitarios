@@ -4,6 +4,7 @@ using Financ.Application.CQRS.Handler;
 using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs.ContasUsuarios.Get;
 using Financ.Application.DTOs.ContasUsuarios.Get.Filtros;
+using Financ.Application.DTOs.ContasUsuarios.Patch;
 using Financ.Application.DTOs.ContasUsuarios.Post;
 using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Domain.Entidades;
@@ -33,6 +34,11 @@ namespace Financ.Application.Servicos
 
             return contaUsuario;
         }
+        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(Guid idUsuario, int idConta, AtualizaContasUsuariosDTO contaUsuario)
+        {
+            return await _mediator.Send(new AtualizarContaUsuarioCommand(idUsuario, idConta, contaUsuario.Acesso,contaUsuario.Status));
+        }
+
 
         public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(FiltroUsuarioAssociado filtroConta, Guid idUsuarioSolicitante)
         {

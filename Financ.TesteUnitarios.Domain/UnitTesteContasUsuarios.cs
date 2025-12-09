@@ -50,7 +50,7 @@ namespace Financ.TesteUnitarios.Domain
         {
             var statusInvalido = (TiposStatus)999;
             Action action = () => new ContasUsuarios(1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Visualizador, statusInvalido);
-            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensContas.STATUS_INVALIDO);
+            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensBase.STATUS_INVALIDO);
         }
 
         [Fact(DisplayName = "Cadastra ContasUsuario com sucesso")]
@@ -64,6 +64,54 @@ namespace Financ.TesteUnitarios.Domain
         public void ContasUsuario_ComId_Valido_NaoGeraDivergencia()
         {
             Action action = () => new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Ativo);
+            action.Should().NotThrow<ContasUsuariosValidacao>();
+        }
+
+        [Fact(DisplayName = "Atualiza com acesso inválido")]
+        public void Atualiza_Usuario_com_acesso_invalido()
+        {
+            var contaUsuario = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Ativo);
+
+            Action action = () => contaUsuario.AtualizaContasUsuario((TiposAcessos)3, TiposStatus.Ativo);
+            action.Should().Throw(MensagensContasUsuarios.ACESSO_INVALIDO);
+        }
+
+        [Fact(DisplayName = "Atualiza com status inválido")]
+        public void Atualiza_Usuario_com_status_invalido()
+        {
+            var contaUsuario = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Ativo);
+
+            Action action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Visualizador, (TiposStatus)99);
+            action.Should().Throw(MensagensBase.STATUS_INVALIDO);
+        }
+
+        [Fact(DisplayName = "Atualiza com não está ativo")]
+        public void Atualiza_Usuario_não_esta_com_status_ativo()
+        {
+            var contaUsuario = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Desativado);
+
+            Action action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Visualizador, null);
+            action.Should().Throw(MensagensContasUsuarios.ACESSO_NEGADO);
+        }
+
+        [Fact(DisplayName = "Atualiza com não é um administrador")]
+        public void Atualiza_Usuario_não_é_um_administrador()
+        {
+            var contaUsuario = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Visualizador, TiposStatus.Ativo);
+
+            Action action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Administrador, null);
+            action.Should().Throw(MensagensContasUsuarios.USUARIO_INATIVO_NAO_PODE_SER_ATUALIZADO);
+        }
+
+        [Fact(DisplayName = "Atualiza usuário com sucesso")]
+        public void Atualiza_Usuario_sem_Divergencia()
+        {
+            var contaUsuario = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Ativo);
+
+            Action action = () => contaUsuario.AtualizaContasUsuario(null,TiposStatus.Desativado);
+            action.Should().NotThrow<ContasUsuariosValidacao>();
+
+            action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Administrador, null);
             action.Should().NotThrow<ContasUsuariosValidacao>();
         }
     }

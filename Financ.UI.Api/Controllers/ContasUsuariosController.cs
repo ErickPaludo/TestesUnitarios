@@ -1,4 +1,5 @@
 ﻿using Financ.Application.DTOs.ContasUsuarios.Get.Filtros;
+using Financ.Application.DTOs.ContasUsuarios.Patch;
 using Financ.Application.DTOs.ContasUsuarios.Post;
 using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Domain.Interfaces.Repositorios;
@@ -33,6 +34,12 @@ namespace Financ.UI.Api.Controllers
         {
             var usuariosAssociados = await _contasUsuariosServico.RetornaUsuariosAssociados(filtroConta, User.RetornaIdUsuario());
             return usuariosAssociados.RetornoAutomatico();
+        }
+        [HttpPatch("altera_usuario_conta/{idConta}")]
+        public async Task<IActionResult> AlteraUsuarioConta(int idConta, [FromBody] AtualizaContasUsuariosDTO contaUsuario)
+        {
+            var usuarioAlterado = await _contasUsuariosServico.AtualizaUsuarioConta(User.RetornaIdUsuario(), idConta, contaUsuario);
+            return usuarioAlterado.RetornoAutomatico();
         }
     }
 }
