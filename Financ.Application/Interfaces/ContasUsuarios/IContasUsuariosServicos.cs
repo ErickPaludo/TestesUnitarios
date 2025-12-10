@@ -15,6 +15,6 @@ namespace Financ.Application.Interfaces.ContasUsuarios
     {
         Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO,Guid idUsuario);
         Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(FiltroUsuarioAssociado filtroConta, Guid idUsuarioSolicitante);
-        Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(Guid idUsuario, int idConta, AtualizaContasUsuariosDTO contaUsuario);
+        Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(Guid idUsuarioSolicitante, Guid idUsuarioAlterado, int idConta, AtualizaContasUsuariosDTO contaUsuario);
     }
 }

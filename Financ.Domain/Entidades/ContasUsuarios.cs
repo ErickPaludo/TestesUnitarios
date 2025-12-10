@@ -43,8 +43,7 @@ namespace Financ.Domain.Entidades
         }
         public void AtualizaContasUsuario(TiposAcessos? acessos, TiposStatus? status)
         {
-            ContasUsuariosValidacao.Verifica(Acesso != TiposAcessos.Administrador, MensagensContasUsuarios.ACESSO_NEGADO);
-            ContasUsuariosValidacao.Verifica(Status != TiposStatus.Ativo, MensagensContasUsuarios.USUARIO_INATIVO_NAO_PODE_SER_ATUALIZADO);
+            ContasUsuariosValidacao.Verifica(Acesso == TiposAcessos.Mestre, MensagensContasUsuarios.USUARIO_MESTRE_NAO_PODE_SER_ATUALIZADO);
 
             if (acessos.HasValue)
             {

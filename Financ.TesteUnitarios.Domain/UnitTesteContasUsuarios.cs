@@ -85,24 +85,6 @@ namespace Financ.TesteUnitarios.Domain
             action.Should().Throw(MensagensBase.STATUS_INVALIDO);
         }
 
-        [Fact(DisplayName = "Atualiza com não está ativo")]
-        public void Atualiza_Usuario_não_esta_com_status_ativo()
-        {
-            var contaUsuario = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Administrador, TiposStatus.Desativado);
-
-            Action action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Visualizador, null);
-            action.Should().Throw(MensagensContasUsuarios.ACESSO_NEGADO);
-        }
-
-        [Fact(DisplayName = "Atualiza com não é um administrador")]
-        public void Atualiza_Usuario_não_é_um_administrador()
-        {
-            var contaUsuario = new ContasUsuarios(1, 1, Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3301"), TiposAcessos.Visualizador, TiposStatus.Ativo);
-
-            Action action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Administrador, null);
-            action.Should().Throw(MensagensContasUsuarios.USUARIO_INATIVO_NAO_PODE_SER_ATUALIZADO);
-        }
-
         [Fact(DisplayName = "Atualiza usuário com sucesso")]
         public void Atualiza_Usuario_sem_Divergencia()
         {

@@ -26,28 +26,26 @@ namespace Financ.Application.CQRS.Handler
         {
             try
             {
-                var contaUsuario = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.idConta && x.IdUsuario == request.idUsuario);
+                var contaUsuarioAlterado = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.idConta && x.IdUsuario == request.idUsuarioAlterado);
+                var contaUsuarioSolicitante = await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.idConta && x.IdUsuario == request.idUsuarioSolicitante);
 
-                if (contaUsuario is not null)
+                if (contaUsuarioAlterado is not null && contaUsuarioSolicitante is not null)
                 {
-                    if ((await _unitOfWork.contasUsuariosRepositorio.BuscarPorCondicao(
-                           x => x.IdConta == request.idConta &&
-                           x.IdUsuario != request.idUsuario &&
-                           x.Acesso == TiposAcessos.Administrador &&
-                           x.Status == TiposStatus.Ativo)).Count() > 0)
+                    if (contaUsuarioSolicitante.Acesso == TiposAcessos.Mestre)
                     {
-                        contaUsuario.AtualizaContasUsuario(request.acesso, request.status);
-                        _unitOfWork.contasUsuariosRepositorio.Atualiza(contaUsuario);
-                        await _unitOfWork.Commit();
-                        return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuario));
+                            contaUsuarioAlterado.AtualizaContasUsuario(request.acesso, request.status);
+                            _unitOfWork.contasUsuariosRepositorio.Atualiza(contaUsuarioAlterado);
+                            await _unitOfWork.Commit();
+                            return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuarioAlterado)); 
                     }
-                    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional("Não é possível atualizar a conta, pois a mesma ficará sem administradores ativos!"));
+                    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.NaoEncontrado("Você precisa ser um usuário mestre para alterar outros usuários desta conta!"));
+
                 }
-                else
-                {
-                    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
-                }
-            }catch(ContasUsuariosValidacao ex)
+
+                return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.NaoEncontrado("Conta ou usuário não encontrados!"));
+
+            }
+            catch (ContasUsuariosValidacao ex)
             {
                 return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional(ex.Message));
             }

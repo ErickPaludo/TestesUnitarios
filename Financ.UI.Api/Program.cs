@@ -30,9 +30,10 @@ namespace Financ.UI.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseHttpsRedirection();
+
 
             app.MapControllers();
 

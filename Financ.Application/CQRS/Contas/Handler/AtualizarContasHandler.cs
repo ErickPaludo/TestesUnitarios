@@ -36,9 +36,6 @@ namespace Financ.Application.CQRS.Handler
                 if (!contaUsuario.Status.Equals(TiposStatus.Ativo))
                     return Resultado<RetornaContasDTO>.GeraFalha(Falha.ErroOperacional($"Não foi possível concluir a operação pois seu usuário está {contaUsuario.Status.ToString()}!"));
 
-                if (!contaUsuario.Acesso.Equals(TiposAcessos.Administrador))
-                    return Resultado<RetornaContasDTO>.GeraFalha(Falha.ErroOperacional("O Usuário não um adiministrador!"));
-
                 var conta = await _unitOfWork.contasRepositorio.BuscarPeloId<int>(contaUsuario.IdConta);
                 if (conta == null)
                     return Resultado<RetornaContasDTO>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada."));

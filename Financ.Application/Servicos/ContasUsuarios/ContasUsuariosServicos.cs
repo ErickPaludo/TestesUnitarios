@@ -34,9 +34,9 @@ namespace Financ.Application.Servicos
 
             return contaUsuario;
         }
-        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(Guid idUsuario, int idConta, AtualizaContasUsuariosDTO contaUsuario)
+        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(Guid idUsuarioSolicitante,Guid idUsuarioAlterado, int idConta, AtualizaContasUsuariosDTO contaUsuario)
         {
-            return await _mediator.Send(new AtualizarContaUsuarioCommand(idUsuario, idConta, contaUsuario.Acesso,contaUsuario.Status));
+            return await _mediator.Send(new AtualizarContaUsuarioCommand(idUsuarioSolicitante,idUsuarioAlterado, idConta, contaUsuario.Acesso,contaUsuario.Status));
         }
 
 

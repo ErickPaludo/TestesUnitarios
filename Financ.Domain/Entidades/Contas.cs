@@ -94,7 +94,7 @@ namespace Financ.Domain.Entidades
         public void AtualizaConta(ContasUsuarios usuarios, string? titulo, bool? creditoAtivo, TiposStatus? status, bool? creditoLimite, double? creditoMaximo, int? diaFechamento, int? diaVencimento)
         {
             ContasValidacao.Verifica(usuarios == null, MensagensBase.USUARIO_NAO_INFORMADO);
-            ContasValidacao.Verifica(usuarios!.Acesso != TiposAcessos.Administrador, MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
+            ContasValidacao.Verifica((usuarios!.Acesso == TiposAcessos.Visualizador), MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
             ContasValidacao.Verifica(CreditoAtivo && creditoAtivo == false, MensagensContas.ATUALIZA_CONTA_CREDITO_ATIVO);
 
             if (titulo != null)

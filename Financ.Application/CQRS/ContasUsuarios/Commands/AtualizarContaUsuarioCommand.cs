@@ -10,5 +10,5 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public record AtualizarContaUsuarioCommand(Guid idUsuario, int idConta, TiposAcessos? acesso, TiposStatus? status) : IRequest<Resultado<RetornaCadastroContasUsuariosDTO>>;
+    public record AtualizarContaUsuarioCommand(Guid idUsuarioSolicitante,Guid idUsuarioAlterado, int idConta, TiposAcessos? acesso, TiposStatus? status) : IRequest<Resultado<RetornaCadastroContasUsuariosDTO>>;
 }
