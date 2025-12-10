@@ -21,7 +21,7 @@ namespace Financ.Application.CQRS.Commands
         {
             IdConta = idConta;
             IdUsuario = idUsuario;
-            Acesso = TiposAcessos.Administrador;
+            Acesso = TiposAcessos.Mestre;
             Status = TiposStatus.Ativo;
         }
     }

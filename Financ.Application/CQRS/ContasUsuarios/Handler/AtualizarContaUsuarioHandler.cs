@@ -51,9 +51,6 @@ namespace Financ.Application.CQRS.Handler
             {
                 return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional(ex.Message));
             }
-
-
-            throw new NotImplementedException();
         }
     }
 }

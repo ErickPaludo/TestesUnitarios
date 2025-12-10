@@ -8,6 +8,7 @@ namespace Financ.Domain.Enums
 {
     public enum TiposAcessos
     {
+        Mestre,
         Administrador,
         Visualizador
     }
