@@ -1,9 +1,12 @@
-﻿using Financ.Application.DTOs.Autenticação.Post;
-using Financ.Application.Interfaces.Autenticação;
+﻿using Financ.Application.Comun.Resultado;
+using Financ.Application.CQRS.Commands;
+using Financ.Application.DTOs.Autenticação.Get;
+using Financ.Application.DTOs.Autenticação.Post;
 using Financ.Domain.Interfaces.Autenticação;
 using Financ.UI.Api.Extensao;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NetDevPack.SimpleMediator;
 
 namespace Financ.UI.Api.Controllers
 {
@@ -11,17 +14,17 @@ namespace Financ.UI.Api.Controllers
     [ApiController]
     public class AutenticacaoController : ControllerBase
     {
-        private readonly Application.Interfaces.Autenticação.IAutenticacaoServicos _usuarioAutenticacao;
-        public AutenticacaoController(Application.Interfaces.Autenticação.IAutenticacaoServicos usuarioAutenticacao)
+        private readonly IMediator _mediator;
+        public AutenticacaoController(IMediator mediator)
         {
-            _usuarioAutenticacao = usuarioAutenticacao;
+            _mediator = mediator;
         }
        
         [HttpPost]
         public async Task<IActionResult> RetornaToken(ConectaUsuarioDTO usuario)
         {
-            var resultado = await _usuarioAutenticacao.AutenticacaoUsuario(usuario);
-            return resultado.RetornoAutomatico();
+            var tokenAutenticacao = await _mediator.Send(new AutenticadoUsuarioCommand(usuario.Email, usuario.Senha));         
+            return tokenAutenticacao.RetornoAutomatico();
         }
     }
 }

@@ -14,8 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Financ.Application.Interfaces.Autenticação;
-using Financ.Application.Servicos.Autenticaçao;
+
 using Financ.Infra.Data.Identity;
 using Microsoft.AspNetCore.Identity;
 using Financ.Domain.Interfaces.Autenticação;
@@ -28,7 +27,6 @@ namespace Financ.Infra.IoC
         public static void ConfigurarInjecaoServicos(this IServiceCollection services)
         {
             services.AddScoped<IContasServicos, ContasServico>();
-            services.AddScoped<IAutenticacaoServicos, AutenticacaoServicos>();
             services.AddScoped<IUsuariosIdentityServicos, UsuariosIdentityServicos>();
 
             services.AddIdentity<UsuarioIdentity, IdentityRole>()

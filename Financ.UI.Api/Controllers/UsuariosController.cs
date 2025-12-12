@@ -1,7 +1,6 @@
 ﻿using Financ.Application.CQRS.Usuarios.Commands;
 using Financ.Application.CQRS.Usuarios.Querys;
 using Financ.Application.DTOs.Usuarios.Post;
-using Financ.Application.Interfaces.Autenticação;
 using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces.Autenticação;
 using Financ.UI.Api.Extensao;
