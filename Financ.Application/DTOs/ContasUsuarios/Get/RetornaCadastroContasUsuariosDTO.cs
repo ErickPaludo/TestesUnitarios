@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.DTOs.ContasUsuarios.Get
 {
-    public record RetornaCadastroContasUsuariosDTO(int IdConta,TiposAcessos Acesso,Guid IdUsuario){}
+    public record RetornaCadastroContasUsuariosDTO(int IdConta,TiposAcessos Acesso, string IdUsuario){}
 }

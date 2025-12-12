@@ -11,8 +11,8 @@ namespace Financ.Application.CQRS.Usuarios.Querys
 {
     public class RetornaUsuarioPorIdQuery : IRequest<Resultado<RetornaUsuarioDTO>>
     {
-        public Guid IdUsuario { get; private set; }
-        public RetornaUsuarioPorIdQuery(Guid idUsuario)
+        public string IdUsuario { get; private set; }
+        public RetornaUsuarioPorIdQuery(string idUsuario)
         {
             IdUsuario = idUsuario;
         }

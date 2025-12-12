@@ -12,6 +12,6 @@ namespace Financ.Application.Interfaces.Usuarios
     public interface IUsuariosServicos
     {
         Task<Resultado<string>> CadastraUsuario(CadastraUsuarioDTO usuarioDTO);
-        Task<Resultado<RetornaUsuarioDTO>> RetornaUsuario(Guid idUsuario);
+        Task<Resultado<RetornaUsuarioDTO>> RetornaUsuario(string idUsuario);
     }
 }

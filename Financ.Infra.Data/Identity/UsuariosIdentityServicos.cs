@@ -43,7 +43,7 @@ namespace Financ.Infra.Data.Identity
             return (usuarioCriado.Succeeded, string.Join("\n", usuarioCriado.Errors.Select(x => x.Description)));
         }
 
-        public async Task<Usuario> ObtemUsuario(Guid idUsuario)
+        public async Task<Usuario> ObtemUsuario(string idUsuario)
         {
             var usuario = _gerenciaUsuarios.FindByIdAsync(idUsuario.ToString()).Result;
 

@@ -14,10 +14,10 @@ namespace Financ.Application.CQRS.Commands
     public class IncluiUsuarioContaCommand : IRequest<Resultado<RetornaCadastroContasUsuariosDTO>>
     {
         public int IdConta { get; private set; }
-        public Guid IdUsuario { get; private set; }
+        public string IdUsuario { get; private set; }
         public TiposAcessos Acesso { get; private set; }
         public TiposStatus Status { get; private set; }
-        public IncluiUsuarioContaCommand(int idConta, Guid idUsuario, TiposAcessos acesso)
+        public IncluiUsuarioContaCommand(int idConta, string idUsuario, TiposAcessos acesso)
         {
             IdConta = idConta;
             IdUsuario = idUsuario;

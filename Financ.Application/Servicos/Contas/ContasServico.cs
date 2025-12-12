@@ -22,7 +22,7 @@ namespace Financ.Application.Servicos.Contas
             _mediator = mediator;
         }
 
-        public async Task<Resultado<RetornaContasDTO>> CriarConta(Guid idUsuario, CadastrarContasDTO contaDTO)
+        public async Task<Resultado<RetornaContasDTO>> CriarConta(string idUsuario, CadastrarContasDTO contaDTO)
         {
             var commandConta = new CriarContaCommand(contaDTO.Titulo, contaDTO.CreditoAtivo, contaDTO.CreditoLimite, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoMaximo);
 
@@ -39,12 +39,12 @@ namespace Financ.Application.Servicos.Contas
             return conta;
         }
 
-        public async Task<Resultado<List<RetornaContasDTO>>> RetornarContas(FiltroContasDTO? filtros, Guid IdUsuario)
+        public async Task<Resultado<List<RetornaContasDTO>>> RetornarContas(FiltroContasDTO? filtros, string IdUsuario)
         {
             return await _mediator.Send(new RetornaContaQuery(IdUsuario, filtros));
         }
 
-        public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, Guid IdUsuario, AtualizaContaDTO contaDTO)
+        public async Task<Resultado<RetornaContasDTO>> AlterarConta(int idContaUsuario, string IdUsuario, AtualizaContaDTO contaDTO)
         {
             var contaAtualizada = await _mediator.Send(new AtualizarContaCommand(idContaUsuario, IdUsuario, contaDTO.CreditoAtivo, contaDTO.CreditoLimite, contaDTO.Status, contaDTO.Titulo, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoMaximo));
 

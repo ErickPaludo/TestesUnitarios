@@ -14,7 +14,7 @@ namespace Financ.Application.CQRS.Commands
     public sealed class AtualizarContaCommand : IRequest<Resultado<RetornaContasDTO>>
     {
         public int IdConta { get; private set; }
-        public Guid IdUsuario { get; set; }
+        public string IdUsuario { get; set; }
         public TiposStatus? Status { get; private set; }
         public string? Titulo { get; private set; }
         public bool? CreditoAtivo { get; private set; }
@@ -23,7 +23,7 @@ namespace Financ.Application.CQRS.Commands
         public int? DiaVencimento { get; private set; }
         public double? CreditoMaximo { get; private set; }
 
-        public AtualizarContaCommand(int idContaUsuario, Guid idUsuario, bool? creditoAtivo, bool? creditoLimite, TiposStatus? status, string? titulo, int? diaFechamento, int? diaVencimento, double? creditoMaximo)
+        public AtualizarContaCommand(int idContaUsuario, string idUsuario, bool? creditoAtivo, bool? creditoLimite, TiposStatus? status, string? titulo, int? diaFechamento, int? diaVencimento, double? creditoMaximo)
         {
             IdConta = idContaUsuario;
             IdUsuario = idUsuario;

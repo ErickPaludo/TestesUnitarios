@@ -12,14 +12,14 @@ namespace Financ.Application.CQRS.Querys
 {
     public class RetornaUsuariosAssociadosQuery : IRequest<Resultado<List<RetornaUsuariosAssociadosDTO>>>
     {
-        public Guid IdUsuarioSolicitante { get; set; }
+        public string IdUsuarioSolicitante { get; set; }
         public int IdConta { get; set; }
-        public Guid? IdUsuario { get; set; }
+        public string? IdUsuario { get; set; }
         public string? NomeUsuario { get; set; }
         public TiposAcessos? Acesso { get; set; }
         public TiposStatus? Status { get; set; }
 
-        public RetornaUsuariosAssociadosQuery(Guid idUsuarioSolicitante, int idConta, Guid? idUsuario, string? nomeUsuario, TiposAcessos? acesso, TiposStatus? status)
+        public RetornaUsuariosAssociadosQuery(string idUsuarioSolicitante, int idConta, string? idUsuario, string? nomeUsuario, TiposAcessos? acesso, TiposStatus? status)
         {
             IdUsuarioSolicitante = idUsuarioSolicitante;
             IdConta = idConta;

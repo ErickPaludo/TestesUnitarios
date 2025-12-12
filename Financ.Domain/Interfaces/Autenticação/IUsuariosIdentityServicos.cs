@@ -11,6 +11,6 @@ namespace Financ.Domain.Interfaces.Autenticação
     {
         Task<string> ObtemIdUsuario(string email);
         Task<(bool, string?)> RegistrarUsuario(Usuario usuario, string senha);
-        Task<Usuario> ObtemUsuario(Guid idUsuario);
+        Task<Usuario> ObtemUsuario(string idUsuario);
     }
 }

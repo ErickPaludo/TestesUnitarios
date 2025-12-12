@@ -26,7 +26,7 @@ namespace Financ.Application.Servicos
             _mediator = mediator;
         }
 
-        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO, Guid idUsuario)
+        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO, string idUsuario)
         {
             var commandContaUsuario = new IncluiUsuarioContaCommand(contaUsuarioDTO.IdConta, idUsuario, contaUsuarioDTO.Acesso);
 
@@ -34,13 +34,13 @@ namespace Financ.Application.Servicos
 
             return contaUsuario;
         }
-        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(Guid idUsuarioSolicitante,Guid idUsuarioAlterado, int idConta, AtualizaContasUsuariosDTO contaUsuario)
+        public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(string idUsuarioSolicitante, string idUsuarioAlterado, int idConta, AtualizaContasUsuariosDTO contaUsuario)
         {
             return await _mediator.Send(new AtualizarContaUsuarioCommand(idUsuarioSolicitante,idUsuarioAlterado, idConta, contaUsuario.Acesso,contaUsuario.Status));
         }
 
 
-        public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(FiltroUsuarioAssociado filtroConta, Guid idUsuarioSolicitante)
+        public async Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(FiltroUsuarioAssociado filtroConta, string idUsuarioSolicitante)
         {
            return await _mediator.Send(new RetornaUsuariosAssociadosQuery(idUsuarioSolicitante,filtroConta.IdConta,filtroConta.IdUsuario, filtroConta.NomeUsuario,filtroConta.Acesso,filtroConta.Status));
         }

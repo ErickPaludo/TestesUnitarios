@@ -11,14 +11,14 @@ namespace Financ.Domain.Entidades
 {
     public class Usuario : IUsuarioIdentity
     {
-        public Guid IdUsuario { get; private set; }
+        public string IdUsuario { get; private set; }
         public string PrimeiroNome { get; private set; }
         public string SegundoNome { get; private set; }
         public string Email { get; private set; }
 
-        public Usuario(Guid idUsuario, string primeiroNome, string segundoNome, string email)
+        public Usuario(string idUsuario, string primeiroNome, string segundoNome, string email)
         {
-            UsuariosValidacoes.Verifica(idUsuario == Guid.Empty, MensagensBase.USUARIO_NAO_INFORMADO);
+            UsuariosValidacoes.Verifica(string.IsNullOrEmpty(idUsuario), MensagensBase.USUARIO_NAO_INFORMADO);
             VerificaNome(primeiroNome, segundoNome);
             VerificaEmail(email);
 

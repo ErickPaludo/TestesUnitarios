@@ -26,7 +26,7 @@ namespace Financ.Application.Servicos.Usuarios
             return await _mediator.Send(new CadastraUsuarioCommand(usuarioDTO.Email, usuarioDTO.PrimeiroNome, usuarioDTO.SegundoNome, usuarioDTO.Senha, usuarioDTO.ConfirmarSenha));
         }
 
-        public async Task<Resultado<RetornaUsuarioDTO>> RetornaUsuario(Guid idUsuario)
+        public async Task<Resultado<RetornaUsuarioDTO>> RetornaUsuario(string idUsuario)
         {
             return await _mediator.Send(new RetornaUsuarioPorIdQuery(idUsuario));
         }

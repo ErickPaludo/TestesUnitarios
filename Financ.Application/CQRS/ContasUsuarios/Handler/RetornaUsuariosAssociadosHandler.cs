@@ -29,7 +29,7 @@ namespace Financ.Application.CQRS.Handler
             if (await _unitOfWork.contasUsuariosRepositorio.BuscarObjetoUnico(x => x.IdConta == request.IdConta && x.IdUsuario == request.IdUsuarioSolicitante) != null)
             {
 
-                var filtroIdUsuario = request.IdUsuario.HasValue;
+                var filtroIdUsuario = !string.IsNullOrEmpty(request.IdUsuario);
                 var filtroStatus = request.Status.HasValue;
                 var filtroAcesso = request.Acesso.HasValue;
                 var filtroNome = !string.IsNullOrEmpty(request.NomeUsuario);

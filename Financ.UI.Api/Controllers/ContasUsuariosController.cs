@@ -36,7 +36,7 @@ namespace Financ.UI.Api.Controllers
             return usuariosAssociados.RetornoAutomatico();
         }
         [HttpPatch("altera_usuario_conta/{idConta}/{idUsuario}")]
-        public async Task<IActionResult> AlteraUsuarioConta(int idConta, Guid idUsuario, [FromBody] AtualizaContasUsuariosDTO contaUsuario)
+        public async Task<IActionResult> AlteraUsuarioConta(int idConta, string idUsuario, [FromBody] AtualizaContasUsuariosDTO contaUsuario)
         {
             var usuarioAlterado = await _contasUsuariosServico.AtualizaUsuarioConta(User.RetornaIdUsuario(), idUsuario, idConta, contaUsuario);
             return usuarioAlterado.RetornoAutomatico();

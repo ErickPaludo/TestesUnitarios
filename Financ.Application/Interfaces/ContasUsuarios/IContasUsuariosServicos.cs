@@ -13,8 +13,8 @@ namespace Financ.Application.Interfaces.ContasUsuarios
 {
     public interface IContasUsuariosServicos
     {
-        Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO,Guid idUsuario);
-        Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(FiltroUsuarioAssociado filtroConta, Guid idUsuarioSolicitante);
-        Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(Guid idUsuarioSolicitante, Guid idUsuarioAlterado, int idConta, AtualizaContasUsuariosDTO contaUsuario);
+        Task<Resultado<RetornaCadastroContasUsuariosDTO>> IncluiUsuarioNaConta(InclusaoContaUsuarioDTO contaUsuarioDTO, string idUsuario);
+        Task<Resultado<List<RetornaUsuariosAssociadosDTO>>> RetornaUsuariosAssociados(FiltroUsuarioAssociado filtroConta, string idUsuarioSolicitante);
+        Task<Resultado<RetornaCadastroContasUsuariosDTO>> AtualizaUsuarioConta(string idUsuarioSolicitante, string idUsuarioAlterado, int idConta, AtualizaContasUsuariosDTO contaUsuario);
     }
 }

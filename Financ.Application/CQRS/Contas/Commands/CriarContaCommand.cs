@@ -14,7 +14,7 @@ namespace Financ.Application.CQRS.Commands
     public sealed class CriarContaCommand : IRequest<Resultado<RetornaContasDTO>>
     {
         public int IdConta { get; private set; }
-        public Guid IdUsuario { get; private set; }
+        public string IdUsuario { get; private set; }
         public TiposAcessos Acesso { get; private set; }
         public TiposStatus Status { get; private set; }
         public string? Titulo { get; private set; }

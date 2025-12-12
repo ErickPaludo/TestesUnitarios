@@ -8,6 +8,7 @@ namespace Financ.Domain.Validacoes.Mensagens
 {
     public static class MensagensContas 
     {
+        public const string ID_NAO_PODE_SER_IGUAL_A_ZERO = "O id da conta deve ser superior a zero.";
         public const string TITULO_OBRIGATORIO = "O título é obrigatório.";
         public const string TITULO_TAMANHO_INVALIDO = "O título deve possuir entre 3 e 100 caracteres.";
         public const string TIPO_CONTA_INVALIDO = "Tipo de conta inválido.";

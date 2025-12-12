@@ -15,7 +15,7 @@ namespace Financ.TesteUnitarios.Domain
         [Fact(DisplayName = "Valida IdUsuario não informado")]
         public void IdUsuario_NaoInformado_GeraExcecao()
         {
-            Action action = () => new Usuario(Guid.Empty, "Joao", "Silva", "teste@teste.com");
+            Action action = () => new Usuario(string.Empty, "Joao", "Silva", "teste@teste.com");
 
             action.Should()
                   .Throw<UsuariosValidacoes>()
@@ -121,7 +121,7 @@ namespace Financ.TesteUnitarios.Domain
         [Fact(DisplayName = "Criação válida de usuário")]
         public void Usuario_Valido_NaoGeraExcecao()
         {
-            Action action = () => new Usuario(Guid.NewGuid(), "Joao", "Silva", "teste@teste.com");
+            Action action = () => new Usuario(Guid.NewGuid().ToString(), "Joao", "Silva", "teste@teste.com");
 
             action.Should().NotThrow();
         }
