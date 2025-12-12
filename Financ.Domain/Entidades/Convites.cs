@@ -19,24 +19,12 @@ namespace Financ.Domain.Entidades
         public bool? Aceito { get; private set; }
         public DateTime Expiracao { get; private set; }
 
-        public Convites(int id, string idUsuarioRemetente, string idUsuarioDestinatario, int idConta, TiposAcessos acesso, DateTime expiracao)
+        public Convites(ContasUsuarios usuarioRemetente, string idUsuarioDestinatario, Contas conta, TiposAcessos acesso)
         {
-            ConvitesValidacao.Verifica(id <= 0, MensagensBase.ID_IGUAL_MENOR_ZERO);
-            Id = id;
-            ValidaUsuarios(idUsuarioRemetente, idUsuarioDestinatario);
-            ConvitesValidacao.Verifica(idConta == 0, MensagensContas.ID_NAO_PODE_SER_IGUAL_A_ZERO);
-            ConvitesValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos), acesso), MensagensContasUsuarios.ACESSO_INVALIDO);
-            IdConta = idConta;
-            Acesso = acesso;
-            Expiracao = DateTime.Now.AddDays(7);
-        }
-
-        public Convites(string idUsuarioRemetente, string idUsuarioDestinatario, int idConta, TiposAcessos acesso, DateTime expiracao)
-        {
-            ValidaUsuarios(idUsuarioRemetente, idUsuarioDestinatario);
-            ConvitesValidacao.Verifica(idConta == 0, MensagensContas.ID_NAO_PODE_SER_IGUAL_A_ZERO);
-            ConvitesValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos), acesso), MensagensContasUsuarios.ACESSO_INVALIDO);
-            IdConta = idConta;
+            ConvitesValidacao.Verifica(usuarioRemetente.Acesso != TiposAcessos.Mestre, MensagensConvite.USUARIO_SEM_PERMISSAO);
+            ConvitesValidacao.Verifica(conta.Status != TiposStatus.Ativo, MensagensConvite.USUARIO_SEM_PERMISSAO);
+            ValidaUsuarios(usuarioRemetente.IdUsuario, idUsuarioDestinatario);
+            IdConta = conta.Id;
             Acesso = acesso;
             Expiracao = DateTime.Now.AddDays(7);
         }

@@ -6,7 +6,7 @@ using FluentAssertions;
 
 namespace Financ.TesteUnitarios.Domain
 {
-    public class UniTesteContas
+    public class UnitTesteContas
     {
         [Fact(DisplayName = "Valida id menor igual a 0")]
         public void Id_NuloOuVazio_GeraDivergencia()
@@ -123,7 +123,7 @@ namespace Financ.TesteUnitarios.Domain
         [Fact(DisplayName = "Não permiti inserir valor máximo igual a nulo quando credito limite for verdadeiro")]
         public void Atualiza_Conta_Credito_Maximo_Nulo_Quando_Credito_Limite_For_Verdadeiro()
         {
-            var conta = new Contas("Conta Teste", TiposContas.Corrente, true, 5, 12, true, 500, TiposStatus.Ativo);
+            var conta = new Contas("Conta Teste", TiposContas.Corrente, true, 5, 12, false, null, TiposStatus.Ativo);
 
             var contausuario = new ContasUsuarios(1, 1, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
 

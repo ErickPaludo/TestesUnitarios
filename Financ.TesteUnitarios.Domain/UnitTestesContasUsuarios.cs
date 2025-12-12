@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Financ.TesteUnitarios.Domain
 {
-    public class UnitTesteContasUsuarios
+    public class UnitTestesContasUsuarios
     {
         [Fact(DisplayName = "Valida se ID explícito menor ou igual a 0 gera divergência")]
         public void ContasUsuario_ComId_Invalido_GeraDivergencia()
