@@ -1,12 +1,14 @@
-﻿using Financ.Application.DTOs.Usuarios.Post;
+﻿using Financ.Application.CQRS.Usuarios.Commands;
+using Financ.Application.CQRS.Usuarios.Querys;
+using Financ.Application.DTOs.Usuarios.Post;
 using Financ.Application.Interfaces.Autenticação;
-using Financ.Application.Interfaces.Usuarios;
-using Financ.Application.Servicos.Usuarios;
+using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces.Autenticação;
 using Financ.UI.Api.Extensao;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NetDevPack.SimpleMediator;
 
 namespace Financ.UI.Api.Controllers
 {
@@ -14,24 +16,23 @@ namespace Financ.UI.Api.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuariosServicos _usuarioServicos;
-
-        public UsuariosController(IUsuariosServicos usuarioServicos)
+        private readonly IMediator _mediator;
+        public UsuariosController(IMediator mediator)
         {
-            _usuarioServicos = usuarioServicos;
+            _mediator = mediator;
         }
 
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar(CadastraUsuarioDTO usuarioDTO)
         {
-            var usuario = await _usuarioServicos.CadastraUsuario(usuarioDTO);
+            var usuario = await _mediator.Send(new CadastraUsuarioCommand(usuarioDTO.Email, usuarioDTO.PrimeiroNome, usuarioDTO.SegundoNome, usuarioDTO.Senha, usuarioDTO.ConfirmarSenha));
             return usuario.RetornoAutomatico();
         }
         [HttpGet("meus_dados")]
         [Authorize]
         public async Task<IActionResult> MeusDados()
         {
-            var usuario = await _usuarioServicos.RetornaUsuario(User.RetornaIdUsuario());
+            var usuario = await _mediator.Send(new RetornaUsuarioPorIdQuery(User.RetornaIdUsuario()));
             return usuario.RetornoAutomatico();
         }
     }
