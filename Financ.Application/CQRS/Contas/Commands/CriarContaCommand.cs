@@ -25,8 +25,9 @@ namespace Financ.Application.CQRS.Commands
         public bool CreditoLimite { get; private set; }
         public double? CreditoMaximo { get; private set; }
 
-        public CriarContaCommand(string? titulo, bool creditoAtivo, bool creditoLimite, int? diaFechamento, int? diaVencimento, double? creditoMaximo)
+        public CriarContaCommand(string idUsuario, string titulo, bool creditoAtivo, bool creditoLimite, int? diaFechamento, int? diaVencimento, double? creditoMaximo)
         {
+            IdUsuario = idUsuario;
             Status = TiposStatus.Ativo;
             CreditoAtivo = creditoAtivo;
             CreditoLimite = creditoLimite;

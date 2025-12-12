@@ -39,6 +39,7 @@ namespace Financ.Domain.Entidades
             ValidaTipoDaConta(tipoConta);
             ValidaStatus(status);
             ValidaCreditoAtivo(creditoAtivo, diaFechamento, diaVencimento, creditoLimite, creditoMaximo);
+            ContasUsuarios = new List<ContasUsuarios>();
         }
         private void ValidaCreditoAtivo(bool creditoAtivo, int? diaFechamento, int? diaVencimento, bool creditoLimite, double? creditoMaximo)
         {

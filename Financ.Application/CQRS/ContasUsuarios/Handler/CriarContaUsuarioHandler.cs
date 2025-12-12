@@ -24,17 +24,18 @@ namespace Financ.Application.CQRS.Handler
         }
         public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> Handle(CriarContaUsuarioCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var contaUsuario = new ContasUsuarios(request.IdConta, request.IdUsuario, request.Acesso, request.Status);
-                contaUsuario = await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);
-                await _unitOfWork.Commit();
-                return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuario));
-            }
-            catch (ContasUsuariosValidacao contasUseuariosExcessao)
-            {
-                return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional(contasUseuariosExcessao.Message));
-            }
+            //try
+            //{
+            //    var contaUsuario = new ContasUsuarios(request.IdConta, request.IdUsuario, request.Acesso, request.Status);
+            //    contaUsuario = await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);
+            //    await _unitOfWork.Commit();
+            //    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuario));
+            //}
+            //catch (ContasUsuariosValidacao contasUseuariosExcessao)
+            //{
+            //    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional(contasUseuariosExcessao.Message));
+            //}
+            return null!;
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using Financ.Application.Interfaces.Contas;
-using Financ.Application.Servicos;
-using Financ.Application.Servicos.Contas;
-using Financ.Domain.Interfaces;
+﻿using Financ.Domain.Interfaces;
 using Financ.Domain.Interfaces.Repositorios;
 using Financ.Infra.Data;
 using Financ.Infra.Data.Contexto;
