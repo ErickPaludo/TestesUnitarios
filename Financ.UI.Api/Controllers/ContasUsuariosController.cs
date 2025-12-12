@@ -1,12 +1,16 @@
-﻿using Financ.Application.DTOs.ContasUsuarios.Get.Filtros;
+﻿using Financ.Application.CQRS.Commands;
+using Financ.Application.CQRS.Querys;
+using Financ.Application.DTOs.Autenticação.Post;
+using Financ.Application.DTOs.ContasUsuarios.Get.Filtros;
 using Financ.Application.DTOs.ContasUsuarios.Patch;
 using Financ.Application.DTOs.ContasUsuarios.Post;
-using Financ.Application.Interfaces.ContasUsuarios;
+using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces.Repositorios;
 using Financ.UI.Api.Extensao;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NetDevPack.SimpleMediator;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -17,28 +21,28 @@ namespace Financ.UI.Api.Controllers
     [Authorize]
     public class ContasUsuariosController : ControllerBase
     {
-        private readonly IContasUsuariosServicos _contasUsuariosServico;
-        public ContasUsuariosController(IContasUsuariosServicos contasUsuariosServico)
+        private readonly IMediator _mediator;
+        public ContasUsuariosController(IMediator mediator)
         {
-            _contasUsuariosServico = contasUsuariosServico;
+            _mediator = mediator;
         }
 
         [HttpPost("entrar_na_conta")]
         public async Task<IActionResult> EntrarNaConta(InclusaoContaUsuarioDTO inclusaoContaUsuarioDTO)
         {
-            var usuarioConta = await _contasUsuariosServico.IncluiUsuarioNaConta(inclusaoContaUsuarioDTO, User.RetornaIdUsuario());
+            var usuarioConta = await _mediator.Send(new IncluiUsuarioContaCommand(inclusaoContaUsuarioDTO.IdConta, User.RetornaIdUsuario(), inclusaoContaUsuarioDTO.Acesso));
             return usuarioConta.RetornoAutomatico();
         }
         [HttpGet("retorna_usuarios_associados")]
         public async Task<IActionResult> RetornaUsuarosAssociados([FromQuery] FiltroUsuarioAssociado filtroConta)
         {
-            var usuariosAssociados = await _contasUsuariosServico.RetornaUsuariosAssociados(filtroConta, User.RetornaIdUsuario());
+            var usuariosAssociados = await _mediator.Send(new RetornaUsuariosAssociadosQuery(User.RetornaIdUsuario(), filtroConta.IdConta, filtroConta.IdUsuario, filtroConta.NomeUsuario, filtroConta.Acesso, filtroConta.Status));
             return usuariosAssociados.RetornoAutomatico();
         }
         [HttpPatch("altera_usuario_conta/{idConta}/{idUsuario}")]
         public async Task<IActionResult> AlteraUsuarioConta(int idConta, string idUsuario, [FromBody] AtualizaContasUsuariosDTO contaUsuario)
         {
-            var usuarioAlterado = await _contasUsuariosServico.AtualizaUsuarioConta(User.RetornaIdUsuario(), idUsuario, idConta, contaUsuario);
+            var usuarioAlterado = await _mediator.Send(new AtualizarContaUsuarioCommand(User.RetornaIdUsuario(), idUsuario, idConta, contaUsuario.Acesso, contaUsuario.Status));
             return usuarioAlterado.RetornoAutomatico();
         }
     }

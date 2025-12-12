@@ -1,5 +1,4 @@
 ﻿using Financ.Application.Interfaces.Contas;
-using Financ.Application.Interfaces.ContasUsuarios;
 using Financ.Application.Servicos.Contas;
 using Financ.Application.Servicos;
 using Financ.Domain.Interfaces.Repositorios;
@@ -20,8 +19,7 @@ using Financ.Application.Servicos.Autenticaçao;
 using Financ.Infra.Data.Identity;
 using Microsoft.AspNetCore.Identity;
 using Financ.Domain.Interfaces.Autenticação;
-using Financ.Application.Interfaces.Usuarios;
-using Financ.Application.Servicos.Usuarios;
+
 
 namespace Financ.Infra.IoC
 {
@@ -30,9 +28,7 @@ namespace Financ.Infra.IoC
         public static void ConfigurarInjecaoServicos(this IServiceCollection services)
         {
             services.AddScoped<IContasServicos, ContasServico>();
-            services.AddScoped<IContasUsuariosServicos, ContasUsuariosServicos>();
             services.AddScoped<IAutenticacaoServicos, AutenticacaoServicos>();
-            services.AddScoped<IUsuariosServicos, UsuariosServicos>();
             services.AddScoped<IUsuariosIdentityServicos, UsuariosIdentityServicos>();
 
             services.AddIdentity<UsuarioIdentity, IdentityRole>()
