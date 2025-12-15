@@ -101,7 +101,7 @@ namespace Financ.TesteUnitarios.Domain
         public void Atualiza_Conta_Usuario_Nao_Admin()
         {
             var conta = new Contas("Teste x", TiposContas.Poupanca, true, 5, 15, true, 200, TiposStatus.Ativo);
-            var contausuario = new ContasUsuarios(1, 1, Guid.NewGuid().ToString(), TiposAcessos.Visualizador, TiposStatus.Ativo);
+            var contausuario = new ContasUsuarios(1, conta, Guid.NewGuid().ToString(), TiposAcessos.Visualizador, TiposStatus.Ativo);
 
             Action action = () => conta.AtualizaConta(contausuario, "Teste y", true, TiposStatus.Desativado, true, 300, 2, 10);
             action.Should().Throw<ContasValidacao>().WithMessage(MensagensContas.ATUALIZA_CONTA_USUARIO_SEM_PERMISSAO);
@@ -111,7 +111,7 @@ namespace Financ.TesteUnitarios.Domain
         {
             var conta = new Contas("Conta Teste", TiposContas.Corrente, true, 5, 12, true, 500, TiposStatus.Ativo);
 
-            var contausuario = new ContasUsuarios(1, 1, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
+            var contausuario = new ContasUsuarios(1, conta, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
 
             Action action = () => conta.AtualizaConta(contausuario, "Nova Conta", false, TiposStatus.Ativo, true, 500, 5, 10);
 
@@ -125,7 +125,7 @@ namespace Financ.TesteUnitarios.Domain
         {
             var conta = new Contas("Conta Teste", TiposContas.Corrente, true, 5, 12, false, null, TiposStatus.Ativo);
 
-            var contausuario = new ContasUsuarios(1, 1, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
+            var contausuario = new ContasUsuarios(1, conta, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
 
             Action action = () => conta.AtualizaConta(contausuario, "Nova Conta", true, TiposStatus.Ativo, true, null, 5, 12);
 
@@ -138,7 +138,7 @@ namespace Financ.TesteUnitarios.Domain
         public void Atualiza_Conta_NaoGeraDivergencia()
         {
             var conta = new Contas("Teste x", TiposContas.Corrente, true, 5, 15, true, 200, TiposStatus.Ativo);
-            var contausuario = new ContasUsuarios(1, 1, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
+            var contausuario = new ContasUsuarios(1, conta, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
 
             Action action = () => conta.AtualizaConta(contausuario, null, true, TiposStatus.Desativado, true, 300, 2, 10);
             action.Should().NotThrow();
@@ -169,7 +169,7 @@ namespace Financ.TesteUnitarios.Domain
         {
             var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
 
-            var usuario = new ContasUsuarios(1, 1, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
+            var usuario = new ContasUsuarios(1, conta, Guid.NewGuid().ToString(), TiposAcessos.Administrador, TiposStatus.Ativo);
 
             Action atualizarTitulo = () => conta.AtualizaConta(usuario, "Novo Titulo", null, null, null, null, null, null);
             atualizarTitulo.Should().NotThrow();
