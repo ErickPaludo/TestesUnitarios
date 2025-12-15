@@ -4,6 +4,7 @@ using Financ.Application.DTOs.Autenticação.Post;
 using Financ.Application.DTOs.ContasUsuarios.Get.Filtros;
 using Financ.Application.DTOs.ContasUsuarios.Patch;
 using Financ.Application.DTOs.ContasUsuarios.Post;
+using Financ.Application.DTOs.Convites.Post;
 using Financ.Domain.Entidades;
 using Financ.Domain.Interfaces.Repositorios;
 using Financ.UI.Api.Extensao;
@@ -33,17 +34,26 @@ namespace Financ.UI.Api.Controllers
             var usuarioConta = await _mediator.Send(new IncluiUsuarioContaCommand(inclusaoContaUsuarioDTO.IdConta, User.RetornaIdUsuario(), inclusaoContaUsuarioDTO.Acesso));
             return usuarioConta.RetornoAutomatico();
         }
+
         [HttpGet("retorna_usuarios_associados")]
         public async Task<IActionResult> RetornaUsuarosAssociados([FromQuery] FiltroUsuarioAssociado filtroConta)
         {
             var usuariosAssociados = await _mediator.Send(new RetornaUsuariosAssociadosQuery(User.RetornaIdUsuario(), filtroConta.IdConta, filtroConta.IdUsuario, filtroConta.NomeUsuario, filtroConta.Acesso, filtroConta.Status));
             return usuariosAssociados.RetornoAutomatico();
         }
+
         [HttpPatch("altera_usuario_conta/{idConta}/{idUsuario}")]
         public async Task<IActionResult> AlteraUsuarioConta(int idConta, string idUsuario, [FromBody] AtualizaContasUsuariosDTO contaUsuario)
         {
             var usuarioAlterado = await _mediator.Send(new AtualizarContaUsuarioCommand(User.RetornaIdUsuario(), idUsuario, idConta, contaUsuario.Acesso, contaUsuario.Status));
             return usuarioAlterado.RetornoAutomatico();
+        }
+
+        [HttpPost("convida_usuario")]
+        public async Task<IActionResult> ConvidaUsuario(CriaConviteDTO conviteDTO)
+        {
+            var convite = await _mediator.Send(new CriaConviteCommand(User.RetornaIdUsuario(), conviteDTO.EmailDestinatario, conviteDTO.IdConta, conviteDTO.Acesso));
+            return convite.RetornoAutomatico();
         }
     }
 }

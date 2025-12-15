@@ -24,24 +24,25 @@ namespace Financ.Application.CQRS.Handler
         }
         public async Task<Resultado<RetornaCadastroContasUsuariosDTO>> Handle(IncluiUsuarioContaCommand request, CancellationToken cancellationToken)
         {
-            //try
-            //{
-            //    if (!await _unitOfWork.contasRepositorio.ExisteId(x => x.Id == request.IdConta && x.Status != TiposStatus.Deletado))
-            //        return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.NaoEncontrado("Conta não cadastrada!"));
+            try
+            {
+                if (!await _unitOfWork.contasRepositorio.ExisteId(x => x.Id == request.IdConta && x.Status != TiposStatus.Deletado))
+                    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.NaoEncontrado("Conta não cadastrada!"));
 
-            //    if ((await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdUsuario == request.IdUsuario && x.IdConta == request.IdConta)).Count() > 0)
-            //        return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional("Usuário já está cadastrado nesta conta!"));
+                if ((await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdUsuario == request.IdUsuario && x.IdConta == request.IdConta)).Count() > 0)
+                    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional("Usuário já está cadastrado nesta conta!"));
 
-            //    var contaUsuario = new ContasUsuarios(request.IdConta, request.IdUsuario, request.Acesso, request.Status);
-            //    contaUsuario = await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);
-            //    await _unitOfWork.Commit();
-            //    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuario));
-            //}
-            //catch (ContasUsuariosValidacao contasUsuariosExcessao)
-            //{
-            //    return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional(contasUsuariosExcessao.Message));
-            //}
-            return null;
+                Contas? conta = await _unitOfWork.contasRepositorio.BuscarObjetoUnico(x => x.Id == request.IdConta);
+
+                var contaUsuario = new ContasUsuarios(conta!, request.IdUsuario, request.Acesso, request.Status);
+                contaUsuario = await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);
+                await _unitOfWork.Commit();
+                return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuario));
+            }
+            catch (ContasUsuariosValidacao contasUsuariosExcessao)
+            {
+                return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional(contasUsuariosExcessao.Message));
+            }
         }
     }
 }

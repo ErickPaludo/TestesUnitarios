@@ -15,12 +15,14 @@ namespace Financ.Infra.Data
         private readonly AppContextoData _contexto;
         private IContasRepositorio _contasRepositorio;
         private IContasUsuariosRepositorio _contasUsuariosRepositorio;
+        private IConvitesRepostorio _convitesRepostorio;
         public UnitOfWork(AppContextoData contexto)
         {
             _contexto = contexto;
         }
         public IContasRepositorio contasRepositorio { get { return _contasRepositorio = _contasRepositorio ?? new ContasRepositorio(_contexto); } }
         public IContasUsuariosRepositorio contasUsuariosRepositorio { get { return _contasUsuariosRepositorio = _contasUsuariosRepositorio ?? new ContasUsuariosRepositorio(_contexto); } }
+        public IConvitesRepostorio convitesRepostorio { get { return _convitesRepostorio = _convitesRepostorio ?? new ConvitesRepositorio(_contexto); } }
         public async Task Commit()
         {
             await _contexto.SaveChangesAsync();
