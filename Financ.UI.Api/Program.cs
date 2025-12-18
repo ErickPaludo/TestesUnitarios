@@ -15,11 +15,25 @@ namespace Financ.UI.Api
             builder.Services.ConfigurarInjecaoBibliotecas();
             builder.Services.ConfigurarInjecaoAutenticaoJWT(builder.Configuration);
             builder.Services.ConfigurarInjecaoSwagger(builder.Configuration);
-            
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-           builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen();
+
+            var MyAllowSpecificOrigins = "_MyAllowSubdomainPolicy";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                              .AllowAnyMethod()
+                              .AllowAnyHeader();
+                    });
+            });
+            builder.Services.AddControllers();
 
             var app = builder.Build();
 
@@ -29,10 +43,12 @@ namespace Financ.UI.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseHttpsRedirection();
 
 
             app.MapControllers();

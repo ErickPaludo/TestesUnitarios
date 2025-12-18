@@ -59,7 +59,7 @@ namespace Financ.Domain.Entidades
         private void ValidaTitulo(string titulo)
         {
             ContasValidacao.Verifica(string.IsNullOrWhiteSpace(titulo), MensagensContas.TITULO_OBRIGATORIO);
-            ContasValidacao.Verifica(string.IsNullOrWhiteSpace(titulo) || titulo.Length < 5 || titulo.Length > 100, MensagensContas.TITULO_TAMANHO_INVALIDO);
+            ContasValidacao.Verifica(titulo.Length < 3 || titulo.Length > 100, MensagensContas.TITULO_TAMANHO_INVALIDO);
             Titulo = titulo;
         }
         private void ValidaTipoDaConta(TiposContas tipoConta)
@@ -103,6 +103,12 @@ namespace Financ.Domain.Entidades
 
             if (status is not null)
                 ValidaStatus(status.Value);
+
+            if (diaFechamento is not null)
+                ValidaFechamentoVencimento(diaFechamento.Value, DiaVencimento!.Value); 
+            
+            if (diaVencimento is not null)
+                ValidaFechamentoVencimento(DiaFechamento!.Value, diaVencimento.Value);
 
             if (!CreditoAtivo && creditoAtivo == true)
             {
