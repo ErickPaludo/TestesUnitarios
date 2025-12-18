@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.DTOs.Contas.Get.Filtros
 {
-    public class FiltroContasDTO
+    public class FiltroContaDTO
     {
         public int? Id { get; set; }
         public string? Titulo { get; set; }

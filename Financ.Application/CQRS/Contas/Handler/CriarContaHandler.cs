@@ -26,10 +26,10 @@ namespace Financ.Application.CQRS.Handler
         {
             try
             {
-                Contas conta = new Contas(request.Titulo, request.TipoConta, request.CreditoAtivo, request.DiaFechamento, request.DiaVencimento, request.CreditoLimite, request.CreditoMaximo, request.Status);
+                Conta conta = new Conta(request.Titulo, request.CreditoAtivo, request.DiaFechamento, request.DiaVencimento, request.CreditoLimite, request.CreditoMaximo);
 
-                var contaUsuario = new ContasUsuarios(conta, request.IdUsuario, request.Acesso, request.Status);
-                conta.ContasUsuarios!.Add(contaUsuario);
+                var contaUsuario = new ContasUsuarios(conta, request.IdUsuario);
+                conta.ContasUsuariosVinculados!.Add(contaUsuario);
 
                 await _unitOfWork.contasRepositorio.Adicionar(conta);
                 await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);

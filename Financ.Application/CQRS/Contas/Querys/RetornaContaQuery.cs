@@ -13,8 +13,8 @@ namespace Financ.Application.CQRS.Querys
     public class RetornaContaQuery : IRequest<Resultado<List<RetornaContasDTO>>>
     {
         public string IdUsuario { get; private set; }
-        public FiltroContasDTO? Filtros { get; private set; }
-        public RetornaContaQuery(string idUsuario, FiltroContasDTO? filtros)
+        public FiltroContaDTO? Filtros { get; private set; }
+        public RetornaContaQuery(string idUsuario, FiltroContaDTO? filtros)
         {
             IdUsuario = idUsuario;
             Filtros = filtros;

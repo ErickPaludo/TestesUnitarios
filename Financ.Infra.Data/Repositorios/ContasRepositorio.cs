@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Financ.Infra.Data.Repositorios
 {
-    public class ContasRepositorio : BaseRepositorio<Contas> , IContasRepositorio
+    public class ContasRepositorio : BaseRepositorio<Conta> , IContasRepositorio
     {
         public ContasRepositorio(AppContextoData contexto) : base(contexto)
         {

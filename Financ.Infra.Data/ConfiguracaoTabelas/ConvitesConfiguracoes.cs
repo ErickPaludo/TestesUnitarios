@@ -33,7 +33,7 @@ namespace Financ.Infra.Data.ConfiguracaoTabelas
             .HasPrincipalKey(u => u.Id)
             .OnDelete(DeleteBehavior.Restrict); 
             
-            builder.HasOne<Contas>()
+            builder.HasOne<Conta>()
             .WithMany()
             .HasForeignKey(e => e.IdConta)
             .HasPrincipalKey(u => u.Id)

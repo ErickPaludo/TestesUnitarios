@@ -35,7 +35,7 @@ namespace Financ.Application.CQRS.Handler
                     return Resultado<RetornoConvitesDTO>.GeraFalha(Falha.NaoEncontrado("Usuário destinatário do convite não cadastrado no sistema."));
                 }
 
-                Contas? conta = await _unitOfWork.contasRepositorio.BuscarObjetoUnico(x => x.Id == request.idConta);
+                Conta? conta = await _unitOfWork.contasRepositorio.BuscarObjetoUnico(x => x.Id == request.idConta);
                 if (conta is null)
                 {
                     return Resultado<RetornoConvitesDTO>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada."));

@@ -13,7 +13,7 @@ namespace Financ.Infra.Data.Contexto
     public class AppContextoData : IdentityDbContext<UsuarioIdentity>
     {
         public AppContextoData(DbContextOptions<AppContextoData> options) : base(options){}
-        public DbSet<Contas> Contas { get; set; }
+        public DbSet<Conta> Contas { get; set; }
         public DbSet<ContasUsuarios> ContasUsuarios { get; set; }
         public DbSet<Convites> Convites { get; set; }
 

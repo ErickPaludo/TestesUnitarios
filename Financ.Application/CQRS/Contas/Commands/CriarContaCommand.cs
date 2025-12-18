@@ -11,31 +11,12 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public sealed class CriarContaCommand : IRequest<Resultado<RetornaContasDTO>>
-    {
-        public int IdConta { get; private set; }
-        public string IdUsuario { get; private set; }
-        public TiposAcessos Acesso { get; private set; }
-        public TiposStatus Status { get; private set; }
-        public string? Titulo { get; private set; }
-        public TiposContas TipoConta { get; private set; }
-        public bool CreditoAtivo { get; private set; }
-        public int? DiaFechamento { get; private set; }
-        public int? DiaVencimento { get; private set; }
-        public bool CreditoLimite { get; private set; }
-        public double? CreditoMaximo { get; private set; }
-
-        public CriarContaCommand(string idUsuario, string titulo, bool creditoAtivo, bool creditoLimite, int? diaFechamento, int? diaVencimento, double? creditoMaximo)
-        {
-            IdUsuario = idUsuario;
-            Status = TiposStatus.Ativo;
-            CreditoAtivo = creditoAtivo;
-            CreditoLimite = creditoLimite;
-            Titulo = titulo;
-            TipoConta = TiposContas.Corrente;
-            DiaFechamento = diaFechamento;
-            DiaVencimento = diaVencimento;
-            CreditoMaximo = creditoMaximo;
-        }
-    }
+    public sealed record CriarContaCommand(
+        string IdUsuario,
+        string Titulo,
+        bool CreditoAtivo,
+        int? DiaFechamento,
+        int? DiaVencimento,
+        bool CreditoLimite,
+        double? CreditoMaximo) : IRequest<Resultado<RetornaContasDTO>>;
 }

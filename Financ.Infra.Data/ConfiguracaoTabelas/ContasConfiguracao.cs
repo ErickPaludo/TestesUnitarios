@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Financ.Infra.Data.ConfiguracaoTabelas
 {
-    public class ContasConfiguracao : IEntityTypeConfiguration<Contas>
+    public class ContasConfiguracao : IEntityTypeConfiguration<Conta>
     {
-        public void Configure(EntityTypeBuilder<Contas> builder)
+        public void Configure(EntityTypeBuilder<Conta> builder)
         {
             builder.ToTable("fnc_contas");
             builder.Property(e => e.Titulo).IsRequired().HasMaxLength(100);

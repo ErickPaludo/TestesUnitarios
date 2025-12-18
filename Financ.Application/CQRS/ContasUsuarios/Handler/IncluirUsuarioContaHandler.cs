@@ -32,7 +32,7 @@ namespace Financ.Application.CQRS.Handler
                 if ((await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(x => x.IdUsuario == request.IdUsuario && x.IdConta == request.IdConta)).Count() > 0)
                     return Resultado<RetornaCadastroContasUsuariosDTO>.GeraFalha(Falha.ErroOperacional("Usuário já está cadastrado nesta conta!"));
 
-                Contas? conta = await _unitOfWork.contasRepositorio.BuscarObjetoUnico(x => x.Id == request.IdConta);
+                Conta? conta = await _unitOfWork.contasRepositorio.BuscarObjetoUnico(x => x.Id == request.IdConta);
 
                 var contaUsuario = new ContasUsuarios(conta!, request.IdUsuario, request.Acesso, request.Status);
                 contaUsuario = await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);

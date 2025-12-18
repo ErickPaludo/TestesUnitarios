@@ -20,7 +20,7 @@ namespace Financ.Domain.Entidades
         public DateTime Expiracao { get; private set; }
 
         private Convites() { }
-        public Convites(ContasUsuarios usuarioRemetente, string idUsuarioDestinatario, Contas conta, TiposAcessos acesso)
+        public Convites(ContasUsuarios usuarioRemetente, string idUsuarioDestinatario, Conta conta, TiposAcessos acesso)
         {
             ConvitesValidacao.Verifica(usuarioRemetente.Acesso != TiposAcessos.Mestre, MensagensConvite.USUARIO_SEM_PERMISSAO);
             ConvitesValidacao.Verifica(acesso == TiposAcessos.Mestre, MensagensConvite.CONTA_JA_POSSUI_UM_USUARIO_MASTER);

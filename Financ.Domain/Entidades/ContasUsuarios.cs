@@ -15,30 +15,40 @@ namespace Financ.Domain.Entidades
         public int IdConta { get; private set; }
         public string IdUsuario { get; private set; }
         public TiposAcessos Acesso { get; private set; }
-        public Contas? Contas { get; private set; }
+        public Conta? Contas { get; private set; }
 
         public ContasUsuarios() { }
-        public ContasUsuarios(Contas conta, string idUsuario, TiposAcessos acesso, TiposStatus status)
+        public ContasUsuarios(Conta conta, string idUsuario, TiposAcessos acesso, TiposStatus status)
         {
-            ValidaContasUsuarios(conta, idUsuario, acesso, status);
+            ValidaContasUsuarios(conta, idUsuario);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensBase.STATUS_INVALIDO);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos), acesso), MensagensContasUsuarios.ACESSO_INVALIDO);
+            Status = status;
+            Acesso = acesso;
         }
-        public ContasUsuarios(int id, Contas conta, string idUsuario, TiposAcessos acesso, TiposStatus status)
+        public ContasUsuarios(Conta conta, string idUsuario)
         {
+            ValidaContasUsuarios(conta, idUsuario);
+            Status = TiposStatus.Ativo;
+            Acesso = TiposAcessos.Mestre;
+        }
+        public ContasUsuarios(int id, Conta conta, string idUsuario, TiposAcessos acesso, TiposStatus status)
+        {
+            ValidaContasUsuarios(conta, idUsuario);
             ContasUsuariosValidacao.Verifica(id <= 0, MensagensBase.ID_IGUAL_MENOR_ZERO);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensBase.STATUS_INVALIDO);
+            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos), acesso), MensagensContasUsuarios.ACESSO_INVALIDO);
             Id = id;
-            ValidaContasUsuarios(conta, idUsuario, acesso, status);
+            Status = status;
+            Acesso = acesso;
         }
-        private void ValidaContasUsuarios(Contas conta, string idUsuario, TiposAcessos acesso, TiposStatus status)
+        private void ValidaContasUsuarios(Conta conta, string idUsuario)
         {
             ContasUsuariosValidacao.Verifica(conta is null, MensagensContasUsuarios.CONTA_NAO_PODE_SER_NULA);
-            ContasUsuariosValidacao.Verifica(string.IsNullOrWhiteSpace(idUsuario), MensagensContasUsuarios.IDUSUARIO_VAZIO);
-            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposAcessos), acesso), MensagensContasUsuarios.ACESSO_INVALIDO);
-            ContasUsuariosValidacao.Verifica(!Enum.IsDefined(typeof(TiposStatus), status), MensagensBase.STATUS_INVALIDO);
+            ContasUsuariosValidacao.Verifica(string.IsNullOrWhiteSpace(idUsuario), MensagensContasUsuarios.IDUSUARIO_VAZIO);          
 
             Contas = conta;
             IdUsuario = idUsuario;
-            Acesso = acesso;
-            Status = status;
             DthrReg = DateTime.Now;
         }
         public void AtualizaContasUsuario(TiposAcessos? acessos, TiposStatus? status)

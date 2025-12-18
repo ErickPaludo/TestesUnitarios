@@ -27,13 +27,13 @@ namespace Financ.UI.Api.Controllers
 
         }
         [HttpPost("cadastrar")]
-        public async Task<IActionResult> CadastrarContas(CadastrarContasDTO contaDTO)
+        public async Task<IActionResult> CadastrarContas(CadastrarContaDTO contaDTO)
         {
-            var conta = await _mediator.Send(new CriarContaCommand(User.RetornaIdUsuario(), contaDTO.Titulo, contaDTO.CreditoAtivo, contaDTO.CreditoLimite, contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoMaximo));
+            var conta = await _mediator.Send(new CriarContaCommand(User.RetornaIdUsuario(), contaDTO.Titulo, contaDTO.CreditoAtivo,  contaDTO.DiaFechamento, contaDTO.DiaVencimento, contaDTO.CreditoLimite, contaDTO.CreditoMaximo));
             return conta.RetornoAutomatico();
         }
         [HttpGet("retorna_contas")]
-        public async Task<IActionResult> RetornarContas([FromQuery]FiltroContasDTO? parametros)
+        public async Task<IActionResult> RetornarContas([FromQuery]FiltroContaDTO? parametros)
         {
             var contasLista = await _mediator.Send(new RetornaContaQuery(User.RetornaIdUsuario(), parametros));
             return contasLista.RetornoAutomatico();

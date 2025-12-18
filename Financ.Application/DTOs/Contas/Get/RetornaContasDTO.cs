@@ -9,15 +9,15 @@ using Financ.Domain.Enums;
 
 namespace Financ.Application.DTOs.Contas.Get
 {
-    public sealed class RetornaContasDTO 
-    {
-        public int IdConta { get; set; }
-        public string Titulo { get; set; }
-        public TiposStatus Status { get; set; }
-        public bool CreditoAtivo { get; set; }
-        public bool CreditoLimite { get; set; }
-        public double? CreditoMaximo { get; set; }
-        public int? DiaFechamento { get; init; }
-        public int? DiaVencimento { get; set; }
-    }
+    public sealed record RetornaContasDTO
+    (
+        int IdConta,
+        string Titulo,
+        TiposStatus Status,
+        bool CreditoAtivo,
+        bool CreditoLimite,
+        double? CreditoMaximo,
+        int? DiaFechamento,
+        int? DiaVencimento
+    );
 }

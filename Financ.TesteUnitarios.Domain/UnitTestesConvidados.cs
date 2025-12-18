@@ -16,7 +16,7 @@ namespace Financ.TesteUnitarios.Domain
         [Fact(DisplayName = "Gera convite sem divergência")]
         public void Id_NuloOuVazio_GeraDivergencia()
         {
-            Contas conta = new Contas(1,"Teste x", TiposContas.Poupanca, true, 5, 15, true, 200, TiposStatus.Ativo);
+            Conta conta = new Conta(1,"Teste x", true, 5, 15, true, 200);
             Usuario usuarioRemetente = new Usuario(Guid.NewGuid().ToString(), "Joao", "Silva", "teste@teste.com");
             Usuario usuarioDestinatario = new Usuario(Guid.NewGuid().ToString(), "Marcos", "Costa", "marcos@teste.com");
             ContasUsuarios contasUsuarioRemetente = new ContasUsuarios(1, conta, usuarioRemetente.IdUsuario, TiposAcessos.Mestre, TiposStatus.Ativo);

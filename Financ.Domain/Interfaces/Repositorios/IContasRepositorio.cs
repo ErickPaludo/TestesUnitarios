@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace Financ.Domain.Interfaces
 {
-    public interface IContasRepositorio : IBaseRepositorio<Contas>{}
+    public interface IContasRepositorio : IBaseRepositorio<Conta>{}
 }
