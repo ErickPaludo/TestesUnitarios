@@ -34,7 +34,7 @@ namespace Financ.Application.CQRS.Handler
 
                 Conta? conta = await _unitOfWork.contasRepositorio.BuscarObjetoUnico(x => x.Id == request.IdConta);
 
-                var contaUsuario = new ContasUsuarios(conta!, request.IdUsuario, request.Acesso, request.Status);
+                var contaUsuario = new ContasUsuarios(conta!, request.IdUsuario, request.Acesso,null);
                 contaUsuario = await _unitOfWork.contasUsuariosRepositorio.Adicionar(contaUsuario);
                 await _unitOfWork.Commit();
                 return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuario));

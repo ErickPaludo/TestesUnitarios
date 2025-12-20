@@ -1,6 +1,7 @@
 ﻿using Financ.Application.Comun.Resultado;
 using Financ.Application.CQRS.Querys;
 using Financ.Application.DTOs.Contas.Get;
+using Financ.Application.DTOs.Contas.Get.Filtros;
 using Financ.Domain.Entidades;
 using Financ.Domain.Enums;
 using Financ.Domain.Interfaces;
@@ -23,46 +24,38 @@ namespace Financ.Application.CQRS.Handler
 
         public async Task<Resultado<List<RetornaContasDTO>>> Handle(RetornaContaQuery request, CancellationToken cancellationToken)
         {
-            var filtroId = request.Filtros?.Id;
-            var filtroTitulo = request.Filtros?.Titulo;
-            var filtroStatus = request.Filtros?.Status;
-            var possuiFiltros = request.Filtros != null;
+           var contasUsuarios = await ContasUsuariosSelecionadas(request);
 
-            var contasUsuario = await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(
-                x => x.IdUsuario == request.IdUsuario && x.Contas.Status != TiposStatus.Deletado
-                && (!possuiFiltros || (
-                    (!filtroId.HasValue || x.IdConta == filtroId.Value) &&
-                    (string.IsNullOrEmpty(filtroTitulo) || x.Contas!.Titulo!.Contains(filtroTitulo)) &&
-                    (!filtroStatus.HasValue || x.Contas!.Status == filtroStatus.Value)))
-            );
-
-
-
-            if (contasUsuario.Count() == 0)
+            if (contasUsuarios.Count() == 0)
                 return Resultado<List<RetornaContasDTO>>.GeraFalha(Falha.NaoEncontrado("Nenhuma conta foi encontrada!"));
 
             List<RetornaContasDTO> listaContas = new List<RetornaContasDTO>();
-            foreach (var conta in contasUsuario)
+            foreach (var conta in contasUsuarios)
             {
                 if (conta.Contas is null)
                 {
                     return Resultado<List<RetornaContasDTO>>.GeraFalha(Falha.NaoEncontrado("Conta não encontrada!"));
                 }
-                listaContas.Add(new RetornaContasDTO
-                {
-                    IdConta = conta.Contas.Id,
-                    Titulo = conta.Contas.Titulo!,
-                    Status = conta.Contas.Status,
-                    CreditoAtivo = conta.Contas.CreditoAtivo,
-                    CreditoLimite = conta.Contas.CreditoLimite,
-                    DiaFechamento = conta.Contas.DiaFechamento,
-                    DiaVencimento = conta.Contas.DiaVencimento,
-                    CreditoMaximo = conta.Contas.CreditoMaximo,
-                });
-
+                listaContas.Add(new RetornaContasDTO(conta.Contas.Id, conta.Contas.Titulo!, conta.Contas.Status, conta.Contas.CreditoAtivo, conta.Contas.CreditoLimite, conta.Contas.CreditoMaximo, conta.Contas.DiaFechamento, conta.Contas.DiaVencimento));
             }
 
             return Resultado<List<RetornaContasDTO>>.GeraSucesso(listaContas);
+        }
+        private async Task<IEnumerable<ContasUsuarios>> ContasUsuariosSelecionadas(RetornaContaQuery filtros)
+        {
+            var filtroId = filtros.Filtros?.Id;
+            var filtroTitulo = filtros.Filtros?.Titulo;
+            var filtroStatus = filtros.Filtros?.Status;
+            var possuiFiltros = filtros.Filtros != null;
+
+            var contasUsuario = await _unitOfWork.contasUsuariosRepositorio.ObterContasDoUsuario(
+                x => x.IdUsuario == filtros.IdUsuario && x.Contas!.Status != TiposStatus.Deletado
+                && (!possuiFiltros || (
+                    (!filtroId.HasValue || x.IdConta == filtroId.Value) &&
+                    (string.IsNullOrEmpty(filtroTitulo) || x.Contas!.Titulo!.Contains(filtroTitulo)) &&
+                    (!filtroStatus.HasValue || x.Contas!.Status == filtroStatus.Value)))
+            );
+            return contasUsuario;
         }
     }
 }

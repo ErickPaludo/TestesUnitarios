@@ -38,7 +38,6 @@ namespace Financ.Infra.IoC
             services.AddScoped<IRequestHandler<RetornaContaQuery, Resultado<List<RetornaContasDTO>>>, RetornaContasHandler>();
 
             // 2. Contexto de Contas de Usuários (Vínculos)
-            services.AddScoped<IRequestHandler<CriarContaUsuarioCommand, Resultado<RetornaCadastroContasUsuariosDTO>>, CriarContaUsuarioHandler>();
             services.AddScoped<IRequestHandler<IncluiUsuarioContaCommand, Resultado<RetornaCadastroContasUsuariosDTO>>, IncluirUsuarioContaHandler>();
             services.AddScoped<IRequestHandler<AtualizarContaUsuarioCommand, Resultado<RetornaCadastroContasUsuariosDTO>>, AtualizarContaUsuarioHandler>();
             services.AddScoped<IRequestHandler<RetornaUsuariosAssociadosQuery, Resultado<List<RetornaUsuariosAssociadosDTO>>>, RetornaUsuariosAssociadosHandler>();

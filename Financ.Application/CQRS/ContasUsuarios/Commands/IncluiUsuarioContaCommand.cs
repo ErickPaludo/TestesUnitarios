@@ -11,18 +11,5 @@ using System.Threading.Tasks;
 
 namespace Financ.Application.CQRS.Commands
 {
-    public class IncluiUsuarioContaCommand : IRequest<Resultado<RetornaCadastroContasUsuariosDTO>>
-    {
-        public int IdConta { get; private set; }
-        public string IdUsuario { get; private set; }
-        public TiposAcessos Acesso { get; private set; }
-        public TiposStatus Status { get; private set; }
-        public IncluiUsuarioContaCommand(int idConta, string idUsuario, TiposAcessos acesso)
-        {
-            IdConta = idConta;
-            IdUsuario = idUsuario;
-            Acesso = acesso;
-            Status = TiposStatus.Ativo;
-        }
-    }
+    public record IncluiUsuarioContaCommand(int IdConta, string IdUsuario, TiposAcessos Acesso) : IRequest<Resultado<RetornaCadastroContasUsuariosDTO>>;
 }

@@ -14,106 +14,202 @@ namespace Financ.TesteUnitarios.Domain
 {
     public class UnitTestesContasUsuarios
     {
-        [Fact(DisplayName = "Valida se ID explícito menor ou igual a 0 gera divergência")]
-        public void ContasUsuario_ComId_Invalido_GeraDivergencia()
+        // Helper para criar uma conta válida (Dummy) para os testes não ficarem repetitivos
+        // Assumindo que o construtor padrão cria uma conta com Status Ativo
+        private Conta CriarContaPadrao()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
-
-            Action action = () => new ContasUsuarios(0, conta, "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Visualizador, TiposStatus.Ativo);
-            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensBase.ID_IGUAL_MENOR_ZERO);
-
-            action = () => new ContasUsuarios(-3, conta,  "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Visualizador, TiposStatus.Ativo);
-            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensBase.ID_IGUAL_MENOR_ZERO);
+            return new Conta("Conta Teste", false, null, null, false, null);
         }
 
-        [Fact(DisplayName = "Valida se IdConta <= 0 gera divergência")]
-        public void IdConta_MenorOuIgualZero_GeraDivergencia()
+        // ====================================================================
+        // TESTES DE CRIAÇÃO (CONSTRUTORES)
+        // ====================================================================
+
+        [Theory(DisplayName = "Construtor: IDs inválidos devem gerar divergência")]
+        [InlineData(0)]
+        [InlineData(-10)]
+        public void Construtor_IdInvalido_DeveLancarExcecao(int idInvalido)
         {
-            Action action = () => new ContasUsuarios(null,  "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Visualizador, TiposStatus.Ativo);
-            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensContasUsuarios.CONTA_NAO_PODE_SER_NULA);
+            // Arrange
+            var conta = CriarContaPadrao();
+            var idUsuario = Guid.NewGuid().ToString();
+
+            // Act
+            Action action = () => new ContasUsuarios(idInvalido, conta, idUsuario, TiposAcessos.Visualizador, TiposStatus.Ativo);
+
+            // Assert
+            action.Should().Throw<ContasUsuariosValidacao>()
+                .WithMessage(MensagensBase.ID_IGUAL_MENOR_ZERO);
         }
 
-        [Fact(DisplayName = "IdUsuario é vazio")]
-        public void IdUsuario_MenorOuIgualZero_GeraDivergencia()
+        [Fact(DisplayName = "Construtor: Conta nula deve gerar divergência")]
+        public void Construtor_ContaNula_DeveLancarExcecao()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Act
+            Action action = () => new ContasUsuarios(null, "guid-user", TiposAcessos.Visualizador, TiposStatus.Ativo);
 
-            Action action = () => new ContasUsuarios(conta,  string.Empty, TiposAcessos.Visualizador, TiposStatus.Ativo);
-            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensContasUsuarios.IDUSUARIO_VAZIO);
+            // Assert
+            action.Should().Throw<ContasUsuariosValidacao>()
+                .WithMessage(MensagensContasUsuarios.CONTA_NAO_PODE_SER_NULA);
         }
 
-        [Fact(DisplayName = "Valida se TipoAcesso inválido gera divergência")]
-        public void TipoAcesso_Invalido_GeraDivergencia()
+        [Theory(DisplayName = "Construtor: IdUsuario vazio ou nulo deve gerar divergência")]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("   ")]
+        public void Construtor_IdUsuarioVazio_DeveLancarExcecao(string idUsuarioInvalido)
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Arrange
+            var conta = CriarContaPadrao();
 
-            var acessoInvalido = (TiposAcessos)999;
-            Action action = () => new ContasUsuarios(conta,  "3f2504e0-4f89-11d3-9a0c-0305e82c3301", acessoInvalido, TiposStatus.Ativo);
-            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensContasUsuarios.ACESSO_INVALIDO);
+            // Act
+            Action action = () => new ContasUsuarios(conta, idUsuarioInvalido, TiposAcessos.Visualizador, TiposStatus.Ativo);
+
+            // Assert
+            action.Should().Throw<ContasUsuariosValidacao>()
+                .WithMessage(MensagensContasUsuarios.IDUSUARIO_VAZIO);
         }
 
-        [Fact(DisplayName = "Valida se Status inválido gera divergência")]
-        public void Status_Invalido_GeraDivergencia()
+        [Fact(DisplayName = "Construtor: Enums inválidos devem gerar divergência")]
+        public void Construtor_EnumsInvalidos_DeveLancarExcecao()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Arrange
+            var conta = CriarContaPadrao();
+            var idUsuario = Guid.NewGuid().ToString();
 
-            var statusInvalido = (TiposStatus)999;
-            Action action = () => new ContasUsuarios(conta, "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Visualizador, statusInvalido);
-            action.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensBase.STATUS_INVALIDO);
+            // Act - Acesso Inválido
+            Action actionAcesso = () => new ContasUsuarios(conta, idUsuario, (TiposAcessos)999, TiposStatus.Ativo);
+            actionAcesso.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensContasUsuarios.ACESSO_INVALIDO);
+
+            // Act - Status Inválido
+            Action actionStatus = () => new ContasUsuarios(conta, idUsuario, TiposAcessos.Visualizador, (TiposStatus)999);
+            actionStatus.Should().Throw<ContasUsuariosValidacao>().WithMessage(MensagensBase.STATUS_INVALIDO);
         }
 
-        [Fact(DisplayName = "Cadastra ContasUsuario com sucesso")]
-        public void ContasUsuario_Valido_NaoGeraDivergencia()
+        [Fact(DisplayName = "Construtor: Criação válida com todos parâmetros")]
+        public void Construtor_Valido_NaoDeveGerarExcecao()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Arrange
+            var conta = CriarContaPadrao();
+            var idUsuario = Guid.NewGuid().ToString();
 
-            Action action = () => new ContasUsuarios(conta,  "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Visualizador, TiposStatus.Ativo);
+            // Act
+            Action action = () => new ContasUsuarios(1, conta, idUsuario, TiposAcessos.Administrador, TiposStatus.Ativo);
+
+            // Assert
             action.Should().NotThrow<ContasUsuariosValidacao>();
         }
 
-        [Fact(DisplayName = "Cadastra ContasUsuario com ID explícito com sucesso")]
-        public void ContasUsuario_ComId_Valido_NaoGeraDivergencia()
+        [Fact(DisplayName = "Construtor: Criação simplificada define padrão Mestre/Ativo")]
+        public void Construtor_Simplificado_DeveCriarComoMestreEAtivo()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Arrange
+            var conta = CriarContaPadrao();
+            var idUsuario = Guid.NewGuid().ToString();
 
-            Action action = () => new ContasUsuarios(1, conta, "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Administrador, TiposStatus.Ativo);
-            action.Should().NotThrow<ContasUsuariosValidacao>();
+            // Act
+            var usuarioConta = new ContasUsuarios(conta, idUsuario);
+
+            // Assert
+            usuarioConta.Acesso.Should().Be(TiposAcessos.Mestre);
+            usuarioConta.Status.Should().Be(TiposStatus.Ativo);
         }
 
-        [Fact(DisplayName = "Atualiza com acesso inválido")]
-        public void Atualiza_Usuario_com_acesso_invalido()
+        // ====================================================================
+        // TESTES DE ATUALIZAÇÃO (Regras de Negócio)
+        // ====================================================================
+
+        [Fact(DisplayName = "Atualização: Falha se o remetente tentar atualizar a si mesmo")]
+        public void Atualiza_RemetenteIgualUsuario_DeveLancarAcessoNegado()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Arrange
+            var conta = CriarContaPadrao();
+            var idMesmoUsuario = Guid.NewGuid().ToString();
 
-            var contaUsuario = new ContasUsuarios(1, conta, "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Administrador, TiposStatus.Ativo);
+            // O remetente e o objeto sendo editado possuem o mesmo ID de Usuário
+            var usuarioAlvo = new ContasUsuarios(1, conta, idMesmoUsuario, TiposAcessos.Mestre, TiposStatus.Ativo);
+            var remetente = new ContasUsuarios(1, conta, idMesmoUsuario, TiposAcessos.Mestre, TiposStatus.Ativo);
 
-            Action action = () => contaUsuario.AtualizaContasUsuario((TiposAcessos)3, TiposStatus.Ativo);
-            action.Should().Throw(MensagensContasUsuarios.ACESSO_INVALIDO);
+            // Act
+            Action action = () => usuarioAlvo.AtualizaOutraContaUsuario(remetente, TiposAcessos.Visualizador, null);
+
+            // Assert
+            action.Should().Throw<ContasUsuariosValidacao>()
+                .WithMessage(MensagensContasUsuarios.ACESSO_NEGADO);
         }
 
-        [Fact(DisplayName = "Atualiza com status inválido")]
-        public void Atualiza_Usuario_com_status_invalido()
+        [Fact(DisplayName = "Atualização: Falha se remetente NÃO for Mestre")]
+        public void Atualiza_RemetenteNaoMestre_DeveLancarAcessoNegado()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Regra do código: if (contasUsuarioRemetente.Acesso != TiposAcessos.Mestre)
 
-            var contaUsuario = new ContasUsuarios(1, conta, "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Administrador, TiposStatus.Ativo);
+            // Arrange
+            var conta = CriarContaPadrao();
+            var alvo = new ContasUsuarios(1, conta, "id-alvo", TiposAcessos.Visualizador, TiposStatus.Ativo);
 
-            Action action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Visualizador, (TiposStatus)99);
-            action.Should().Throw(MensagensBase.STATUS_INVALIDO);
+            // Remetente é apenas Administrador
+            var remetenteAdmin = new ContasUsuarios(2, conta, "id-admin", TiposAcessos.Administrador, TiposStatus.Ativo);
+
+            // Act
+            Action action = () => alvo.AtualizaOutraContaUsuario(remetenteAdmin, TiposAcessos.Administrador, null);
+
+            // Assert
+            action.Should().Throw<ContasUsuariosValidacao>()
+                .WithMessage(MensagensContasUsuarios.ACESSO_NEGADO);
         }
 
-        [Fact(DisplayName = "Atualiza usuário com sucesso")]
-        public void Atualiza_Usuario_sem_Divergencia()
+        [Fact(DisplayName = "Atualização: Falha se remetente estiver com Status diferente de Ativo")]
+        public void Atualiza_RemetenteInativo_DeveLancarAcessoNegadoPorStatus()
         {
-            var conta = new Contas("Teste x", TiposContas.Corrente, false, null, null, false, null, TiposStatus.Ativo);
+            // Arrange
+            var conta = CriarContaPadrao();
+            var alvo = new ContasUsuarios(1, conta, "id-alvo", TiposAcessos.Visualizador, TiposStatus.Ativo);
 
-            var contaUsuario = new ContasUsuarios(1, conta, "3f2504e0-4f89-11d3-9a0c-0305e82c3301", TiposAcessos.Administrador, TiposStatus.Ativo);
+            // Remetente é Mestre, mas está Bloqueado
+            var remetenteBloqueado = new ContasUsuarios(2, conta, "id-mestre", TiposAcessos.Mestre, TiposStatus.Bloqueado);
 
-            Action action = () => contaUsuario.AtualizaContasUsuario(null,TiposStatus.Desativado);
-            action.Should().NotThrow<ContasUsuariosValidacao>();
+            // Act
+            Action action = () => alvo.AtualizaOutraContaUsuario(remetenteBloqueado, TiposAcessos.Administrador, null);
 
-            action = () => contaUsuario.AtualizaContasUsuario(TiposAcessos.Administrador, null);
-            action.Should().NotThrow<ContasUsuariosValidacao>();
+            // Assert
+            action.Should().Throw<ContasUsuariosValidacao>()
+                .WithMessage(MensagensContasUsuarios.ACESSO_NEGADO_POR_STATUS);
+        }
+
+        [Fact(DisplayName = "Atualização: Falha ao tentar alterar um usuário Mestre")]
+        public void Atualiza_AlvoEhMestre_DeveImpedirAlteracao()
+        {
+            // Regra: if (Acesso == TiposAcessos.Mestre) -> USUARIO_MESTRE_NAO_PODE_SER_ATUALIZADO
+
+            // Arrange
+            var conta = CriarContaPadrao();
+            // Alvo já é Mestre
+            var alvoMestre = new ContasUsuarios(1, conta, "id-alvo-mestre", TiposAcessos.Mestre, TiposStatus.Ativo);
+            var remetente = new ContasUsuarios(2, conta, "id-remetente", TiposAcessos.Mestre, TiposStatus.Ativo);
+
+            // Act
+            Action action = () => alvoMestre.AtualizaOutraContaUsuario(remetente, TiposAcessos.Visualizador, null);
+
+            // Assert
+            action.Should().Throw<ContasUsuariosValidacao>()
+                .WithMessage(MensagensContasUsuarios.USUARIO_MESTRE_NAO_PODE_SER_ATUALIZADO);
+        }
+
+        [Fact(DisplayName = "Atualização: Sucesso quando Mestre altera Visualizador")]
+        public void Atualiza_FluxoSucesso_DeveAtualizarPropriedades()
+        {
+            // Arrange
+            var conta = CriarContaPadrao();
+            var alvo = new ContasUsuarios(1, conta, "id-alvo", TiposAcessos.Visualizador, TiposStatus.Ativo);
+            var remetente = new ContasUsuarios(2, conta, "id-remetente", TiposAcessos.Mestre, TiposStatus.Ativo);
+
+            // Act
+            // Mudando acesso para Admin e status para Bloqueado
+            alvo.AtualizaOutraContaUsuario(remetente, TiposAcessos.Administrador, TiposStatus.Bloqueado);
+
+            // Assert
+            alvo.Acesso.Should().Be(TiposAcessos.Administrador);
+            alvo.Status.Should().Be(TiposStatus.Bloqueado);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Financ.Application.CQRS.Handler
                 {
                     if (contaUsuarioSolicitante.Acesso == TiposAcessos.Mestre)
                     {
-                            contaUsuarioAlterado.AtualizaContasUsuario(request.acesso, request.status);
+                            contaUsuarioAlterado.AtualizaOutraContaUsuario(contaUsuarioSolicitante,request.acesso, request.status);
                             _unitOfWork.contasUsuariosRepositorio.Atualiza(contaUsuarioAlterado);
                             await _unitOfWork.Commit();
                             return Resultado<RetornaCadastroContasUsuariosDTO>.GeraSucesso(ContasUsuariosMapper.ParaDTO(contaUsuarioAlterado)); 
